@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tags on mgei.github.io</title>
+    <link>http://mgei.github.io/tags/</link>
+    <description>Recent content in Tags on mgei.github.io</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Sun, 12 Aug 2018 12:30:00 +0600</lastBuildDate>
+    
+	<atom:link href="http://mgei.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Configuration</title>
+      <link>http://mgei.github.io/tags/config/</link>
+      <pubDate>Sun, 12 Aug 2018 12:30:00 +0600</pubDate>
+      
+      <guid>http://mgei.github.io/tags/config/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>katex</title>
+      <link>http://mgei.github.io/tags/katex/</link>
+      <pubDate>Sun, 12 Aug 2018 12:30:00 +0600</pubDate>
+      
+      <guid>http://mgei.github.io/tags/katex/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>fuse.js</title>
+      <link>http://mgei.github.io/tags/fuse.js/</link>
+      <pubDate>Fri, 06 Jul 2018 01:00:00 +0600</pubDate>
+      
+      <guid>http://mgei.github.io/tags/fuse.js/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>search</title>
+      <link>http://mgei.github.io/tags/search/</link>
+      <pubDate>Fri, 06 Jul 2018 01:00:00 +0600</pubDate>
+      
+      <guid>http://mgei.github.io/tags/search/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>algolia</title>
+      <link>http://mgei.github.io/tags/algolia/</link>
+      <pubDate>Thu, 05 Jul 2018 23:30:00 +0600</pubDate>
+      
+      <guid>http://mgei.github.io/tags/algolia/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>lunr.js</title>
+      <link>http://mgei.github.io/tags/lunr.js/</link>
+      <pubDate>Thu, 05 Jul 2018 20:30:00 +0600</pubDate>
+      
+      <guid>http://mgei.github.io/tags/lunr.js/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>widgets</title>
+      <link>http://mgei.github.io/tags/widgets/</link>
+      <pubDate>Wed, 07 Feb 2018 18:30:00 +0600</pubDate>
+      
+      <guid>http://mgei.github.io/tags/widgets/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>shortcode</title>
+      <link>http://mgei.github.io/tags/shortcode/</link>
+      <pubDate>Thu, 05 Oct 2017 20:00:00 +0600</pubDate>
+      
+      <guid>http://mgei.github.io/tags/shortcode/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>i18n</title>
+      <link>http://mgei.github.io/tags/i18n/</link>
+      <pubDate>Wed, 27 Sep 2017 14:00:00 +0600</pubDate>
+      
+      <guid>http://mgei.github.io/tags/i18n/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>translation</title>
+      <link>http://mgei.github.io/tags/translation/</link>
+      <pubDate>Wed, 27 Sep 2017 14:00:00 +0600</pubDate>
+      
+      <guid>http://mgei.github.io/tags/translation/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>chroma</title>
+      <link>http://mgei.github.io/tags/chroma/</link>
+      <pubDate>Wed, 27 Sep 2017 12:00:00 +0600</pubDate>
+      
+      <guid>http://mgei.github.io/tags/chroma/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>pygments</title>
+      <link>http://mgei.github.io/tags/pygments/</link>
+      <pubDate>Wed, 27 Sep 2017 12:00:00 +0600</pubDate>
+      
+      <guid>http://mgei.github.io/tags/pygments/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>menus</title>
+      <link>http://mgei.github.io/tags/menus/</link>
+      <pubDate>Wed, 27 Sep 2017 10:00:00 +0600</pubDate>
+      
+      <guid>http://mgei.github.io/tags/menus/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Opengraph</title>
+      <link>http://mgei.github.io/tags/og/</link>
+      <pubDate>Tue, 26 Sep 2017 08:00:00 +0600</pubDate>
+      
+      <guid>http://mgei.github.io/tags/og/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>authors</title>
+      <link>http://mgei.github.io/tags/authors/</link>
+      <pubDate>Tue, 26 Sep 2017 06:00:00 +0600</pubDate>
+      
+      <guid>http://mgei.github.io/tags/authors/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>R Markdown</title>
+      <link>http://mgei.github.io/tags/r-markdown/</link>
+      <pubDate>Thu, 23 Jul 2015 21:13:14 -0500</pubDate>
+      
+      <guid>http://mgei.github.io/tags/r-markdown/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>plot</title>
+      <link>http://mgei.github.io/tags/plot/</link>
+      <pubDate>Thu, 23 Jul 2015 21:13:14 -0500</pubDate>
+      
+      <guid>http://mgei.github.io/tags/plot/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>regression</title>
+      <link>http://mgei.github.io/tags/regression/</link>
+      <pubDate>Thu, 23 Jul 2015 21:13:14 -0500</pubDate>
+      
+      <guid>http://mgei.github.io/tags/regression/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>
