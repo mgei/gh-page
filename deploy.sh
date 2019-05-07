@@ -1,3 +1,5 @@
+R -e "blogdown::build_site()"
+
 echo Please enter commit message
 
 read commitmessage
