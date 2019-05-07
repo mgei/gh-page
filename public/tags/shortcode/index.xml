@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>shortcode on mgei.github.io</title>
-    <link>http://mgei.github.io/tags/shortcode/</link>
-    <description>Recent content in shortcode on mgei.github.io</description>
+    <title>shortcode on Martin&#39;s Github Page</title>
+    <link>https://mgei.github.io/tags/shortcode/</link>
+    <description>Recent content in shortcode on Martin&#39;s Github Page</description>
     <generator>Hugo -- gohugo.io</generator>
     <lastBuildDate>Thu, 05 Oct 2017 20:00:00 +0600</lastBuildDate>
     
-	<atom:link href="http://mgei.github.io/tags/shortcode/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://mgei.github.io/tags/shortcode/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Shortcodes</title>
-      <link>http://mgei.github.io/docs/shortcodes/</link>
+      <link>https://mgei.github.io/docs/shortcodes/</link>
       <pubDate>Thu, 05 Oct 2017 20:00:00 +0600</pubDate>
       
-      <guid>http://mgei.github.io/docs/shortcodes/</guid>
+      <guid>https://mgei.github.io/docs/shortcodes/</guid>
       <description>Minimo comes with several shortcodes built-in.
 Shortcode: center Center align you content.
 center: Parameters  Markdown content between opening and closing tags.  center: Usage Example {{&amp;lt; center &amp;gt;}} _Center Aligned Text_ {{&amp;lt; /center &amp;gt;}} Output
