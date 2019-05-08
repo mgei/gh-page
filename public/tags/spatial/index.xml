@@ -31,5 +31,27 @@ As we will see, in four cantons lawyers outnumber physicians.</description>
  Intro Imagine you just fell out of a plane over Switzerland and landed at a random location. As you are wounded your number one concern it to get to a hospital asap. Not any hospital but one that has an emergency room and is equipped at least with a CT to check for fractures.</description>
     </item>
     
+    <item>
+      <title>Generate mock addresses with realistic names and locations</title>
+      <link>https://mgei.github.io/post/mock-addresses/</link>
+      <pubDate>Mon, 14 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgei.github.io/post/mock-addresses/</guid>
+      <description>Originally published on a Github gist: https://gist.github.com/mgei/0269fb9e4120be24af6b5d1d344b89b6
+ Fake name generator Fake Name Generator allows to generate mock names/addresses. One can choose from plenty of fields to include besides names and addresses, such as date of birth, phone number, ID number, and also lon/lat coordinates.
+For the following purpose we will order as many addresses as possible and should not forget to include longitude and latitude.</description>
+    </item>
+    
+    <item>
+      <title>Geocode in R with ggmap (and a free Google API key)</title>
+      <link>https://mgei.github.io/post/geocode-ggmap/</link>
+      <pubDate>Wed, 12 Dec 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgei.github.io/post/geocode-ggmap/</guid>
+      <description>Youtube video https://www.youtube.com/watch?v=A7LzEJiKQvc
+   How to geocode locations or addresses in R with library(ggmap) in 2018/2019. Previously you could just use geocode(“New York”) to get the coordinates, but Google now required a Google Cloud Platform API key. Get the latest ggmap version from Github, and a free 12 month trial to GCP. This is how you geocode now.
+We will create a leaflet map with library(leaflet) in R.</description>
+    </item>
+    
   </channel>
 </rss>

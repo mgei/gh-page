@@ -1,0 +1,73 @@
+---
+slug: "timevis-range"
+date: "2019-02-21"
+title: "Create open/closing hours data for timevis"
+tags: ["R"]
+authors: [mgei]
+---
+
+<script src="/rmarkdown-libs/htmlwidgets/htmlwidgets.js"></script>
+<link href="/rmarkdown-libs/vis/vis.min.css" rel="stylesheet" />
+<script src="/rmarkdown-libs/vis/vis.min.js"></script>
+<link href="/rmarkdown-libs/timeline/timevis.css" rel="stylesheet" />
+<script src="/rmarkdown-libs/timevis-binding/timevis.js"></script>
+<script src="/rmarkdown-libs/jquery/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="/rmarkdown-libs/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+<script src="/rmarkdown-libs/bootstrap/js/bootstrap.min.js"></script>
+<script src="/rmarkdown-libs/bootstrap/shim/html5shiv.min.js"></script>
+<script src="/rmarkdown-libs/bootstrap/shim/respond.min.js"></script>
+
+
+<blockquote>
+<p>Originally published on a Github gist: <a href="https://gist.github.com/mgei/5708f7e605d5d23a45777a1d156b0ee8" class="uri">https://gist.github.com/mgei/5708f7e605d5d23a45777a1d156b0ee8</a></p>
+</blockquote>
+<div id="timevis" class="section level1">
+<h1>Timevis</h1>
+<p>Timevis is a package by <a href="https://deanattali.com/">Dean Attali</a> to create fully interactive timeline visualizations in R. It is available on <a href="https://github.com/daattali/timevis">Github</a> with a demo and how-to here: <a href="https://daattali.com/shiny/timevis-demo/" class="uri">https://daattali.com/shiny/timevis-demo/</a></p>
+</div>
+<div id="range-data" class="section level1">
+<h1>Range data</h1>
+<pre class="r"><code>library(tidyverse)
+library(lubridate)
+library(timevis)</code></pre>
+<pre class="r"><code>days &lt;- tibble(date = seq(date(&quot;2018-01-01&quot;), by = &quot;days&quot;, length.out = 2)) %&gt;% 
+  mutate(day = weekdays(date))
+
+hours &lt;- tibble(daytype =   c(&quot;weekday&quot;, &quot;weekday&quot;, &quot;weekday&quot;, &quot;weekday&quot;, &quot;weekday&quot;, &quot;weekend&quot;),
+                time_from = c(&quot;00:00&quot;,   &quot;08:00&quot;,   &quot;12:00&quot;,   &quot;13:00&quot;,   &quot;17:00&quot;,   &quot;00:00&quot; ),
+                time_to =   c(&quot;08:00&quot;,   &quot;12:00&quot;,   &quot;13:00&quot;,   &quot;17:00&quot;,   &quot;23:59&quot;,   &quot;23:59&quot; ),
+                state =     c(&quot;closed&quot;,  &quot;open&quot;,    &quot;closed&quot;,  &quot;open&quot;,    &quot;closed&quot;,  &quot;closed&quot;))
+
+week &lt;- tibble(#day = c(&quot;Monday&quot;, &quot;Tuesday&quot;, &quot;Wednesday&quot;, &quot;Thursday&quot;, &quot;Friday&quot;, &quot;Saturday&quot;, &quot;Sunday&quot;),
+  day = c(&quot;Montag&quot;, &quot;Dienstag&quot;, &quot;Mittwoch&quot;, &quot;Donnerstag&quot;, &quot;Freitag&quot;, &quot;Samstag&quot;, &quot;Sonntag&quot;),
+  daytype = c(rep(&quot;weekday&quot;, 5), rep(&quot;weekend&quot;, 2)))
+
+days %&gt;% left_join(left_join(week, hours, by = &quot;daytype&quot;), by = &quot;day&quot;) %&gt;% 
+  mutate(start = ymd_hm(paste(date, time_from)),
+         end =   ymd_hm(paste(date, time_to))) %&gt;% 
+  select(start, end, state) -&gt; openclosed
+
+openclosed</code></pre>
+<pre><code>## # A tibble: 10 x 3
+##    start               end                 state 
+##    &lt;dttm&gt;              &lt;dttm&gt;              &lt;chr&gt; 
+##  1 2018-01-01 00:00:00 2018-01-01 08:00:00 closed
+##  2 2018-01-01 08:00:00 2018-01-01 12:00:00 open  
+##  3 2018-01-01 12:00:00 2018-01-01 13:00:00 closed
+##  4 2018-01-01 13:00:00 2018-01-01 17:00:00 open  
+##  5 2018-01-01 17:00:00 2018-01-01 23:59:00 closed
+##  6 2018-01-02 00:00:00 2018-01-02 08:00:00 closed
+##  7 2018-01-02 08:00:00 2018-01-02 12:00:00 open  
+##  8 2018-01-02 12:00:00 2018-01-02 13:00:00 closed
+##  9 2018-01-02 13:00:00 2018-01-02 17:00:00 open  
+## 10 2018-01-02 17:00:00 2018-01-02 23:59:00 closed</code></pre>
+<pre class="r"><code>timevis(data = openclosed %&gt;% mutate(content = state, style = if_else(state == &quot;open&quot;, &quot;background: green&quot;, &quot;background: red&quot;)))</code></pre>
+<div id="htmlwidget-1" class="timevis html-widget" style="width:672px;height:480px;">
+<div class="btn-group zoom-menu">
+<button type="button" class="btn btn-default btn-lg zoom-in" title="Zoom in">+</button>
+<button type="button" class="btn btn-default btn-lg zoom-out" title="Zoom out">-</button>
+</div>
+</div>
+<script type="application/json" data-for="htmlwidget-1">{"x":{"items":[{"start":"2018-01-01","end":"2018-01-01 08:00:00","state":"closed","content":"closed","style":"background: red"},{"start":"2018-01-01 08:00:00","end":"2018-01-01 12:00:00","state":"open","content":"open","style":"background: green"},{"start":"2018-01-01 12:00:00","end":"2018-01-01 13:00:00","state":"closed","content":"closed","style":"background: red"},{"start":"2018-01-01 13:00:00","end":"2018-01-01 17:00:00","state":"open","content":"open","style":"background: green"},{"start":"2018-01-01 17:00:00","end":"2018-01-01 23:59:00","state":"closed","content":"closed","style":"background: red"},{"start":"2018-01-02","end":"2018-01-02 08:00:00","state":"closed","content":"closed","style":"background: red"},{"start":"2018-01-02 08:00:00","end":"2018-01-02 12:00:00","state":"open","content":"open","style":"background: green"},{"start":"2018-01-02 12:00:00","end":"2018-01-02 13:00:00","state":"closed","content":"closed","style":"background: red"},{"start":"2018-01-02 13:00:00","end":"2018-01-02 17:00:00","state":"open","content":"open","style":"background: green"},{"start":"2018-01-02 17:00:00","end":"2018-01-02 23:59:00","state":"closed","content":"closed","style":"background: red"}],"groups":null,"showZoom":true,"zoomFactor":0.5,"fit":true,"options":[],"height":null,"api":[]},"evals":[],"jsHooks":[]}</script>
+</div>

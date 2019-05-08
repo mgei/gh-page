@@ -102,6 +102,10 @@ On a more general note, in R Markdown to have a link open in a new tab one would
 [Google](https://www.google.com){target="_blank"}
 ```
 
+### Other interesting observations
+
+* If the date of a post is in the future, it will not be included when building the site with `site_build()`. It was however included when previewing locally with `serve_site()`.
+
 ## Build and depoly
 
 For local preview we can do the following

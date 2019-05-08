@@ -5,10 +5,20 @@
     <link>https://mgei.github.io/tags/switzerland/</link>
     <description>Recent content in Switzerland on mgei.github.io</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Wed, 27 Mar 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 14 Apr 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://mgei.github.io/tags/switzerland/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>(de) In welchen Kantonen es mehr Anwälte als Ärzte gibt</title>
+      <link>https://mgei.github.io/post/econovo-lawyers/</link>
+      <pubDate>Sun, 14 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgei.github.io/post/econovo-lawyers/</guid>
+      <description>  Published here: https://www.econovo.ch/de/2019/04/14/anwaelte-aerzte/
+ </description>
+    </item>
     
     <item>
       <title>How far to the closest hospital?</title>
@@ -18,6 +28,16 @@
       <guid>https://mgei.github.io/post/drivingtimes/</guid>
       <description>Originally published on RPubs: http://rpubs.com/mgei/drivingtimes
  Intro Imagine you just fell out of a plane over Switzerland and landed at a random location. As you are wounded your number one concern it to get to a hospital asap. Not any hospital but one that has an emergency room and is equipped at least with a CT to check for fractures.</description>
+    </item>
+    
+    <item>
+      <title>(de) Über die Fallzahlen in Schweizer Spitälern</title>
+      <link>https://mgei.github.io/post/econovo-fallzahlen-cluster/</link>
+      <pubDate>Mon, 18 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgei.github.io/post/econovo-fallzahlen-cluster/</guid>
+      <description>  Published here: https://www.econovo.ch/en/2019/03/18/fallzahlen-cluster/
+ </description>
     </item>
     
   </channel>

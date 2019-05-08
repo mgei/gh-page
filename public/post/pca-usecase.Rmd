@@ -1,0 +1,275 @@
+---
+slug: "pca-usecase"
+date: "2019-04-23"
+title: "PCA use case"
+tags: ["PCA", "R", "tidyquant", "finance", "stock market", "linear model"]
+authors: [mgei]
+---
+
+> Originally published on RPubs: http://rpubs.com/mgei/pca-usecase
+
+```{r setup, message=F, warning=F}
+
+library(tidyverse)
+library(tidyquant)
+library(quantmod)
+library(lubridate)
+library(broom)      # for tidying up linear models
+library(factoextra)
+
+```
+
+# Data
+
+FTSE 350 Industrial Engineering [index](https://www.investing.com/indices/industrial-engineering-historical-data). The index components are Bodycote, Hill&Smith, IMI, Rotork, Spirax-Sarco Engineering, and Weir Group ([components](https://www.investing.com/indices/industrial-engineering-components)).
+
+```{r indexdata, eval = F}
+
+index <- read_csv("postdata/pca-usecase/FTSE 350 Industrial Engineering Historical Data.csv")
+
+index %<>%
+  rename(date = Date) %>% 
+  mutate(date = mdy(date),
+         adjusted = Price) %>% 
+  select(-Vol., -`Change %`)
+
+# gets data from Yahoo Finance
+bodycote   <- tq_get("BOY.L")
+hill_smith <- tq_get("HILS.L")
+imi        <- tq_get("IMI.L")
+rotork     <- tq_get("ROR.L")
+spirax_s   <- tq_get("SPX.L")
+weir       <- tq_get("WEIR.L")
+
+data <- bind_rows(index %>%      mutate(type = "index", name = "FTSE 350 Industrial Engineering"), 
+                  bodycote %>%   mutate(type = "stock", name = "Bodycote plc"), 
+                  hill_smith %>% mutate(type = "stock", name = "Hill & Smith Holdings PLC"), 
+                  imi %>%        mutate(type = "stock", name = "IMI plc"), 
+                  rotork %>%     mutate(type = "stock", name = "Rotork plc"), 
+                  spirax_s %>%   mutate(type = "stock", name = "Spirax-Sarco Engineering plc"), 
+                  weir %>%       mutate(type = "stock", name = "The Weir Group PLC"))
+
+```
+
+```{r readdata, echo=F, warning=F, message=F}
+
+data <- readRDS("postdata/pca-usecase/data.RDS")
+
+```
+
+Compute the returns.
+
+```{r retcomp, warning=F}
+
+# compute returns (daily)
+data_rets <- data %>% 
+  select(date, name, type, adjusted) %>% 
+  arrange(type, name, date) %>% 
+  group_by(name, type) %>%
+  mutate(return = adjusted/lag(adjusted)-1,
+         return_ln = log(adjusted/lag(adjusted))) %>% 
+  filter(!is.na(return_ln),
+         # cut-off date
+         date >= "2016-04-15") %>% 
+  mutate(cumret_ln = cumsum(return_ln),
+         adjusted_ln = exp(cumret_ln))
+
+data_rets %>% 
+  ggplot(aes(x = date, y = adjusted_ln, color = name)) +
+  geom_line(aes(size = factor(desc(type)))) +
+  scale_size_discrete(range = c(0.4,1.4), guide = "none") +
+  theme_tq()
+
+# compute returns (monthly)
+data_rets_m <- data %>% 
+  select(date, name, type, adjusted) %>% 
+  arrange(type, name, date) %>% 
+  group_by(name, type, date = floor_date(date, unit = "months") %>% date()) %>%
+  summarise(adjusted = first(adjusted)) %>% 
+  mutate(return = adjusted/lag(adjusted)-1,
+         return_ln = log(adjusted/lag(adjusted))) %>% 
+  filter(!is.na(return_ln),
+         # cut-off date
+         date >= "2016-04-01") %>% 
+  mutate(cumret_ln = cumsum(return_ln),
+         adjusted_ln = exp(cumret_ln))
+
+data_rets_m %>% 
+  ggplot(aes(x = date, y = adjusted_ln, color = name)) +
+  geom_line(aes(size = factor(desc(type)))) +
+  scale_size_discrete(range = c(0.4,1.4), guide = "none") +
+  theme_tq()
+
+```
+
+Spread format for modelling.
+
+```{r spreadformat}
+
+data_rets %>%
+  ungroup() %>% 
+  select(date, name, return_ln) %>% 
+  filter(date >= "2016-04-15") %>% 
+  spread(name, return_ln) -> returns_daily
+
+data_rets_m %>%
+  ungroup() %>% 
+  select(date, name, return_ln) %>% 
+  filter(date >= "2016-04-01") %>% 
+  spread(name, return_ln) -> returns_monthly
+
+```
+
+Linear model. The *estimates* can be seen as weights.
+
+```{r linmodel}
+
+lm(`FTSE 350 Industrial Engineering` ~ . -1, data = returns_daily %>% 
+     select(-date)) -> model
+
+tidy(model)
+
+```
+
+Estimated/weights shoud approximately sum up to 1.
+
+```{r sumofweights}
+
+tidy(model) %>% 
+  summarise(total = sum(estimate))
+
+# note R-square of .99
+glance(model)$r.squared
+
+```
+
+Correlation plots, daily and monthly.
+
+```{r corr}
+
+data_rets %>% 
+  ungroup() %>% 
+  select(date, name, return_ln) %>% 
+  spread(name, return_ln) %>% 
+  select(-date) %>% 
+  chart.Correlation()
+
+data_rets_m %>% 
+  ungroup() %>% 
+  select(date, name, return_ln) %>% 
+  spread(name, return_ln) %>% 
+  select(-date) %>% 
+  chart.Correlation()
+
+```
+
+# PCA
+
+PCA on monthly log returns.
+
+```{r pca1}
+
+data_rets_m %>%
+  filter(type != "index") %>% 
+  ungroup() %>% 
+  select(date, name, return_ln) %>% 
+  # fill to remove the misssing values
+  spread(name, return_ln, fill = 0) %>% 
+  select(-date) %>% 
+  as.matrix() %>% 
+  prcomp(scale. = T, center = T) -> pca
+
+pca %>% summary()
+
+pca %>% fviz_eig()
+pca %>% fviz_pca_biplot()
+
+```
+
+PCA loadings (eigenvectors) and eigenvalues.
+
+```{r eigen}
+
+pca$rotation
+
+pca$sdev^2
+
+```
+
+# Varimax
+
+Varimax rotation.
+
+```{r varimax}
+
+varimaxrot <- pca$rotation %>% varimax()
+
+varimaxrot
+
+```
+
+For taking into account the maximum of the first three components, it seems that a combination of Bodycote, Hill&Smith, and Weir could be fine.
+
+In a linear model.
+
+```{r linmodel2}
+
+lm(`FTSE 350 Industrial Engineering` ~ `Bodycote plc` + `Hill & Smith Holdings PLC` + `The Weir Group PLC` -1, 
+   data = returns_daily %>% select(-date)) -> model_pca_daily
+
+tidy(model_pca_daily)
+# R-square
+glance(model_pca_daily)$r.squared
+
+
+
+lm(`FTSE 350 Industrial Engineering` ~ `Bodycote plc` + `Hill & Smith Holdings PLC` + `The Weir Group PLC` -1, 
+   data = returns_monthly %>% select(-date)) -> model_pca_monthly
+
+tidy(model_pca_monthly)
+# R-square
+glance(model_pca_monthly)$r.squared
+```
+
+Best fit portfolio return. Look at monthly here.
+
+```{r bestfit}
+
+returns_monthly %>% 
+  mutate(fitted = model_pca_monthly$fitted.values) %>% 
+  select(date, fitted, everything()) -> return_fitted
+
+return_fitted %>% 
+  ggplot(aes(x = `FTSE 350 Industrial Engineering`, y = fitted)) +
+  geom_point(aes(color = fitted > `FTSE 350 Industrial Engineering`)) +
+  geom_abline(slope=1, intercept=0) +
+  geom_smooth(method = "lm") +
+  theme_tq()
+
+
+```
+
+Cumulative return for performance.
+
+```{r cumretfitted, warning=F}
+
+data_rets_m_fitted <- return_fitted %>%
+  gather(name, return_ln, -date) %>% 
+  mutate(type = case_when(name == "fitted"        ~ "fitted",
+                          str_detect(name, "FTSE") ~ "index",
+                          T ~ "stock")) %>% 
+  arrange(type, name, date) %>% 
+  group_by(name, type) %>%
+  mutate(cumret_ln = cumsum(return_ln),
+         adjusted_ln = exp(cumret_ln))
+
+data_rets_m_fitted %>% 
+  ggplot(aes(x = date, y = adjusted_ln, color = name)) +
+  geom_line(aes(size = factor(desc(type)), alpha = factor(desc(type)))) +
+  scale_size_discrete(range = c(0.4,1.4), guide = "none") +
+  scale_alpha_discrete(range = c(0.4, 1),  guide = "none") +
+  theme_tq()
+
+```
+
+Tracking error etc. could be computed with `tidyquant::tq_performance()`, see https://cran.r-project.org/web/packages/tidyquant/vignettes/TQ05-performance-analysis-with-tidyquant.html

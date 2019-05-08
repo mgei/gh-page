@@ -1,0 +1,18 @@
+---
+slug: "geocode-ggmap"
+date: "2018-12-12"
+title: "Geocode in R with ggmap (and a free Google API key)"
+tags: ["R", "spatial", "geocode", "ggmap", "Youtube"]
+authors: [mgei]
+---
+
+> Youtube video https://www.youtube.com/watch?v=A7LzEJiKQvc
+
+```{r, eval=TRUE, echo=F}
+blogdown::shortcode("youtube", "A7LzEJiKQvc")
+```
+
+How to geocode locations or addresses in R with library(ggmap) in 2018/2019. Previously you could just use geocode("New York") to get the coordinates, but Google now required a Google Cloud Platform API key. Get the latest ggmap version from Github, and a free 12 month trial to GCP. This is how you geocode now.
+
+We will create a leaflet map with library(leaflet) in R. This creates nice interactive maps that can also be inserted into a Shiny application. I plan to create more videos on these steps.
+

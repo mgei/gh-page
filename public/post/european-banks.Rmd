@@ -1,0 +1,261 @@
+---
+slug: "european-banks"
+date: "2019-05-06"
+title: "Europe's Largest Banks"
+tags: ["R", "tidyquant", "finance", "stock market", "plotting"]
+authors: [mgei]
+---
+
+> Originally published on RPubs: http://rpubs.com/mgei/european-banks
+
+# Loading the packages and getting the data
+
+We use *tidyquant*.
+
+```{r setup, include=FALSE, warning=F, message=F}
+library(tidyverse)
+library(tidyquant)
+library(zoo)
+library(ggrepel)
+library(lubridate)
+```
+
+We are interested in the following largest banks in Europe: [Gross, grösser, HSBC: Die 50 grössten Banken, die Europa zu bieten hat](https://www.msn.com/de-ch/finanzen/finance/gross-gr%C3%B6sser-hsbc-die-50-gr%C3%B6ssten-banken-die-europa-zu-bieten-hat/ar-AAAQuXY?ocid=ieslice#page=1)
+
+* HSBC
+* BNP Paribas
+* Crédit Agricole
+* Santander 
+* Deutsche Bank 
+
+Also we would like to have a look at UBS and Credit Suisse for comparison. The data is ready on [Yahoo Finance](https://finance.yahoo.com/).
+
+```{r getstocks, eval = F}
+hsbc    <- tq_get("HSBC", from = "2009-01-01") # usd
+paribas <- tq_get("BNP.PA", from = "2009-01-01")    # eur
+credagr <- tq_get("ACA.PA", from = "2009-01-01")   # eur
+santand <- tq_get("SAN", from = "2009-01-01") # usd
+deutsch <- tq_get("DB", from = "2009-01-01") # usd
+
+ubs     <- tq_get("UBS", from = "2009-01-01")
+cs      <- tq_get("CS", from = "2009-01-01")
+
+```
+
+It is not note that the stocks listed in the US trade in USD. BNP Paribas and Credit Agricole on the other hand trade in EUR.
+
+Ultimately we are interested in the return in CHF. Exchange rates are available form [FRED](https://fred.stlouisfed.org/). The tidyquant's default data source which is [Oanda](https://www.oanda.com) only goes back 180 days, which would not be enough for us. The ticker has to be looked up on FRED.
+
+```{r getexchange, eval = F}
+
+usd_eur <- tq_get("DEXUSEU", 
+                  get = "economic.data", from = "2009-01-01")
+
+chf_usd <- tq_get("DEXSZUS", 
+                  get = "economic.data", from = "2009-01-01")
+
+```
+
+Finally, we create the following function which helps to convert the adjusted closing price in the desired currency.
+
+```{r exchange}
+
+mutate_exchange <- function(data, exchangerates, inverse = F, datecol = "date", ratecol = "price", adjustedcol = "adjusted") {
+  if (inverse) {
+    exchangerates <- exchangerates %>% mutate(!!ratecol := 1/!!as.name(ratecol))
+  }
+  
+  out <- left_join(data, exchangerates, by = "date") %>% 
+    mutate(!!ratecol := na.locf(!!as.name(ratecol))) %>% 
+    mutate(adjusted_ex = !!as.name(adjustedcol)/!!as.name(ratecol)) %>% 
+    select(-one_of("exrate")) %>% 
+    rename(exrate = !!as.name(ratecol))
+    
+  return(out)
+}
+
+```
+
+Apply the currency convertion and bind all data together. 
+
+Note that Yahoo Finance gave some error error prices for UBS in 2014, which we remove manually.
+
+Arithmetic and log daily returns are computed and stored in *returns*.
+
+```{r exchangeandjoin, eval = F}
+
+data <- bind_rows(
+  
+  hsbc    %>% 
+    mutate_exchange(chf_usd, inverse = T) %>% 
+    mutate(stock = "HSBC") %>% 
+    select(date, stock, adjusted_ex),
+  
+  paribas %>% 
+    mutate_exchange(usd_eur, inverse = T) %>% 
+    mutate_exchange(chf_usd, inverse = T, adjustedcol = "adjusted_ex") %>% 
+    mutate(stock = "BNP Paribas") %>% 
+    select(date, stock, adjusted_ex),
+  
+  
+  credagr %>% 
+    mutate_exchange(usd_eur, inverse = T) %>% 
+    mutate_exchange(chf_usd, inverse = T, adjustedcol = "adjusted_ex") %>% 
+    mutate(stock = "Crédit Agricole") %>% 
+    select(date, stock, adjusted_ex),
+  
+  santand %>% 
+    mutate_exchange(chf_usd, inverse = T) %>% 
+    mutate(stock = "Santander") %>% 
+    select(date, stock, adjusted_ex),
+  
+  deutsch %>% 
+    mutate_exchange(chf_usd, inverse = T) %>% 
+    mutate(stock = "Deutsche Bank") %>% 
+    select(date, stock, adjusted_ex),
+  
+  ubs     %>% 
+    mutate(adjusted = if_else(adjusted > 100, lag(adjusted, 7), adjusted)) %>% 
+    mutate_exchange(chf_usd, inverse = T) %>% 
+    mutate(stock = "UBS") %>% 
+    select(date, stock, adjusted_ex),
+  
+  cs      %>% 
+    mutate_exchange(chf_usd, inverse = T) %>% 
+    mutate(stock = "Credit Suisse") %>% 
+    select(date, stock, adjusted_ex)
+  
+)
+
+
+returns <- data %>% 
+  arrange(stock, date) %>% 
+  group_by(stock) %>%
+  mutate(return = adjusted_ex/lag(adjusted_ex)-1,
+         return_ln = log(adjusted_ex/lag(adjusted_ex)))
+
+# returns %>% saveRDS("returns.RDS")
+
+```
+
+
+```{r readdata, include=F, warning=F, message=F}
+
+returns <- readRDS("postdata/european-banks/returns.RDS")
+
+```
+
+# Performance plots
+
+```{r plots, warning=F, message=F}
+
+# 10 years
+
+returns_plot <- returns %>% 
+  filter(!is.na(return_ln),
+         # cut-off date
+         date >= "2009-05-06") %>% 
+  mutate(cumret_ln = cumsum(return_ln),
+         adjusted_ln = exp(cumret_ln))
+
+returns_plot %>% 
+  ggplot(aes(x = date, y = adjusted_ln-1, color = stock)) +
+  geom_line() +
+  geom_label_repel(aes(label = if_else(date == "2019-05-03", stock, NA_character_)),
+                  size = 3) +
+  # geom_text_repel(aes(label = stock, x = tail())) +
+  scale_x_date(expand = c(0,0),
+               date_breaks = "1 year",
+               date_labels = "%Y") +
+  scale_y_continuous(labels = scales::percent, 
+                     breaks = seq(-0.8, 0.9, by = 0.2)) +
+  labs(x = "", y = "",
+       title = "Entwicklung Frankenkurs Bankaktien in %",
+       subtitle = "seit 2009") +
+  theme_tq() +
+  theme(legend.position = "none")
+
+# 5 years
+
+returns_plot <- returns %>% 
+  filter(!is.na(return_ln),
+         # cut-off date
+         date >= "2014-05-06") %>% 
+  mutate(cumret_ln = cumsum(return_ln),
+         adjusted_ln = exp(cumret_ln))
+
+returns_plot %>% 
+  ggplot(aes(x = date, y = adjusted_ln-1, color = stock)) +
+  geom_line() +
+  geom_label_repel(aes(label = if_else(date == "2019-05-03", stock, NA_character_)),
+                  size = 3) +
+  # geom_text_repel(aes(label = stock, x = tail())) +
+  scale_x_date(expand = c(0,0),
+               date_breaks = "1 year",
+               date_labels = "%Y") +
+  scale_y_continuous(labels = scales::percent, 
+                     breaks = seq(-0.8, 0.9, by = 0.2)) +
+  labs(x = "", y = "",
+       title = "Entwicklung Frankenkurs Bankaktien in %",
+       subtitle = "seit 2014") +
+  theme_tq() +
+  theme(legend.position = "none")
+
+# 2 years
+
+returns_plot <- returns %>% 
+  filter(!is.na(return_ln),
+         # cut-off date
+         date >= "2017-05-06") %>% 
+  mutate(cumret_ln = cumsum(return_ln),
+         adjusted_ln = exp(cumret_ln))
+
+returns_plot %>% 
+  ggplot(aes(x = date, y = adjusted_ln-1, color = stock)) +
+  geom_line() +
+  geom_label_repel(aes(label = if_else(date == "2019-05-03", stock, NA_character_)),
+                  size = 3) +
+  # geom_text_repel(aes(label = stock, x = tail())) +
+  scale_x_date(expand = c(0,0),
+               date_breaks = "1 year",
+               date_labels = "%Y") +
+  scale_y_continuous(labels = scales::percent, 
+                     breaks = seq(-0.8, 0.9, by = 0.2)) +
+  labs(x = "", y = "",
+       title = "Entwicklung Frankenkurs Bankaktien in %",
+       subtitle = "seit 2017") +
+  theme_tq() +
+  theme(legend.position = "none")
+
+# 1 year
+
+returns_plot <- returns %>% 
+  filter(!is.na(return_ln),
+         # cut-off date
+         date >= "2018-05-06") %>% 
+  mutate(cumret_ln = cumsum(return_ln),
+         adjusted_ln = exp(cumret_ln))
+
+
+returns_plot %>% 
+  ggplot(aes(x = date, y = adjusted_ln-1, color = stock)) +
+  geom_line() +
+  geom_label_repel(aes(label = if_else(date == "2019-05-03", stock, NA_character_)),
+                  size = 3) +
+  # geom_text_repel(aes(label = stock, x = tail())) +
+  scale_x_date(expand = c(0,0),
+               date_breaks = "3 months",
+               date_labels = "%m.%Y") +
+  scale_y_continuous(labels = scales::percent, 
+                     breaks = seq(-0.8, 0.9, by = 0.2)) +
+  labs(x = "", y = "",
+       title = "Entwicklung Frankenkurs Bankaktien in %",
+       subtitle = "seit 2018") +
+  theme_tq() +
+  theme(legend.position = "none")
+
+
+```
+
+
+

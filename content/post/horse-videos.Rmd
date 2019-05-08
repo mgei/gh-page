@@ -1,0 +1,31 @@
+---
+slug: "horse-videos"
+date: "2018-05-30"
+title: "Various drone videos (Youtube)"
+tags: ["horse videos", "Youtube"]
+authors: [mgei]
+---
+
+# CS Biel-Benken 2017 R/N110
+
+> Youtube video https://www.youtube.com/watch?v=RiuIP5MDxRg
+
+```{r, eval=TRUE, echo=F}
+blogdown::shortcode("youtube", "RiuIP5MDxRg")
+```
+
+# CS Delémont 2018 R/N110
+
+> Youtube video https://www.youtube.com/watch?v=YfstjN6kGR0
+
+```{r, eval=TRUE, echo=F}
+blogdown::shortcode("youtube", "YfstjN6kGR0")
+```
+
+# Horse tracking AI using YOLOv2
+
+> Youtube video https://www.youtube.com/watch?v=YeICugaj5mU
+
+```{r, eval=TRUE, echo=F}
+blogdown::shortcode("youtube", "YeICugaj5mU")
+```

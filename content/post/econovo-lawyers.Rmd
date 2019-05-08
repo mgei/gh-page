@@ -1,0 +1,9 @@
+---
+slug: "econovo-lawyers"
+date: "2019-04-14"
+title: "(de) In welchen Kantonen es mehr Anwälte als Ärzte gibt"
+tags: ["Econovo", "Switzerland"]
+authors: [mgei]
+---
+
+> Published here: https://www.econovo.ch/de/2019/04/14/anwaelte-aerzte/

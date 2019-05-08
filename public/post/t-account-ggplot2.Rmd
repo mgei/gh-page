@@ -1,0 +1,197 @@
+---
+slug: "t-account-ggplot2"
+date: "2019-01-16"
+title: "Create a T-account plot for a balance sheet or income statement using ggplot2 in R"
+tags: ["R", "finance", "plotting", "ggplot2", "Youtube"]
+authors: [mgei]
+---
+
+> Originally published on a Github gist: https://gist.github.com/mgei/14e44b7121fcee18f3809cf4bfd1af71
+
+# Loading the packages and getting the data
+
+```{r setup, warning=F, message=F}
+library(tidyverse)
+library(scales)
+```
+
+Because the native `quantmod::getFinancials()` and `tidyquant::tq_get(get = financials)` do not work anymore (discontinued due to a change in Yahoo Finance), we use an alternative posted on [Stackoverflow](https://stackoverflow.com/questions/49452906/getfinancials-quantmod-and-tq-get-tidy-quant-not-working). Here's the function:
+
+
+```{r datafct, eval = F}
+scrapy_stocks <- function(stock){
+  if ("rvest" %in% installed.packages()) {
+    library(rvest)
+  }else{
+    install.packages("rvest")
+    library(rvest)
+  }
+  for (i in 1:length(stock)) {
+    tryCatch(
+      {
+        url <- "https://finance.yahoo.com/quote/"
+        url <- paste0(url,stock[i],"/financials?p=",stock[i])
+        wahis.session <- html_session(url)                                
+        p <-    wahis.session %>%
+          html_nodes(xpath = '//*[@id="Col1-1-Financials-Proxy"]/section/div[3]/table')%>%
+          html_table(fill = TRUE)
+        IS <- p[[1]]
+        colnames(IS) <- paste(IS[1,])
+        IS <- IS[-c(1,5,12,20,25),]
+        names_row <- paste(IS[,1])
+        IS <- IS[,-1]
+        IS <- apply(IS,2,function(x){gsub(",","",x)})
+        IS <- as.data.frame(apply(IS,2,as.numeric))
+        rownames(IS) <- paste(names_row)
+        temp1 <- IS
+        url <- "https://finance.yahoo.com/quote/"
+        url <- paste0(url,stock[i],"/balance-sheet?p=",stock[i])
+        wahis.session <- html_session(url)
+        p <-    wahis.session %>%
+          html_nodes(xpath = '//*[@id="Col1-1-Financials-Proxy"]/section/div[3]/table')%>%
+          html_table(fill = TRUE)
+        BS <- p[[1]]
+        colnames(BS) <- BS[1,]
+        BS <- BS[-c(1,2,17,28),]
+        names_row <- BS[,1]
+        BS <- BS[,-1] 
+        BS <- apply(BS,2,function(x){gsub(",","",x)})
+        BS <- as.data.frame(apply(BS,2,as.numeric))
+        rownames(BS) <- paste(names_row)
+        temp2 <- BS
+        url <- "https://finance.yahoo.com/quote/"
+        url <- paste0(url,stock[i],"/cash-flow?p=",stock[i])
+        wahis.session <- html_session(url)
+        p <-    wahis.session %>%
+          html_nodes(xpath = '//*[@id="Col1-1-Financials-Proxy"]/section/div[3]/table')%>%
+          html_table(fill = TRUE)
+        CF <- p[[1]]
+        colnames(CF) <- CF[1,]
+        CF <- CF[-c(1,3,11,16),]
+        names_row <- CF[,1]
+        CF <- CF[,-1] 
+        CF <- apply(CF,2,function(x){gsub(",","",x)})
+        CF <- as.data.frame(apply(CF,2,as.numeric))
+        rownames(CF) <- paste(names_row)
+        temp3 <- CF
+        assign(paste0(stock[i],'.f'),value = list(IS = temp1,BS = temp2,CF = temp3),envir = parent.frame())
+        
+      },
+      error = function(cond){
+        message(stock[i], "Give error ",cond)
+      }
+    )
+  }
+}
+
+```
+
+Look up the ticker symbol on Yahoo Finance, e.g. *MSFT* for Microsoft. It is then in your workspace as `MSFT.f`.
+
+```{r sampleget, eval=F}
+
+scrapy_stocks("MSFT")
+
+```
+# Apple vs. Microsoft's balance sheet
+
+Get the data.
+
+```{r appleget, eval = F}
+
+scrapy_stocks("AAPL")
+
+```
+
+```{r applegetdata, include=F}
+
+AAPL.f <- readRDS("postdata/t-account/AAPL.RDS")
+MSFT.f <- readRDS("postdata/t-account/MSFT.RDS")
+
+```
+
+Clean balance sheet and plot.
+
+```{r apple}
+
+AAPL.f$BS %>% rownames_to_column("Position") %>% as_tibble() %>% mutate(stock = "Apple") %>% select(1, USD = 2, stock) %>% 
+  bind_rows(MSFT.f$BS %>% rownames_to_column("Position") %>% as_tibble() %>% mutate(stock = "Microsoft") %>% select(1, USD = 2, stock)) %>% 
+  filter(Position %in% c("Total Current Assets",
+                         "Total Assets",
+                         "Total Current Liabilities",
+                         "Total Liabilities",
+                         "Total Stockholder Equity")) %>% 
+  spread(Position, USD) %>% 
+  mutate(`Total Fixed Assets` = `Total Assets`-`Total Current Assets`,
+         `Total Long-term liabilities` = `Total Liabilities`-`Total Current Liabilities`) %>% 
+  select(-`Total Liabilities`, -`Total Assets`) %>% 
+  gather(Position, USD, -stock) %>% arrange(stock) %>% 
+  mutate(al = case_when(str_detect(Position, "Asset") ~ "assets",
+                                   T ~ "liabilities")) -> balancesheets
+
+balancesheets %>% 
+  ggplot(aes(x = al, y = USD, fill = Position)) + 
+  geom_col(alpha = 0.8, color = "black") +
+  geom_text(aes(label = str_c(Position, number(USD/1000, big.mark = "'"), sep = "\n")), position = position_stack(vjust = 0.5), size = 3) +
+  geom_text(data = balancesheets %>% group_by(stock, al) %>% summarise(USD = sum(USD)), aes(x = al, y = -10000000, label = number(USD/1000, big.mark = "'"), fill = "green"), size = 3) +
+  geom_segment(x = 1.5, y = 0, xend = 1.5, yend = 1000000000000, color = "black", size = 1) +
+  scale_x_discrete(position = "top") +
+  scale_fill_brewer(palette = "Spectral") +
+  facet_wrap(~ stock) +
+  labs(title = "Balance Sheets",
+       subtitle = "Q3 2018, in million USD",
+       y = "",
+       x = "") +
+  theme_classic() +
+  theme(legend.position = "none",
+        plot.title = element_text(hjust=0.5),
+        plot.subtitle = element_text(hjust=0.5),
+        axis.line.y = element_blank(),
+        axis.text.y = element_blank(),
+        axis.ticks = element_blank())
+
+```
+
+# Apple income statment
+
+```{r is}
+
+AAPL.f$IS %>% rownames_to_column("Position") %>% as_tibble() %>% mutate(stock = "Apple") %>% select(1, USD = 2, stock) %>%
+  filter(Position %in% c("Total Revenue",
+                         "Cost of Revenue",
+                         "Total Operating Expenses",
+                         "Total Other Income/Expenses Net",
+                         "Income Tax Expense",
+                         "Net Income")) %>% 
+  spread(Position, USD) %>% 
+  mutate(`Operating Expenses` = `Total Operating Expenses`-`Cost of Revenue`) %>% 
+  select(-`Total Operating Expenses`) %>% 
+  gather(Position, USD, -stock) %>% arrange(stock) %>% 
+  mutate(ei = case_when(Position %in% c("Total Revenue", "Total Other Income/Expenses Net") ~ "income",
+                        T ~ "expenses")) %>% 
+  ggplot(aes(x = ei, y = USD, fill = reorder(Position, USD))) + 
+  geom_col(alpha = 0.8, color = "black") +
+  geom_text(aes(label = str_c(Position, number(USD/1000, big.mark = "'"), sep = "\n")), position = position_stack(vjust = 0.5), size = 3) +
+  geom_segment(x = 1.5, y = 10, xend = 1.5, yend = 1000000000000, color = "black") +
+  scale_x_discrete(position = "top") +
+  scale_fill_brewer(palette = "Spectral") +
+  facet_wrap(~ stock) +
+  labs(title = "Apple Inc.'s Income Statement",
+       subtitle = "Q3 2018, in million USD",
+       y = "",
+       x = "") +
+  theme_classic() +
+  theme(legend.position = "none",
+        plot.title = element_text(hjust=0.5),
+        plot.subtitle = element_text(hjust=0.5),
+        axis.line.y = element_blank(),
+        axis.text.y = element_blank(),
+        axis.ticks = element_blank())
+
+```
+
+# Youtube tutorial
+
+```{r, eval=TRUE, echo=F}
+blogdown::shortcode("youtube", "iYOp-sq4le8")
+```

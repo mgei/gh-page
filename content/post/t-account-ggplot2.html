@@ -1,0 +1,167 @@
+---
+slug: "t-account-ggplot2"
+date: "2019-01-16"
+title: "Create a T-account plot for a balance sheet or income statement using ggplot2 in R"
+tags: ["R", "finance", "plotting", "ggplot2", "Youtube"]
+authors: [mgei]
+---
+
+
+
+<blockquote>
+<p>Originally published on a Github gist: <a href="https://gist.github.com/mgei/14e44b7121fcee18f3809cf4bfd1af71" class="uri">https://gist.github.com/mgei/14e44b7121fcee18f3809cf4bfd1af71</a></p>
+</blockquote>
+<div id="loading-the-packages-and-getting-the-data" class="section level1">
+<h1>Loading the packages and getting the data</h1>
+<pre class="r"><code>library(tidyverse)
+library(scales)</code></pre>
+<p>Because the native <code>quantmod::getFinancials()</code> and <code>tidyquant::tq_get(get = financials)</code> do not work anymore (discontinued due to a change in Yahoo Finance), we use an alternative posted on <a href="https://stackoverflow.com/questions/49452906/getfinancials-quantmod-and-tq-get-tidy-quant-not-working">Stackoverflow</a>. Here’s the function:</p>
+<pre class="r"><code>scrapy_stocks &lt;- function(stock){
+  if (&quot;rvest&quot; %in% installed.packages()) {
+    library(rvest)
+  }else{
+    install.packages(&quot;rvest&quot;)
+    library(rvest)
+  }
+  for (i in 1:length(stock)) {
+    tryCatch(
+      {
+        url &lt;- &quot;https://finance.yahoo.com/quote/&quot;
+        url &lt;- paste0(url,stock[i],&quot;/financials?p=&quot;,stock[i])
+        wahis.session &lt;- html_session(url)                                
+        p &lt;-    wahis.session %&gt;%
+          html_nodes(xpath = &#39;//*[@id=&quot;Col1-1-Financials-Proxy&quot;]/section/div[3]/table&#39;)%&gt;%
+          html_table(fill = TRUE)
+        IS &lt;- p[[1]]
+        colnames(IS) &lt;- paste(IS[1,])
+        IS &lt;- IS[-c(1,5,12,20,25),]
+        names_row &lt;- paste(IS[,1])
+        IS &lt;- IS[,-1]
+        IS &lt;- apply(IS,2,function(x){gsub(&quot;,&quot;,&quot;&quot;,x)})
+        IS &lt;- as.data.frame(apply(IS,2,as.numeric))
+        rownames(IS) &lt;- paste(names_row)
+        temp1 &lt;- IS
+        url &lt;- &quot;https://finance.yahoo.com/quote/&quot;
+        url &lt;- paste0(url,stock[i],&quot;/balance-sheet?p=&quot;,stock[i])
+        wahis.session &lt;- html_session(url)
+        p &lt;-    wahis.session %&gt;%
+          html_nodes(xpath = &#39;//*[@id=&quot;Col1-1-Financials-Proxy&quot;]/section/div[3]/table&#39;)%&gt;%
+          html_table(fill = TRUE)
+        BS &lt;- p[[1]]
+        colnames(BS) &lt;- BS[1,]
+        BS &lt;- BS[-c(1,2,17,28),]
+        names_row &lt;- BS[,1]
+        BS &lt;- BS[,-1] 
+        BS &lt;- apply(BS,2,function(x){gsub(&quot;,&quot;,&quot;&quot;,x)})
+        BS &lt;- as.data.frame(apply(BS,2,as.numeric))
+        rownames(BS) &lt;- paste(names_row)
+        temp2 &lt;- BS
+        url &lt;- &quot;https://finance.yahoo.com/quote/&quot;
+        url &lt;- paste0(url,stock[i],&quot;/cash-flow?p=&quot;,stock[i])
+        wahis.session &lt;- html_session(url)
+        p &lt;-    wahis.session %&gt;%
+          html_nodes(xpath = &#39;//*[@id=&quot;Col1-1-Financials-Proxy&quot;]/section/div[3]/table&#39;)%&gt;%
+          html_table(fill = TRUE)
+        CF &lt;- p[[1]]
+        colnames(CF) &lt;- CF[1,]
+        CF &lt;- CF[-c(1,3,11,16),]
+        names_row &lt;- CF[,1]
+        CF &lt;- CF[,-1] 
+        CF &lt;- apply(CF,2,function(x){gsub(&quot;,&quot;,&quot;&quot;,x)})
+        CF &lt;- as.data.frame(apply(CF,2,as.numeric))
+        rownames(CF) &lt;- paste(names_row)
+        temp3 &lt;- CF
+        assign(paste0(stock[i],&#39;.f&#39;),value = list(IS = temp1,BS = temp2,CF = temp3),envir = parent.frame())
+        
+      },
+      error = function(cond){
+        message(stock[i], &quot;Give error &quot;,cond)
+      }
+    )
+  }
+}</code></pre>
+<p>Look up the ticker symbol on Yahoo Finance, e.g. <em>MSFT</em> for Microsoft. It is then in your workspace as <code>MSFT.f</code>.</p>
+<pre class="r"><code>scrapy_stocks(&quot;MSFT&quot;)</code></pre>
+</div>
+<div id="apple-vs.microsofts-balance-sheet" class="section level1">
+<h1>Apple vs. Microsoft’s balance sheet</h1>
+<p>Get the data.</p>
+<pre class="r"><code>scrapy_stocks(&quot;AAPL&quot;)</code></pre>
+<p>Clean balance sheet and plot.</p>
+<pre class="r"><code>AAPL.f$BS %&gt;% rownames_to_column(&quot;Position&quot;) %&gt;% as_tibble() %&gt;% mutate(stock = &quot;Apple&quot;) %&gt;% select(1, USD = 2, stock) %&gt;% 
+  bind_rows(MSFT.f$BS %&gt;% rownames_to_column(&quot;Position&quot;) %&gt;% as_tibble() %&gt;% mutate(stock = &quot;Microsoft&quot;) %&gt;% select(1, USD = 2, stock)) %&gt;% 
+  filter(Position %in% c(&quot;Total Current Assets&quot;,
+                         &quot;Total Assets&quot;,
+                         &quot;Total Current Liabilities&quot;,
+                         &quot;Total Liabilities&quot;,
+                         &quot;Total Stockholder Equity&quot;)) %&gt;% 
+  spread(Position, USD) %&gt;% 
+  mutate(`Total Fixed Assets` = `Total Assets`-`Total Current Assets`,
+         `Total Long-term liabilities` = `Total Liabilities`-`Total Current Liabilities`) %&gt;% 
+  select(-`Total Liabilities`, -`Total Assets`) %&gt;% 
+  gather(Position, USD, -stock) %&gt;% arrange(stock) %&gt;% 
+  mutate(al = case_when(str_detect(Position, &quot;Asset&quot;) ~ &quot;assets&quot;,
+                                   T ~ &quot;liabilities&quot;)) -&gt; balancesheets
+
+balancesheets %&gt;% 
+  ggplot(aes(x = al, y = USD, fill = Position)) + 
+  geom_col(alpha = 0.8, color = &quot;black&quot;) +
+  geom_text(aes(label = str_c(Position, number(USD/1000, big.mark = &quot;&#39;&quot;), sep = &quot;\n&quot;)), position = position_stack(vjust = 0.5), size = 3) +
+  geom_text(data = balancesheets %&gt;% group_by(stock, al) %&gt;% summarise(USD = sum(USD)), aes(x = al, y = -10000000, label = number(USD/1000, big.mark = &quot;&#39;&quot;), fill = &quot;green&quot;), size = 3) +
+  geom_segment(x = 1.5, y = 0, xend = 1.5, yend = 1000000000000, color = &quot;black&quot;, size = 1) +
+  scale_x_discrete(position = &quot;top&quot;) +
+  scale_fill_brewer(palette = &quot;Spectral&quot;) +
+  facet_wrap(~ stock) +
+  labs(title = &quot;Balance Sheets&quot;,
+       subtitle = &quot;Q3 2018, in million USD&quot;,
+       y = &quot;&quot;,
+       x = &quot;&quot;) +
+  theme_classic() +
+  theme(legend.position = &quot;none&quot;,
+        plot.title = element_text(hjust=0.5),
+        plot.subtitle = element_text(hjust=0.5),
+        axis.line.y = element_blank(),
+        axis.text.y = element_blank(),
+        axis.ticks = element_blank())</code></pre>
+<pre><code>## Warning: Ignoring unknown aesthetics: fill</code></pre>
+<p><img src="/post/t-account-ggplot2_files/figure-html/apple-1.png" width="672" /></p>
+</div>
+<div id="apple-income-statment" class="section level1">
+<h1>Apple income statment</h1>
+<pre class="r"><code>AAPL.f$IS %&gt;% rownames_to_column(&quot;Position&quot;) %&gt;% as_tibble() %&gt;% mutate(stock = &quot;Apple&quot;) %&gt;% select(1, USD = 2, stock) %&gt;%
+  filter(Position %in% c(&quot;Total Revenue&quot;,
+                         &quot;Cost of Revenue&quot;,
+                         &quot;Total Operating Expenses&quot;,
+                         &quot;Total Other Income/Expenses Net&quot;,
+                         &quot;Income Tax Expense&quot;,
+                         &quot;Net Income&quot;)) %&gt;% 
+  spread(Position, USD) %&gt;% 
+  mutate(`Operating Expenses` = `Total Operating Expenses`-`Cost of Revenue`) %&gt;% 
+  select(-`Total Operating Expenses`) %&gt;% 
+  gather(Position, USD, -stock) %&gt;% arrange(stock) %&gt;% 
+  mutate(ei = case_when(Position %in% c(&quot;Total Revenue&quot;, &quot;Total Other Income/Expenses Net&quot;) ~ &quot;income&quot;,
+                        T ~ &quot;expenses&quot;)) %&gt;% 
+  ggplot(aes(x = ei, y = USD, fill = reorder(Position, USD))) + 
+  geom_col(alpha = 0.8, color = &quot;black&quot;) +
+  geom_text(aes(label = str_c(Position, number(USD/1000, big.mark = &quot;&#39;&quot;), sep = &quot;\n&quot;)), position = position_stack(vjust = 0.5), size = 3) +
+  geom_segment(x = 1.5, y = 10, xend = 1.5, yend = 1000000000000, color = &quot;black&quot;) +
+  scale_x_discrete(position = &quot;top&quot;) +
+  scale_fill_brewer(palette = &quot;Spectral&quot;) +
+  facet_wrap(~ stock) +
+  labs(title = &quot;Apple Inc.&#39;s Income Statement&quot;,
+       subtitle = &quot;Q3 2018, in million USD&quot;,
+       y = &quot;&quot;,
+       x = &quot;&quot;) +
+  theme_classic() +
+  theme(legend.position = &quot;none&quot;,
+        plot.title = element_text(hjust=0.5),
+        plot.subtitle = element_text(hjust=0.5),
+        axis.line.y = element_blank(),
+        axis.text.y = element_blank(),
+        axis.ticks = element_blank())</code></pre>
+<p><img src="/post/t-account-ggplot2_files/figure-html/is-1.png" width="672" /></p>
+</div>
+<div id="youtube-tutorial" class="section level1">
+<h1>Youtube tutorial</h1>
+{{% youtube "iYOp-sq4le8" %}}
+</div>

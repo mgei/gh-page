@@ -1,0 +1,46 @@
+---
+slug: "timevis-range"
+date: "2019-02-21"
+title: "Create open/closing hours data for timevis"
+tags: ["R"]
+authors: [mgei]
+---
+
+> Originally published on a Github gist: https://gist.github.com/mgei/5708f7e605d5d23a45777a1d156b0ee8
+
+# Timevis
+
+Timevis is a package by [Dean Attali](https://deanattali.com/) to create fully interactive timeline visualizations in R. It is available on [Github](https://github.com/daattali/timevis) with a demo and how-to here: https://daattali.com/shiny/timevis-demo/
+
+# Range data
+
+```{r setup, warning=F, message=F}
+library(tidyverse)
+library(lubridate)
+library(timevis)
+```
+
+
+```{r sample}
+days <- tibble(date = seq(date("2018-01-01"), by = "days", length.out = 2)) %>% 
+  mutate(day = weekdays(date))
+
+hours <- tibble(daytype =   c("weekday", "weekday", "weekday", "weekday", "weekday", "weekend"),
+                time_from = c("00:00",   "08:00",   "12:00",   "13:00",   "17:00",   "00:00" ),
+                time_to =   c("08:00",   "12:00",   "13:00",   "17:00",   "23:59",   "23:59" ),
+                state =     c("closed",  "open",    "closed",  "open",    "closed",  "closed"))
+
+week <- tibble(#day = c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"),
+  day = c("Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag", "Sonntag"),
+  daytype = c(rep("weekday", 5), rep("weekend", 2)))
+
+days %>% left_join(left_join(week, hours, by = "daytype"), by = "day") %>% 
+  mutate(start = ymd_hm(paste(date, time_from)),
+         end =   ymd_hm(paste(date, time_to))) %>% 
+  select(start, end, state) -> openclosed
+
+openclosed
+
+timevis(data = openclosed %>% mutate(content = state, style = if_else(state == "open", "background: green", "background: red")))
+
+```

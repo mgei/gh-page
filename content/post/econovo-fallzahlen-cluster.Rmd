@@ -1,0 +1,9 @@
+---
+slug: "econovo-fallzahlen-cluster"
+date: "2019-03-18"
+title: "(de) Über die Fallzahlen in Schweizer Spitälern"
+tags: ["cluster analysis", "hospitals", "Switzerland"]
+authors: [mgei]
+---
+
+> Published here: https://www.econovo.ch/en/2019/03/18/fallzahlen-cluster/

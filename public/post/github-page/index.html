@@ -59,55 +59,13 @@ The theme used here is Minimo.
       <ul><li class='item'>
   <a href='/'>Home</a></li><li class='item'>
   <a href='/post/'>Archive</a></li><li class='item'>
+  <a href='/tags/'>Tags</a></li><li class='item'>
   <a href='/search/'>Search</a></li><li class='item'>
   <a href='/about/'>About</a></li></ul>
     </div>
   </nav>
 
-</section><section class='widget widget-taxonomy_cloud sep-after'>
-  <header>
-    <h4 class='title widget-title'>Tags</h4>
-  </header>
-
-  <div class='container list-container'>
-  <ul class='list taxonomy-cloud'><li>
-        <a href='/tags/blogdown/' style='font-size:1em'>blogdown</a>
-      </li><li>
-        <a href='/tags/ggmap/' style='font-size:1em'>ggmap</a>
-      </li><li>
-        <a href='/tags/ggplot/' style='font-size:1em'>ggplot</a>
-      </li><li>
-        <a href='/tags/github-page/' style='font-size:1em'>github-page</a>
-      </li><li>
-        <a href='/tags/hospitals/' style='font-size:1em'>hospitals</a>
-      </li><li>
-        <a href='/tags/hugo/' style='font-size:1em'>hugo</a>
-      </li><li>
-        <a href='/tags/lawyers/' style='font-size:1em'>lawyers</a>
-      </li><li>
-        <a href='/tags/leaflet/' style='font-size:1em'>leaflet</a>
-      </li><li>
-        <a href='/tags/linear-model/' style='font-size:1em'>linear model</a>
-      </li><li>
-        <a href='/tags/misc/' style='font-size:1em'>misc</a>
-      </li><li>
-        <a href='/tags/osrm/' style='font-size:1em'>OSRM</a>
-      </li><li>
-        <a href='/tags/page/' style='font-size:1em'>page</a>
-      </li><li>
-        <a href='/tags/r/' style='font-size:2em'>R</a>
-      </li><li>
-        <a href='/tags/spatial/' style='font-size:1.5em'>spatial</a>
-      </li><li>
-        <a href='/tags/statistics/' style='font-size:1em'>statistics</a>
-      </li><li>
-        <a href='/tags/switzerland/' style='font-size:1em'>Switzerland</a>
-      </li></ul>
-</div>
-
-
-</section>
-</div>
+</section></div>
 
   <div class='sidebar-overlay'></div>
 </div><div class='main'><a class='screen-reader-text' href='#content'>Skip to Content</a>
@@ -260,6 +218,12 @@ authors: [mgei]
 <p>On a more general note, in R Markdown to have a link open in a new tab one would do like this:</p>
 <pre class="md"><code>[Google](https://www.google.com){target=&quot;_blank&quot;}</code></pre>
 </div>
+<div id="other-interesting-observations" class="section level3">
+<h3>Other interesting observations</h3>
+<ul>
+<li>If the date of a post is in the future, it will not be included when building the site with <code>site_build()</code>. It was however included when previewing locally with <code>serve_site()</code>.</li>
+</ul>
+</div>
 </div>
 <div id="build-and-depoly" class="section level2">
 <h2>Build and depoly</h2>
@@ -339,7 +303,7 @@ which hugo</code></pre>
 
 <nav class='entry-nav'>
   <div class='container'><div class='prev-entry sep-before'>
-      <a href='/post/lawyer-physicians/'>
+      <a href='/post/european-banks/'>
         <span aria-hidden='true'><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
   
   <line x1="20" y1="12" x2="4" y2="12"/>
@@ -347,17 +311,7 @@ which hugo</code></pre>
   
 </svg>
  Previous</span>
-        <span class='screen-reader-text'>Previous post: </span>Analyzing the Swiss cantons with more lawyers than medical doctors</a>
-    </div><div class='next-entry sep-before'>
-      <a href='/post/hello-world/'>
-        <span class='screen-reader-text'>Next post: </span>Hello World<span aria-hidden='true'>Next <svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
-  
-  <line x1="4" y1="12" x2="20" y2="12"/>
-  <polyline points="14 6 20 12 14 18"/>
-  
-</svg>
-</span>
-      </a>
+        <span class='screen-reader-text'>Previous post: </span>Europe&#39;s Largest Banks</a>
     </div></div>
 </nav>
 
@@ -425,6 +379,11 @@ which hugo</code></pre>
   </div><script>window.__assets_js_src="/assets/js/"</script>
 
 <script src='/assets/js/main.9e5c4cf4.js'></script><script src='/js/custom.js'></script>
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
 
 </body>
 

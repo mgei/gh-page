@@ -4,7 +4,7 @@ menu:
   main:
   sidebar:
     identifier: search
-weight: 3
+weight: 4
 type: page
 layout: search
 #outputs:

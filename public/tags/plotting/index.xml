@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>plotting on mgei.github.io</title>
+    <link>https://mgei.github.io/tags/plotting/</link>
+    <description>Recent content in plotting on mgei.github.io</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Mon, 06 May 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://mgei.github.io/tags/plotting/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Europe&#39;s Largest Banks</title>
+      <link>https://mgei.github.io/post/european-banks/</link>
+      <pubDate>Mon, 06 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgei.github.io/post/european-banks/</guid>
+      <description>Originally published on RPubs: http://rpubs.com/mgei/european-banks
+ Loading the packages and getting the data We use tidyquant.
+We are interested in the following largest banks in Europe: Gross, grösser, HSBC: Die 50 grössten Banken, die Europa zu bieten hat
+ HSBC BNP Paribas Crédit Agricole Santander Deutsche Bank  Also we would like to have a look at UBS and Credit Suisse for comparison. The data is ready on Yahoo Finance.</description>
+    </item>
+    
+    <item>
+      <title>Create a T-account plot for a balance sheet or income statement using ggplot2 in R</title>
+      <link>https://mgei.github.io/post/t-account-ggplot2/</link>
+      <pubDate>Wed, 16 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgei.github.io/post/t-account-ggplot2/</guid>
+      <description>Originally published on a Github gist: https://gist.github.com/mgei/14e44b7121fcee18f3809cf4bfd1af71
+ Loading the packages and getting the data library(tidyverse) library(scales) Because the native quantmod::getFinancials() and tidyquant::tq_get(get = financials) do not work anymore (discontinued due to a change in Yahoo Finance), we use an alternative posted on Stackoverflow. Here’s the function:
+scrapy_stocks &amp;lt;- function(stock){ if (&amp;quot;rvest&amp;quot; %in% installed.packages()) { library(rvest) }else{ install.packages(&amp;quot;rvest&amp;quot;) library(rvest) } for (i in 1:length(stock)) { tryCatch( { url &amp;lt;- &amp;quot;https://finance.</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -4,7 +4,7 @@ menu:
   main:
   sidebar:
     identifier: about
-weight: 4
+weight: 5
 type: page
 ---
 

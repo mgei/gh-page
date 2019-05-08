@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang='en'><head>
+  <meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'>
+<meta name='description' content='Originally published on RPubs: http://rpubs.com/mgei/european-banks
+ Loading the packages and getting the data We use tidyquant.
+We are interested in the following largest banks in Europe: Gross, grösser, HSBC: Die 50 grössten Banken, die Europa zu bieten hat
+ HSBC BNP Paribas Crédit Agricole Santander Deutsche Bank  Also we would like to have a look at UBS and Credit Suisse for comparison. The data is ready on Yahoo Finance.'>
+<meta name='theme-color' content='#369b6c'>
+
+<meta property='og:title' content='Europe&#39;s Largest Banks • Martin Geissmann'>
+<meta property='og:description' content='Originally published on RPubs: http://rpubs.com/mgei/european-banks
+ Loading the packages and getting the data We use tidyquant.
+We are interested in the following largest banks in Europe: Gross, grösser, HSBC: Die 50 grössten Banken, die Europa zu bieten hat
+ HSBC BNP Paribas Crédit Agricole Santander Deutsche Bank  Also we would like to have a look at UBS and Credit Suisse for comparison. The data is ready on Yahoo Finance.'>
+<meta property='og:url' content='https://mgei.github.io/post/european-banks/'>
+<meta property='og:site_name' content='mgei.github.io'>
+<meta property='og:type' content='article'><meta property='og:image' content='https://www.gravatar.com/avatar/a525a84fae399669fa8861e2661df00b?s=256'><meta property='article:section' content='post'><meta property='article:tag' content='R'><meta property='article:tag' content='tidyquant'><meta property='article:tag' content='finance'><meta property='article:tag' content='stock market'><meta property='article:tag' content='plotting'><meta property='article:published_time' content='2019-05-06T00:00:00Z'/><meta property='article:modified_time' content='2019-05-06T00:00:00Z'/><meta name='twitter:card' content='summary'>
+
+<meta name="generator" content="Hugo 0.55.5" />
+
+  <title>Europe&#39;s Largest Banks • Martin Geissmann</title>
+  <link rel='canonical' href='https://mgei.github.io/post/european-banks/'>
+  
+  
+  <link rel='icon' href='/favicon.ico'>
+<link rel='stylesheet' href='/assets/css/main.fb20af92.css'><link rel='stylesheet' href='/css/custom.css'><style>
+:root{--color-accent:#369b6c;}
+</style>
+
+  
+
+</head>
+<body class='page type-post has-sidebar'>
+
+  <div class='site'><div id='sidebar' class='sidebar'>
+  <a class='screen-reader-text' href='#main-menu'>Skip to Main Menu</a>
+
+  <div class='container'><section class='widget widget-about sep-after'>
+  <header>
+    
+    <div class='logo'>
+      <a href='/'>
+        <img src='/images/logo.png'>
+      </a>
+    </div>
+    
+    <h2 class='title site-title '>
+      <a href='/'>
+      mgei.github.io
+      </a>
+    </h2>
+    <div class='desc'>
+    Martin Geissmann&#39;s personal site
+    </div>
+  </header>
+
+</section>
+<section class='widget widget-sidebar_menu sep-after'><nav id='sidebar-menu' class='menu sidebar-menu' aria-label='Sidebar Menu'>
+    <div class='container'>
+      <ul><li class='item'>
+  <a href='/'>Home</a></li><li class='item'>
+  <a href='/post/'>Archive</a></li><li class='item'>
+  <a href='/tags/'>Tags</a></li><li class='item'>
+  <a href='/search/'>Search</a></li><li class='item'>
+  <a href='/about/'>About</a></li></ul>
+    </div>
+  </nav>
+
+</section></div>
+
+  <div class='sidebar-overlay'></div>
+</div><div class='main'><a class='screen-reader-text' href='#content'>Skip to Content</a>
+
+<button id='sidebar-toggler' class='sidebar-toggler' aria-controls='sidebar'>
+  <span class='screen-reader-text'>Toggle Sidebar</span>
+  <span class='open'><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <line x1="3" y1="12" x2="21" y2="12" />
+  <line x1="3" y1="6" x2="21" y2="6" />
+  <line x1="3" y1="18" x2="21" y2="18" />
+  
+</svg>
+</span>
+  <span class='close'><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <line x1="18" y1="6" x2="6" y2="18" />
+  <line x1="6" y1="6" x2="18" y2="18" />
+  
+</svg>
+</span>
+</button><div class='header-widgets'>
+        <div class='container'>
+    
+    <style>.widget-breadcrumbs li:after{content:'\2f '}</style>
+  <section class='widget widget-breadcrumbs sep-after'>
+    <nav id='breadcrumbs'>
+      <ol><li><a href='/'>Home</a></li><li><span>Europe&#39;s Largest Banks</span></li></ol>
+    </nav>
+  </section></div>
+      </div>
+
+      <header id='header' class='header site-header'>
+        <div class='container sep-after'>
+          <div class='header-info'><p class='site-title title'>mgei.github.io</p><p class='desc site-desc'>Martin Geissmann&#39;s personal site</p>
+          </div>
+        </div>
+      </header>
+
+      <main id='content'>
+
+
+<article lang='en' class='entry'>
+  <header class='header entry-header'>
+  <div class='container sep-after'>
+    <div class='header-info'>
+      <h1 class='title'>Europe&#39;s Largest Banks</h1>
+      
+
+    </div>
+    <div class='entry-meta'>
+  <span class='posted-on'><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+  <line x1="16" y1="2" x2="16" y2="6"/>
+  <line x1="8" y1="2" x2="8" y2="6"/>
+  <line x1="3" y1="10" x2="21" y2="10"/>
+  
+</svg>
+<span class='screen-reader-text'>Posted on </span>
+  <time class='entry-date' datetime='2019-05-06T00:00:00Z'>06 May 2019</time>
+</span>
+
+  <span class='byline'><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <path d="M21,21V20c0-2.76-4-5-9-5s-9,2.24-9,5v1"/>
+  <path d="M16,6.37A4,4,0,1,1,12.63,3,4,4,0,0,1,16,6.37Z"/>
+  
+</svg>
+<span class='screen-reader-text'> by </span><a href='/authors/mgei'>Martin Geissmann</a></span>
+  
+
+</div>
+
+
+  </div>
+</header>
+
+  
+  
+
+  <div class='container entry-content'>
+  
+
+
+<blockquote>
+<p>Originally published on RPubs: <a href="http://rpubs.com/mgei/european-banks" class="uri">http://rpubs.com/mgei/european-banks</a></p>
+</blockquote>
+<div id="loading-the-packages-and-getting-the-data" class="section level1">
+<h1>Loading the packages and getting the data</h1>
+<p>We use <em>tidyquant</em>.</p>
+<p>We are interested in the following largest banks in Europe: <a href="https://www.msn.com/de-ch/finanzen/finance/gross-gr%C3%B6sser-hsbc-die-50-gr%C3%B6ssten-banken-die-europa-zu-bieten-hat/ar-AAAQuXY?ocid=ieslice#page=1">Gross, grösser, HSBC: Die 50 grössten Banken, die Europa zu bieten hat</a></p>
+<ul>
+<li>HSBC</li>
+<li>BNP Paribas</li>
+<li>Crédit Agricole</li>
+<li>Santander</li>
+<li>Deutsche Bank</li>
+</ul>
+<p>Also we would like to have a look at UBS and Credit Suisse for comparison. The data is ready on <a href="https://finance.yahoo.com/">Yahoo Finance</a>.</p>
+<pre class="r"><code>hsbc    &lt;- tq_get(&quot;HSBC&quot;, from = &quot;2009-01-01&quot;) # usd
+paribas &lt;- tq_get(&quot;BNP.PA&quot;, from = &quot;2009-01-01&quot;)    # eur
+credagr &lt;- tq_get(&quot;ACA.PA&quot;, from = &quot;2009-01-01&quot;)   # eur
+santand &lt;- tq_get(&quot;SAN&quot;, from = &quot;2009-01-01&quot;) # usd
+deutsch &lt;- tq_get(&quot;DB&quot;, from = &quot;2009-01-01&quot;) # usd
+
+ubs     &lt;- tq_get(&quot;UBS&quot;, from = &quot;2009-01-01&quot;)
+cs      &lt;- tq_get(&quot;CS&quot;, from = &quot;2009-01-01&quot;)</code></pre>
+<p>It is not note that the stocks listed in the US trade in USD. BNP Paribas and Credit Agricole on the other hand trade in EUR.</p>
+<p>Ultimately we are interested in the return in CHF. Exchange rates are available form <a href="https://fred.stlouisfed.org/">FRED</a>. The tidyquant’s default data source which is <a href="https://www.oanda.com">Oanda</a> only goes back 180 days, which would not be enough for us. The ticker has to be looked up on FRED.</p>
+<pre class="r"><code>usd_eur &lt;- tq_get(&quot;DEXUSEU&quot;, 
+                  get = &quot;economic.data&quot;, from = &quot;2009-01-01&quot;)
+
+chf_usd &lt;- tq_get(&quot;DEXSZUS&quot;, 
+                  get = &quot;economic.data&quot;, from = &quot;2009-01-01&quot;)</code></pre>
+<p>Finally, we create the following function which helps to convert the adjusted closing price in the desired currency.</p>
+<pre class="r"><code>mutate_exchange &lt;- function(data, exchangerates, inverse = F, datecol = &quot;date&quot;, ratecol = &quot;price&quot;, adjustedcol = &quot;adjusted&quot;) {
+  if (inverse) {
+    exchangerates &lt;- exchangerates %&gt;% mutate(!!ratecol := 1/!!as.name(ratecol))
+  }
+  
+  out &lt;- left_join(data, exchangerates, by = &quot;date&quot;) %&gt;% 
+    mutate(!!ratecol := na.locf(!!as.name(ratecol))) %&gt;% 
+    mutate(adjusted_ex = !!as.name(adjustedcol)/!!as.name(ratecol)) %&gt;% 
+    select(-one_of(&quot;exrate&quot;)) %&gt;% 
+    rename(exrate = !!as.name(ratecol))
+    
+  return(out)
+}</code></pre>
+<p>Apply the currency convertion and bind all data together.</p>
+<p>Note that Yahoo Finance gave some error error prices for UBS in 2014, which we remove manually.</p>
+<p>Arithmetic and log daily returns are computed and stored in <em>returns</em>.</p>
+<pre class="r"><code>data &lt;- bind_rows(
+  
+  hsbc    %&gt;% 
+    mutate_exchange(chf_usd, inverse = T) %&gt;% 
+    mutate(stock = &quot;HSBC&quot;) %&gt;% 
+    select(date, stock, adjusted_ex),
+  
+  paribas %&gt;% 
+    mutate_exchange(usd_eur, inverse = T) %&gt;% 
+    mutate_exchange(chf_usd, inverse = T, adjustedcol = &quot;adjusted_ex&quot;) %&gt;% 
+    mutate(stock = &quot;BNP Paribas&quot;) %&gt;% 
+    select(date, stock, adjusted_ex),
+  
+  
+  credagr %&gt;% 
+    mutate_exchange(usd_eur, inverse = T) %&gt;% 
+    mutate_exchange(chf_usd, inverse = T, adjustedcol = &quot;adjusted_ex&quot;) %&gt;% 
+    mutate(stock = &quot;Crédit Agricole&quot;) %&gt;% 
+    select(date, stock, adjusted_ex),
+  
+  santand %&gt;% 
+    mutate_exchange(chf_usd, inverse = T) %&gt;% 
+    mutate(stock = &quot;Santander&quot;) %&gt;% 
+    select(date, stock, adjusted_ex),
+  
+  deutsch %&gt;% 
+    mutate_exchange(chf_usd, inverse = T) %&gt;% 
+    mutate(stock = &quot;Deutsche Bank&quot;) %&gt;% 
+    select(date, stock, adjusted_ex),
+  
+  ubs     %&gt;% 
+    mutate(adjusted = if_else(adjusted &gt; 100, lag(adjusted, 7), adjusted)) %&gt;% 
+    mutate_exchange(chf_usd, inverse = T) %&gt;% 
+    mutate(stock = &quot;UBS&quot;) %&gt;% 
+    select(date, stock, adjusted_ex),
+  
+  cs      %&gt;% 
+    mutate_exchange(chf_usd, inverse = T) %&gt;% 
+    mutate(stock = &quot;Credit Suisse&quot;) %&gt;% 
+    select(date, stock, adjusted_ex)
+  
+)
+
+
+returns &lt;- data %&gt;% 
+  arrange(stock, date) %&gt;% 
+  group_by(stock) %&gt;%
+  mutate(return = adjusted_ex/lag(adjusted_ex)-1,
+         return_ln = log(adjusted_ex/lag(adjusted_ex)))
+
+# returns %&gt;% saveRDS(&quot;returns.RDS&quot;)</code></pre>
+</div>
+<div id="performance-plots" class="section level1">
+<h1>Performance plots</h1>
+<pre class="r"><code># 10 years
+
+returns_plot &lt;- returns %&gt;% 
+  filter(!is.na(return_ln),
+         # cut-off date
+         date &gt;= &quot;2009-05-06&quot;) %&gt;% 
+  mutate(cumret_ln = cumsum(return_ln),
+         adjusted_ln = exp(cumret_ln))
+
+returns_plot %&gt;% 
+  ggplot(aes(x = date, y = adjusted_ln-1, color = stock)) +
+  geom_line() +
+  geom_label_repel(aes(label = if_else(date == &quot;2019-05-03&quot;, stock, NA_character_)),
+                  size = 3) +
+  # geom_text_repel(aes(label = stock, x = tail())) +
+  scale_x_date(expand = c(0,0),
+               date_breaks = &quot;1 year&quot;,
+               date_labels = &quot;%Y&quot;) +
+  scale_y_continuous(labels = scales::percent, 
+                     breaks = seq(-0.8, 0.9, by = 0.2)) +
+  labs(x = &quot;&quot;, y = &quot;&quot;,
+       title = &quot;Entwicklung Frankenkurs Bankaktien in %&quot;,
+       subtitle = &quot;seit 2009&quot;) +
+  theme_tq() +
+  theme(legend.position = &quot;none&quot;)</code></pre>
+<p><img src="/post/european-banks_files/figure-html/plots-1.png" width="672" /></p>
+<pre class="r"><code># 5 years
+
+returns_plot &lt;- returns %&gt;% 
+  filter(!is.na(return_ln),
+         # cut-off date
+         date &gt;= &quot;2014-05-06&quot;) %&gt;% 
+  mutate(cumret_ln = cumsum(return_ln),
+         adjusted_ln = exp(cumret_ln))
+
+returns_plot %&gt;% 
+  ggplot(aes(x = date, y = adjusted_ln-1, color = stock)) +
+  geom_line() +
+  geom_label_repel(aes(label = if_else(date == &quot;2019-05-03&quot;, stock, NA_character_)),
+                  size = 3) +
+  # geom_text_repel(aes(label = stock, x = tail())) +
+  scale_x_date(expand = c(0,0),
+               date_breaks = &quot;1 year&quot;,
+               date_labels = &quot;%Y&quot;) +
+  scale_y_continuous(labels = scales::percent, 
+                     breaks = seq(-0.8, 0.9, by = 0.2)) +
+  labs(x = &quot;&quot;, y = &quot;&quot;,
+       title = &quot;Entwicklung Frankenkurs Bankaktien in %&quot;,
+       subtitle = &quot;seit 2014&quot;) +
+  theme_tq() +
+  theme(legend.position = &quot;none&quot;)</code></pre>
+<p><img src="/post/european-banks_files/figure-html/plots-2.png" width="672" /></p>
+<pre class="r"><code># 2 years
+
+returns_plot &lt;- returns %&gt;% 
+  filter(!is.na(return_ln),
+         # cut-off date
+         date &gt;= &quot;2017-05-06&quot;) %&gt;% 
+  mutate(cumret_ln = cumsum(return_ln),
+         adjusted_ln = exp(cumret_ln))
+
+returns_plot %&gt;% 
+  ggplot(aes(x = date, y = adjusted_ln-1, color = stock)) +
+  geom_line() +
+  geom_label_repel(aes(label = if_else(date == &quot;2019-05-03&quot;, stock, NA_character_)),
+                  size = 3) +
+  # geom_text_repel(aes(label = stock, x = tail())) +
+  scale_x_date(expand = c(0,0),
+               date_breaks = &quot;1 year&quot;,
+               date_labels = &quot;%Y&quot;) +
+  scale_y_continuous(labels = scales::percent, 
+                     breaks = seq(-0.8, 0.9, by = 0.2)) +
+  labs(x = &quot;&quot;, y = &quot;&quot;,
+       title = &quot;Entwicklung Frankenkurs Bankaktien in %&quot;,
+       subtitle = &quot;seit 2017&quot;) +
+  theme_tq() +
+  theme(legend.position = &quot;none&quot;)</code></pre>
+<p><img src="/post/european-banks_files/figure-html/plots-3.png" width="672" /></p>
+<pre class="r"><code># 1 year
+
+returns_plot &lt;- returns %&gt;% 
+  filter(!is.na(return_ln),
+         # cut-off date
+         date &gt;= &quot;2018-05-06&quot;) %&gt;% 
+  mutate(cumret_ln = cumsum(return_ln),
+         adjusted_ln = exp(cumret_ln))
+
+
+returns_plot %&gt;% 
+  ggplot(aes(x = date, y = adjusted_ln-1, color = stock)) +
+  geom_line() +
+  geom_label_repel(aes(label = if_else(date == &quot;2019-05-03&quot;, stock, NA_character_)),
+                  size = 3) +
+  # geom_text_repel(aes(label = stock, x = tail())) +
+  scale_x_date(expand = c(0,0),
+               date_breaks = &quot;3 months&quot;,
+               date_labels = &quot;%m.%Y&quot;) +
+  scale_y_continuous(labels = scales::percent, 
+                     breaks = seq(-0.8, 0.9, by = 0.2)) +
+  labs(x = &quot;&quot;, y = &quot;&quot;,
+       title = &quot;Entwicklung Frankenkurs Bankaktien in %&quot;,
+       subtitle = &quot;seit 2018&quot;) +
+  theme_tq() +
+  theme(legend.position = &quot;none&quot;)</code></pre>
+<p><img src="/post/european-banks_files/figure-html/plots-4.png" width="672" /></p>
+</div>
+
+</div>
+
+  
+<footer class='entry-footer'>
+  <div class='container sep-before'><div class='tags'><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <path d="M20.59,13.41l-7.17,7.17a2,2,0,0,1-2.83,0L2,12V2H12l8.59,8.59A2,2,0,0,1,20.59,13.41Z"/>
+  <line x1="7" y1="7" x2="7" y2="7"/>
+  
+</svg>
+<span class='screen-reader-text'>Tags: </span><a class='tag' href='/tags/r/'>R</a>, <a class='tag' href='/tags/tidyquant/'>tidyquant</a>, <a class='tag' href='/tags/finance/'>finance</a>, <a class='tag' href='/tags/stock-market/'>stock market</a>, <a class='tag' href='/tags/plotting/'>plotting</a></div>
+
+  </div>
+</footer>
+
+
+</article>
+
+<nav class='entry-nav'>
+  <div class='container'><div class='prev-entry sep-before'>
+      <a href='/post/pca-usecase/'>
+        <span aria-hidden='true'><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <line x1="20" y1="12" x2="4" y2="12"/>
+  <polyline points="10 18 4 12 10 6"/>
+  
+</svg>
+ Previous</span>
+        <span class='screen-reader-text'>Previous post: </span>PCA use case</a>
+    </div><div class='next-entry sep-before'>
+      <a href='/post/github-page/'>
+        <span class='screen-reader-text'>Next post: </span>How I made this Github page<span aria-hidden='true'>Next <svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <line x1="4" y1="12" x2="20" y2="12"/>
+  <polyline points="14 6 20 12 14 18"/>
+  
+</svg>
+</span>
+      </a>
+    </div></div>
+</nav>
+
+
+
+
+      </main>
+
+      <footer id='footer' class='footer'>
+        <div class='container sep-before'><section class='widget widget-social_menu sep-after'><nav aria-label='Social Menu'>
+    <ul><li>
+        <a href='mailto:mg@econovo.ch' target='_blank' rel='noopener'>
+          <span class='screen-reader-text'>Contact via Email</span><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+  <polyline points="22,6 12,13 2,6"/>
+  
+</svg>
+</a>
+      </li><li>
+        <a href='https://github.com/mgei' target='_blank' rel='noopener'>
+          <span class='screen-reader-text'>Open Github account in new tab</span><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+  
+</svg>
+</a>
+      </li><li>
+        <a href='https://twitter.com//' target='_blank' rel='noopener'>
+          <span class='screen-reader-text'>Open Twitter account in new tab</span><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/>
+  
+</svg>
+</a>
+      </li><li>
+        <a href='https://linkedin.com/in/martin-geissmann-59034a10b' target='_blank' rel='noopener'>
+          <span class='screen-reader-text'>Open Linkedin account in new tab</span><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+  <rect x="2" y="9" width="4" height="12"/>
+  <circle cx="4" cy="4" r="2"/>
+  
+</svg>
+</a>
+      </li><li>
+        <a href='https://www.youtube.com/channel/UCUYqJUnI_P0XYk6_FRyvb2w' target='_blank' rel='noopener'>
+          <span class='screen-reader-text'>Open Youtube account in new tab</span><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z" />
+  <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02" />
+  
+</svg>
+</a>
+      </li></ul>
+  </nav>
+</section><div class='copyright'>
+  <p> &copy; 2019 mgei.github.io </p>
+</div>
+
+        </div>
+      </footer>
+
+    </div>
+  </div><script>window.__assets_js_src="/assets/js/"</script>
+
+<script src='/assets/js/main.9e5c4cf4.js'></script><script src='/js/custom.js'></script>
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+</body>
+
+</html>
+

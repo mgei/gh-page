@@ -1,0 +1,9 @@
+---
+slug: "econovo-neue-tarifstruktur"
+date: "2018-11-30"
+title: "(de) MRI unter der atm-tms neuen Tarifstruktur"
+tags: ["Econovo", "radiology", "tariffs"]
+authors: [mgei]
+---
+  
+> Published here: https://www.econovo.ch/en/2018/11/30/mri-neue-tarifstruktur/

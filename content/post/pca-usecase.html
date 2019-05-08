@@ -1,0 +1,276 @@
+---
+slug: "pca-usecase"
+date: "2019-04-23"
+title: "PCA use case"
+tags: ["PCA", "R", "tidyquant", "finance", "stock market", "linear model"]
+authors: [mgei]
+---
+
+
+
+<blockquote>
+<p>Originally published on RPubs: <a href="http://rpubs.com/mgei/pca-usecase" class="uri">http://rpubs.com/mgei/pca-usecase</a></p>
+</blockquote>
+<pre class="r"><code>library(tidyverse)
+library(tidyquant)
+library(quantmod)
+library(lubridate)
+library(broom)      # for tidying up linear models
+library(factoextra)</code></pre>
+<div id="data" class="section level1">
+<h1>Data</h1>
+<p>FTSE 350 Industrial Engineering <a href="https://www.investing.com/indices/industrial-engineering-historical-data">index</a>. The index components are Bodycote, Hill&amp;Smith, IMI, Rotork, Spirax-Sarco Engineering, and Weir Group (<a href="https://www.investing.com/indices/industrial-engineering-components">components</a>).</p>
+<pre class="r"><code>index &lt;- read_csv(&quot;postdata/pca-usecase/FTSE 350 Industrial Engineering Historical Data.csv&quot;)
+
+index %&lt;&gt;%
+  rename(date = Date) %&gt;% 
+  mutate(date = mdy(date),
+         adjusted = Price) %&gt;% 
+  select(-Vol., -`Change %`)
+
+# gets data from Yahoo Finance
+bodycote   &lt;- tq_get(&quot;BOY.L&quot;)
+hill_smith &lt;- tq_get(&quot;HILS.L&quot;)
+imi        &lt;- tq_get(&quot;IMI.L&quot;)
+rotork     &lt;- tq_get(&quot;ROR.L&quot;)
+spirax_s   &lt;- tq_get(&quot;SPX.L&quot;)
+weir       &lt;- tq_get(&quot;WEIR.L&quot;)
+
+data &lt;- bind_rows(index %&gt;%      mutate(type = &quot;index&quot;, name = &quot;FTSE 350 Industrial Engineering&quot;), 
+                  bodycote %&gt;%   mutate(type = &quot;stock&quot;, name = &quot;Bodycote plc&quot;), 
+                  hill_smith %&gt;% mutate(type = &quot;stock&quot;, name = &quot;Hill &amp; Smith Holdings PLC&quot;), 
+                  imi %&gt;%        mutate(type = &quot;stock&quot;, name = &quot;IMI plc&quot;), 
+                  rotork %&gt;%     mutate(type = &quot;stock&quot;, name = &quot;Rotork plc&quot;), 
+                  spirax_s %&gt;%   mutate(type = &quot;stock&quot;, name = &quot;Spirax-Sarco Engineering plc&quot;), 
+                  weir %&gt;%       mutate(type = &quot;stock&quot;, name = &quot;The Weir Group PLC&quot;))</code></pre>
+<p>Compute the returns.</p>
+<pre class="r"><code># compute returns (daily)
+data_rets &lt;- data %&gt;% 
+  select(date, name, type, adjusted) %&gt;% 
+  arrange(type, name, date) %&gt;% 
+  group_by(name, type) %&gt;%
+  mutate(return = adjusted/lag(adjusted)-1,
+         return_ln = log(adjusted/lag(adjusted))) %&gt;% 
+  filter(!is.na(return_ln),
+         # cut-off date
+         date &gt;= &quot;2016-04-15&quot;) %&gt;% 
+  mutate(cumret_ln = cumsum(return_ln),
+         adjusted_ln = exp(cumret_ln))
+
+data_rets %&gt;% 
+  ggplot(aes(x = date, y = adjusted_ln, color = name)) +
+  geom_line(aes(size = factor(desc(type)))) +
+  scale_size_discrete(range = c(0.4,1.4), guide = &quot;none&quot;) +
+  theme_tq()</code></pre>
+<p><img src="/post/pca-usecase_files/figure-html/retcomp-1.png" width="672" /></p>
+<pre class="r"><code># compute returns (monthly)
+data_rets_m &lt;- data %&gt;% 
+  select(date, name, type, adjusted) %&gt;% 
+  arrange(type, name, date) %&gt;% 
+  group_by(name, type, date = floor_date(date, unit = &quot;months&quot;) %&gt;% date()) %&gt;%
+  summarise(adjusted = first(adjusted)) %&gt;% 
+  mutate(return = adjusted/lag(adjusted)-1,
+         return_ln = log(adjusted/lag(adjusted))) %&gt;% 
+  filter(!is.na(return_ln),
+         # cut-off date
+         date &gt;= &quot;2016-04-01&quot;) %&gt;% 
+  mutate(cumret_ln = cumsum(return_ln),
+         adjusted_ln = exp(cumret_ln))
+
+data_rets_m %&gt;% 
+  ggplot(aes(x = date, y = adjusted_ln, color = name)) +
+  geom_line(aes(size = factor(desc(type)))) +
+  scale_size_discrete(range = c(0.4,1.4), guide = &quot;none&quot;) +
+  theme_tq()</code></pre>
+<p><img src="/post/pca-usecase_files/figure-html/retcomp-2.png" width="672" /></p>
+<p>Spread format for modelling.</p>
+<pre class="r"><code>data_rets %&gt;%
+  ungroup() %&gt;% 
+  select(date, name, return_ln) %&gt;% 
+  filter(date &gt;= &quot;2016-04-15&quot;) %&gt;% 
+  spread(name, return_ln) -&gt; returns_daily
+
+data_rets_m %&gt;%
+  ungroup() %&gt;% 
+  select(date, name, return_ln) %&gt;% 
+  filter(date &gt;= &quot;2016-04-01&quot;) %&gt;% 
+  spread(name, return_ln) -&gt; returns_monthly</code></pre>
+<p>Linear model. The <em>estimates</em> can be seen as weights.</p>
+<pre class="r"><code>lm(`FTSE 350 Industrial Engineering` ~ . -1, data = returns_daily %&gt;% 
+     select(-date)) -&gt; model
+
+tidy(model)</code></pre>
+<pre><code>## # A tibble: 6 x 5
+##   term                           estimate std.error statistic   p.value
+##   &lt;chr&gt;                             &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+## 1 `Bodycote plc`                   0.0925   0.00353      26.3 1.99e-108
+## 2 `Hill &amp; Smith Holdings PLC`      0.0525   0.00249      21.1 7.50e- 78
+## 3 `IMI plc`                        0.180    0.00416      43.1 6.99e-206
+## 4 `Rotork plc`                     0.150    0.00362      41.5 4.92e-197
+## 5 `Spirax-Sarco Engineering plc`   0.254    0.00477      53.2 1.58e-257
+## 6 `The Weir Group PLC`             0.246    0.00293      84.2 0.</code></pre>
+<p>Estimated/weights shoud approximately sum up to 1.</p>
+<pre class="r"><code>tidy(model) %&gt;% 
+  summarise(total = sum(estimate))</code></pre>
+<pre><code>## # A tibble: 1 x 1
+##   total
+##   &lt;dbl&gt;
+## 1 0.975</code></pre>
+<pre class="r"><code># note R-square of .99
+glance(model)$r.squared</code></pre>
+<pre><code>## [1] 0.9890439</code></pre>
+<p>Correlation plots, daily and monthly.</p>
+<pre class="r"><code>data_rets %&gt;% 
+  ungroup() %&gt;% 
+  select(date, name, return_ln) %&gt;% 
+  spread(name, return_ln) %&gt;% 
+  select(-date) %&gt;% 
+  chart.Correlation()</code></pre>
+<p><img src="/post/pca-usecase_files/figure-html/corr-1.png" width="672" /></p>
+<pre class="r"><code>data_rets_m %&gt;% 
+  ungroup() %&gt;% 
+  select(date, name, return_ln) %&gt;% 
+  spread(name, return_ln) %&gt;% 
+  select(-date) %&gt;% 
+  chart.Correlation()</code></pre>
+<p><img src="/post/pca-usecase_files/figure-html/corr-2.png" width="672" /></p>
+</div>
+<div id="pca" class="section level1">
+<h1>PCA</h1>
+<p>PCA on monthly log returns.</p>
+<pre class="r"><code>data_rets_m %&gt;%
+  filter(type != &quot;index&quot;) %&gt;% 
+  ungroup() %&gt;% 
+  select(date, name, return_ln) %&gt;% 
+  # fill to remove the misssing values
+  spread(name, return_ln, fill = 0) %&gt;% 
+  select(-date) %&gt;% 
+  as.matrix() %&gt;% 
+  prcomp(scale. = T, center = T) -&gt; pca
+
+pca %&gt;% summary()</code></pre>
+<pre><code>## Importance of components:
+##                          PC1    PC2    PC3    PC4     PC5     PC6
+## Standard deviation     1.580 1.1160 0.9779 0.7829 0.65580 0.50892
+## Proportion of Variance 0.416 0.2076 0.1594 0.1022 0.07168 0.04317
+## Cumulative Proportion  0.416 0.6236 0.7830 0.8851 0.95683 1.00000</code></pre>
+<pre class="r"><code>pca %&gt;% fviz_eig()</code></pre>
+<p><img src="/post/pca-usecase_files/figure-html/pca1-1.png" width="672" /></p>
+<pre class="r"><code>pca %&gt;% fviz_pca_biplot()</code></pre>
+<p><img src="/post/pca-usecase_files/figure-html/pca1-2.png" width="672" /></p>
+<p>PCA loadings (eigenvectors) and eigenvalues.</p>
+<pre class="r"><code>pca$rotation</code></pre>
+<pre><code>##                                      PC1        PC2         PC3        PC4
+## Bodycote plc                 -0.34603858 -0.4689933 -0.44006358 -0.4750017
+## Hill &amp; Smith Holdings PLC    -0.04201706 -0.4723064  0.84557402 -0.2241275
+## IMI plc                      -0.51451693 -0.1478469 -0.08864026 -0.2105137
+## Rotork plc                   -0.46124076  0.4918181  0.12879647 -0.1995112
+## Spirax-Sarco Engineering plc -0.40837673 -0.3801979 -0.04891896  0.7932683
+## The Weir Group PLC           -0.48399339  0.3855876  0.25398804  0.1036571
+##                                      PC5          PC6
+## Bodycote plc                  0.49093753 -0.000565362
+## Hill &amp; Smith Holdings PLC     0.06037864  0.079291141
+## IMI plc                      -0.78726662 -0.203597110
+## Rotork plc                    0.06794391  0.695961409
+## Spirax-Sarco Engineering plc  0.07288212  0.227373016
+## The Weir Group PLC            0.35442608 -0.645135677</code></pre>
+<pre class="r"><code>pca$sdev^2</code></pre>
+<pre><code>## [1] 2.4961645 1.2454682 0.9563358 0.6129514 0.4300792 0.2590009</code></pre>
+</div>
+<div id="varimax" class="section level1">
+<h1>Varimax</h1>
+<p>Varimax rotation.</p>
+<pre class="r"><code>varimaxrot &lt;- pca$rotation %&gt;% varimax()
+
+varimaxrot</code></pre>
+<pre><code>## $loadings
+## 
+## Loadings:
+##                              PC1 PC2 PC3 PC4 PC5 PC6
+## Bodycote plc                     -1                 
+## Hill &amp; Smith Holdings PLC             1             
+## IMI plc                                      -1     
+## Rotork plc                                        1 
+## Spirax-Sarco Engineering plc              1         
+## The Weir Group PLC           -1                     
+## 
+##                  PC1   PC2   PC3   PC4   PC5   PC6
+## SS loadings    1.000 1.000 1.000 1.000 1.000 1.000
+## Proportion Var 0.167 0.167 0.167 0.167 0.167 0.167
+## Cumulative Var 0.167 0.333 0.500 0.667 0.833 1.000
+## 
+## $rotmat
+##            [,1]          [,2]        [,3]        [,4]       [,5]
+## [1,]  0.4839714  0.3460371235 -0.04201268 -0.40837888 0.51450979
+## [2,] -0.3855569  0.4690016627 -0.47230551 -0.38019474 0.14785008
+## [3,] -0.2539845  0.4400611233  0.84557494 -0.04891609 0.08864144
+## [4,] -0.1036675  0.4749993490 -0.22412707  0.79326742 0.21051229
+## [5,] -0.3544180 -0.4909350753  0.06037420  0.07287999 0.78727067
+## [6,]  0.6451747  0.0005722849  0.07929358  0.22737892 0.20359811
+##            [,6]
+## [1,] -0.4612714
+## [2,]  0.4918365
+## [3,]  0.1288061
+## [4,] -0.1995172
+## [5,]  0.0679630
+## [6,]  0.6959228</code></pre>
+<p>For taking into account the maximum of the first three components, it seems that a combination of Bodycote, Hill&amp;Smith, and Weir could be fine.</p>
+<p>In a linear model.</p>
+<pre class="r"><code>lm(`FTSE 350 Industrial Engineering` ~ `Bodycote plc` + `Hill &amp; Smith Holdings PLC` + `The Weir Group PLC` -1, 
+   data = returns_daily %&gt;% select(-date)) -&gt; model_pca_daily
+
+tidy(model_pca_daily)</code></pre>
+<pre><code>## # A tibble: 3 x 5
+##   term                        estimate std.error statistic   p.value
+##   &lt;chr&gt;                          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+## 1 `Bodycote plc`                0.223     0.0139     16.0  4.44e- 50
+## 2 `Hill &amp; Smith Holdings PLC`   0.0858    0.0105      8.19 1.11e- 15
+## 3 `The Weir Group PLC`          0.396     0.0109     36.4  1.82e-168</code></pre>
+<pre class="r"><code># R-square
+glance(model_pca_daily)$r.squared</code></pre>
+<pre><code>## [1] 0.8031523</code></pre>
+<pre class="r"><code>lm(`FTSE 350 Industrial Engineering` ~ `Bodycote plc` + `Hill &amp; Smith Holdings PLC` + `The Weir Group PLC` -1, 
+   data = returns_monthly %&gt;% select(-date)) -&gt; model_pca_monthly
+
+tidy(model_pca_monthly)</code></pre>
+<pre><code>## # A tibble: 3 x 5
+##   term                        estimate std.error statistic  p.value
+##   &lt;chr&gt;                          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+## 1 `Bodycote plc`                0.251     0.0494      5.08 1.36e- 5
+## 2 `Hill &amp; Smith Holdings PLC`   0.0715    0.0354      2.02 5.10e- 2
+## 3 `The Weir Group PLC`          0.428     0.0403     10.6  2.33e-12</code></pre>
+<pre class="r"><code># R-square
+glance(model_pca_monthly)$r.squared</code></pre>
+<pre><code>## [1] 0.8309826</code></pre>
+<p>Best fit portfolio return. Look at monthly here.</p>
+<pre class="r"><code>returns_monthly %&gt;% 
+  mutate(fitted = model_pca_monthly$fitted.values) %&gt;% 
+  select(date, fitted, everything()) -&gt; return_fitted
+
+return_fitted %&gt;% 
+  ggplot(aes(x = `FTSE 350 Industrial Engineering`, y = fitted)) +
+  geom_point(aes(color = fitted &gt; `FTSE 350 Industrial Engineering`)) +
+  geom_abline(slope=1, intercept=0) +
+  geom_smooth(method = &quot;lm&quot;) +
+  theme_tq()</code></pre>
+<p><img src="/post/pca-usecase_files/figure-html/bestfit-1.png" width="672" /></p>
+<p>Cumulative return for performance.</p>
+<pre class="r"><code>data_rets_m_fitted &lt;- return_fitted %&gt;%
+  gather(name, return_ln, -date) %&gt;% 
+  mutate(type = case_when(name == &quot;fitted&quot;        ~ &quot;fitted&quot;,
+                          str_detect(name, &quot;FTSE&quot;) ~ &quot;index&quot;,
+                          T ~ &quot;stock&quot;)) %&gt;% 
+  arrange(type, name, date) %&gt;% 
+  group_by(name, type) %&gt;%
+  mutate(cumret_ln = cumsum(return_ln),
+         adjusted_ln = exp(cumret_ln))
+
+data_rets_m_fitted %&gt;% 
+  ggplot(aes(x = date, y = adjusted_ln, color = name)) +
+  geom_line(aes(size = factor(desc(type)), alpha = factor(desc(type)))) +
+  scale_size_discrete(range = c(0.4,1.4), guide = &quot;none&quot;) +
+  scale_alpha_discrete(range = c(0.4, 1),  guide = &quot;none&quot;) +
+  theme_tq()</code></pre>
+<p><img src="/post/pca-usecase_files/figure-html/cumretfitted-1.png" width="672" /></p>
+<p>Tracking error etc. could be computed with <code>tidyquant::tq_performance()</code>, see <a href="https://cran.r-project.org/web/packages/tidyquant/vignettes/TQ05-performance-analysis-with-tidyquant.html" class="uri">https://cran.r-project.org/web/packages/tidyquant/vignettes/TQ05-performance-analysis-with-tidyquant.html</a></p>
+</div>

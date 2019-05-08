@@ -11,14 +11,12 @@
     
     
     <item>
-      <title>Typography</title>
-      <link>https://mgei.github.io/typography/</link>
-      <pubDate>Thu, 28 Sep 2017 08:00:00 +0600</pubDate>
+      <title>Tags</title>
+      <link>https://mgei.github.io/tags/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://mgei.github.io/typography/</guid>
-      <description>Here is a paragraph. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-Heading 2 Another one. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-Heading 3 Yet another, but centered! Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</description>
+      <guid>https://mgei.github.io/tags/</guid>
+      <description></description>
     </item>
     
     <item>
@@ -41,15 +39,6 @@ Me My name is Martin Geissmann. I studied economics in Basel and Zurich before m
     </item>
     
     <item>
-      <title>Hello World</title>
-      <link>https://mgei.github.io/post/hello-world/</link>
-      <pubDate>Wed, 08 May 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://mgei.github.io/post/hello-world/</guid>
-      <description>Hello Page</description>
-    </item>
-    
-    <item>
       <title>How I made this Github page</title>
       <link>https://mgei.github.io/post/github-page/</link>
       <pubDate>Wed, 08 May 2019 00:00:00 +0000</pubDate>
@@ -58,6 +47,29 @@ Me My name is Martin Geissmann. I studied economics in Basel and Zurich before m
       <description>R / Blogdown / Hugo The website you are looking at is made with R and blogdown. Blogdown allows to use the static website generator Hugo with R Markdown documents (*.Rmd) instead of only pure markdown (*.md). So one can easily integrate R code which is rendered like a HTML R Markdown document.
 The theme used here is Minimo.
  Github pages This website hosted on Github. It’s open source, the code is available here.</description>
+    </item>
+    
+    <item>
+      <title>Europe&#39;s Largest Banks</title>
+      <link>https://mgei.github.io/post/european-banks/</link>
+      <pubDate>Mon, 06 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgei.github.io/post/european-banks/</guid>
+      <description>Originally published on RPubs: http://rpubs.com/mgei/european-banks
+ Loading the packages and getting the data We use tidyquant.
+We are interested in the following largest banks in Europe: Gross, grösser, HSBC: Die 50 grössten Banken, die Europa zu bieten hat
+ HSBC BNP Paribas Crédit Agricole Santander Deutsche Bank  Also we would like to have a look at UBS and Credit Suisse for comparison. The data is ready on Yahoo Finance.</description>
+    </item>
+    
+    <item>
+      <title>PCA use case</title>
+      <link>https://mgei.github.io/post/pca-usecase/</link>
+      <pubDate>Tue, 23 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgei.github.io/post/pca-usecase/</guid>
+      <description>Originally published on RPubs: http://rpubs.com/mgei/pca-usecase
+ library(tidyverse) library(tidyquant) library(quantmod) library(lubridate) library(broom) # for tidying up linear models library(factoextra) Data FTSE 350 Industrial Engineering index. The index components are Bodycote, Hill&amp;amp;Smith, IMI, Rotork, Spirax-Sarco Engineering, and Weir Group (components).
+index &amp;lt;- read_csv(&amp;quot;postdata/pca-usecase/FTSE 350 Industrial Engineering Historical Data.csv&amp;quot;) index %&amp;lt;&amp;gt;% rename(date = Date) %&amp;gt;% mutate(date = mdy(date), adjusted = Price) %&amp;gt;% select(-Vol., -`Change %`) # gets data from Yahoo Finance bodycote &amp;lt;- tq_get(&amp;quot;BOY.</description>
     </item>
     
     <item>
@@ -72,6 +84,16 @@ As we will see, in four cantons lawyers outnumber physicians.</description>
     </item>
     
     <item>
+      <title>(de) In welchen Kantonen es mehr Anwälte als Ärzte gibt</title>
+      <link>https://mgei.github.io/post/econovo-lawyers/</link>
+      <pubDate>Sun, 14 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgei.github.io/post/econovo-lawyers/</guid>
+      <description>  Published here: https://www.econovo.ch/de/2019/04/14/anwaelte-aerzte/
+ </description>
+    </item>
+    
+    <item>
       <title>How far to the closest hospital?</title>
       <link>https://mgei.github.io/post/drivingtimes/</link>
       <pubDate>Wed, 27 Mar 2019 00:00:00 +0000</pubDate>
@@ -79,6 +101,206 @@ As we will see, in four cantons lawyers outnumber physicians.</description>
       <guid>https://mgei.github.io/post/drivingtimes/</guid>
       <description>Originally published on RPubs: http://rpubs.com/mgei/drivingtimes
  Intro Imagine you just fell out of a plane over Switzerland and landed at a random location. As you are wounded your number one concern it to get to a hospital asap. Not any hospital but one that has an emergency room and is equipped at least with a CT to check for fractures.</description>
+    </item>
+    
+    <item>
+      <title>R function for accessing the tel.search.ch API</title>
+      <link>https://mgei.github.io/post/tel-search-api/</link>
+      <pubDate>Thu, 21 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgei.github.io/post/tel-search-api/</guid>
+      <description>Originally published on Github: https://github.com/mgei/telsearchR
+ tel.search.ch API This function allows to fetch enteries from the Swiss telephone directory tel.search.ch. It returns a tibble (dplyr).
+Here’s the official API documentation. The R function allows for all of the fields. Additionally, when adj_formats is set to TRUE (default), then the column formats are set appropriately (character, date/time, integer).
+library(tidyverse) library(lubridate) library(httr) library(xml2) library(purrr) telsearch &amp;lt;- function(was, wo, q, privat = 1, firma = 1, pos, maxnum = 200, key, lang, count_only = 0, adj_formats = T) { if (missing(was)) { stop(&amp;quot;was keyword is mandatory&amp;quot;) } if (missing(key) &amp;amp; maxnum &amp;gt; 10) { warning(&amp;quot;without a key the maxnum is 10&amp;quot;) maxnum &amp;lt;- 10 } url &amp;lt;- paste0(&amp;quot;https://tel.</description>
+    </item>
+    
+    <item>
+      <title>(de) Über die Fallzahlen in Schweizer Spitälern</title>
+      <link>https://mgei.github.io/post/econovo-fallzahlen-cluster/</link>
+      <pubDate>Mon, 18 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgei.github.io/post/econovo-fallzahlen-cluster/</guid>
+      <description>  Published here: https://www.econovo.ch/en/2019/03/18/fallzahlen-cluster/
+ </description>
+    </item>
+    
+    <item>
+      <title>Create open/closing hours data for timevis</title>
+      <link>https://mgei.github.io/post/timevis-range/</link>
+      <pubDate>Thu, 21 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgei.github.io/post/timevis-range/</guid>
+      <description>Originally published on a Github gist: https://gist.github.com/mgei/5708f7e605d5d23a45777a1d156b0ee8
+ Timevis Timevis is a package by Dean Attali to create fully interactive timeline visualizations in R. It is available on Github with a demo and how-to here: https://daattali.com/shiny/timevis-demo/
+ Range data library(tidyverse) library(lubridate) library(timevis) days &amp;lt;- tibble(date = seq(date(&amp;quot;2018-01-01&amp;quot;), by = &amp;quot;days&amp;quot;, length.out = 2)) %&amp;gt;% mutate(day = weekdays(date)) hours &amp;lt;- tibble(daytype = c(&amp;quot;weekday&amp;quot;, &amp;quot;weekday&amp;quot;, &amp;quot;weekday&amp;quot;, &amp;quot;weekday&amp;quot;, &amp;quot;weekday&amp;quot;, &amp;quot;weekend&amp;quot;), time_from = c(&amp;quot;00:00&amp;quot;, &amp;quot;08:00&amp;quot;, &amp;quot;12:00&amp;quot;, &amp;quot;13:00&amp;quot;, &amp;quot;17:00&amp;quot;, &amp;quot;00:00&amp;quot; ), time_to = c(&amp;quot;08:00&amp;quot;, &amp;quot;12:00&amp;quot;, &amp;quot;13:00&amp;quot;, &amp;quot;17:00&amp;quot;, &amp;quot;23:59&amp;quot;, &amp;quot;23:59&amp;quot; ), state = c(&amp;quot;closed&amp;quot;, &amp;quot;open&amp;quot;, &amp;quot;closed&amp;quot;, &amp;quot;open&amp;quot;, &amp;quot;closed&amp;quot;, &amp;quot;closed&amp;quot;)) week &amp;lt;- tibble(#day = c(&amp;quot;Monday&amp;quot;, &amp;quot;Tuesday&amp;quot;, &amp;quot;Wednesday&amp;quot;, &amp;quot;Thursday&amp;quot;, &amp;quot;Friday&amp;quot;, &amp;quot;Saturday&amp;quot;, &amp;quot;Sunday&amp;quot;), day = c(&amp;quot;Montag&amp;quot;, &amp;quot;Dienstag&amp;quot;, &amp;quot;Mittwoch&amp;quot;, &amp;quot;Donnerstag&amp;quot;, &amp;quot;Freitag&amp;quot;, &amp;quot;Samstag&amp;quot;, &amp;quot;Sonntag&amp;quot;), daytype = c(rep(&amp;quot;weekday&amp;quot;, 5), rep(&amp;quot;weekend&amp;quot;, 2))) days %&amp;gt;% left_join(left_join(week, hours, by = &amp;quot;daytype&amp;quot;), by = &amp;quot;day&amp;quot;) %&amp;gt;% mutate(start = ymd_hm(paste(date, time_from)), end = ymd_hm(paste(date, time_to))) %&amp;gt;% select(start, end, state) -&amp;gt; openclosed openclosed ## # A tibble: 10 x 3 ## start end state ## &amp;lt;dttm&amp;gt; &amp;lt;dttm&amp;gt; &amp;lt;chr&amp;gt; ## 1 2018-01-01 00:00:00 2018-01-01 08:00:00 closed ## 2 2018-01-01 08:00:00 2018-01-01 12:00:00 open ## 3 2018-01-01 12:00:00 2018-01-01 13:00:00 closed ## 4 2018-01-01 13:00:00 2018-01-01 17:00:00 open ## 5 2018-01-01 17:00:00 2018-01-01 23:59:00 closed ## 6 2018-01-02 00:00:00 2018-01-02 08:00:00 closed ## 7 2018-01-02 08:00:00 2018-01-02 12:00:00 open ## 8 2018-01-02 12:00:00 2018-01-02 13:00:00 closed ## 9 2018-01-02 13:00:00 2018-01-02 17:00:00 open ## 10 2018-01-02 17:00:00 2018-01-02 23:59:00 closed timevis(data = openclosed %&amp;gt;% mutate(content = state, style = if_else(state == &amp;quot;open&amp;quot;, &amp;quot;background: green&amp;quot;, &amp;quot;background: red&amp;quot;))) + -   {&#34;</description>
+    </item>
+    
+    <item>
+      <title>(de) Die Zusammensetzung des Umsatzes - eine Netzwerkanalyse</title>
+      <link>https://mgei.github.io/post/econovo-netzwerk-analyse/</link>
+      <pubDate>Fri, 01 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgei.github.io/post/econovo-netzwerk-analyse/</guid>
+      <description>  Published here: https://www.econovo.ch/en/2019/02/01/netzwerk-analyse/
+ </description>
+    </item>
+    
+    <item>
+      <title>Create a T-account plot for a balance sheet or income statement using ggplot2 in R</title>
+      <link>https://mgei.github.io/post/t-account-ggplot2/</link>
+      <pubDate>Wed, 16 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgei.github.io/post/t-account-ggplot2/</guid>
+      <description>Originally published on a Github gist: https://gist.github.com/mgei/14e44b7121fcee18f3809cf4bfd1af71
+ Loading the packages and getting the data library(tidyverse) library(scales) Because the native quantmod::getFinancials() and tidyquant::tq_get(get = financials) do not work anymore (discontinued due to a change in Yahoo Finance), we use an alternative posted on Stackoverflow. Here’s the function:
+scrapy_stocks &amp;lt;- function(stock){ if (&amp;quot;rvest&amp;quot; %in% installed.packages()) { library(rvest) }else{ install.packages(&amp;quot;rvest&amp;quot;) library(rvest) } for (i in 1:length(stock)) { tryCatch( { url &amp;lt;- &amp;quot;https://finance.</description>
+    </item>
+    
+    <item>
+      <title>(de) Tarifentwicklung und Abrechnung in der Radiologie</title>
+      <link>https://mgei.github.io/post/econovo-tarifentwicklung-radiologie/</link>
+      <pubDate>Mon, 14 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgei.github.io/post/econovo-tarifentwicklung-radiologie/</guid>
+      <description>  Published here: https://www.econovo.ch/en/2019/01/14/tarifentwicklung-radiologie/
+ </description>
+    </item>
+    
+    <item>
+      <title>Generate mock addresses with realistic names and locations</title>
+      <link>https://mgei.github.io/post/mock-addresses/</link>
+      <pubDate>Mon, 14 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgei.github.io/post/mock-addresses/</guid>
+      <description>Originally published on a Github gist: https://gist.github.com/mgei/0269fb9e4120be24af6b5d1d344b89b6
+ Fake name generator Fake Name Generator allows to generate mock names/addresses. One can choose from plenty of fields to include besides names and addresses, such as date of birth, phone number, ID number, and also lon/lat coordinates.
+For the following purpose we will order as many addresses as possible and should not forget to include longitude and latitude.</description>
+    </item>
+    
+    <item>
+      <title>(de) Schritte für eine erfolgreiche interne Leistungsrevision</title>
+      <link>https://mgei.github.io/post/econovo-tarmed-leistungsrevision/</link>
+      <pubDate>Tue, 18 Dec 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgei.github.io/post/econovo-tarmed-leistungsrevision/</guid>
+      <description>  Published here: https://www.econovo.ch/en/2018/12/18/tarmed-leistungsrevision/
+ </description>
+    </item>
+    
+    <item>
+      <title>Geocode in R with ggmap (and a free Google API key)</title>
+      <link>https://mgei.github.io/post/geocode-ggmap/</link>
+      <pubDate>Wed, 12 Dec 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgei.github.io/post/geocode-ggmap/</guid>
+      <description>Youtube video https://www.youtube.com/watch?v=A7LzEJiKQvc
+   How to geocode locations or addresses in R with library(ggmap) in 2018/2019. Previously you could just use geocode(“New York”) to get the coordinates, but Google now required a Google Cloud Platform API key. Get the latest ggmap version from Github, and a free 12 month trial to GCP. This is how you geocode now.
+We will create a leaflet map with library(leaflet) in R.</description>
+    </item>
+    
+    <item>
+      <title>Principal Component Analysis in R for Portfolio Diversification</title>
+      <link>https://mgei.github.io/post/pca-tutorial/</link>
+      <pubDate>Wed, 12 Dec 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgei.github.io/post/pca-tutorial/</guid>
+      <description>Youtube video https://www.youtube.com/watch?v=yrH5A0ZPxf0
+   I perform a PCA on a set of six MSCI indices. First, I go download the data and import it into R with readxl. Then I look at the data and the returns with some very basic techniques like plotting the performance with ggplot and tidyquant. Later I perform a PCA and also apply a varimax transformation on the loadings (the eigenvectors). Lastly, I look at how an equal-weighted portfolio performed versus a portfolio with components selected based on the PCA/varimax results.</description>
+    </item>
+    
+    <item>
+      <title>Deep Learning in Radiology</title>
+      <link>https://mgei.github.io/post/econovo-rad-deep-learning/</link>
+      <pubDate>Wed, 05 Dec 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgei.github.io/post/econovo-rad-deep-learning/</guid>
+      <description>  Published here: https://www.econovo.ch/en/2018/12/05/radiology-deep-learning/
+ </description>
+    </item>
+    
+    <item>
+      <title>(de) MRI unter der atm-tms neuen Tarifstruktur</title>
+      <link>https://mgei.github.io/post/econovo-neue-tarifstruktur/</link>
+      <pubDate>Fri, 30 Nov 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgei.github.io/post/econovo-neue-tarifstruktur/</guid>
+      <description>  Published here: https://www.econovo.ch/en/2018/11/30/mri-neue-tarifstruktur/
+ </description>
+    </item>
+    
+    <item>
+      <title>My company Econovo - new website</title>
+      <link>https://mgei.github.io/post/econovo-welcome/</link>
+      <pubDate>Wed, 21 Nov 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgei.github.io/post/econovo-welcome/</guid>
+      <description>  Published here: https://www.econovo.ch/en/2018/11/21/welcome-from-econovo/
+ </description>
+    </item>
+    
+    <item>
+      <title>(de) Die ärztliche Leistung in der Neuroradiologie</title>
+      <link>https://mgei.github.io/post/econovo-al-neuroradiology/</link>
+      <pubDate>Tue, 20 Nov 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgei.github.io/post/econovo-al-neuroradiology/</guid>
+      <description>  Published here: https://www.econovo.ch/en/2018/11/20/al-neuroradiologie/
+ </description>
+    </item>
+    
+    <item>
+      <title>(de) Business Intelligence und Leistungsanalyse bei Radiologieinstituten</title>
+      <link>https://mgei.github.io/post/econovo-bi-radiology/</link>
+      <pubDate>Sat, 27 Oct 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgei.github.io/post/econovo-bi-radiology/</guid>
+      <description>  Published here: https://www.econovo.ch/en/2018/10/27/bi-leistungsanalyse-rad/
+ </description>
+    </item>
+    
+    <item>
+      <title>(de) Kapitel 39 im TARMED 2018</title>
+      <link>https://mgei.github.io/post/econovo-kapitel-39-tarmed/</link>
+      <pubDate>Wed, 19 Sep 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgei.github.io/post/econovo-kapitel-39-tarmed/</guid>
+      <description>  Published here: https://www.econovo.ch/en/2018/09/19/tarmed-kapitel-39/
+ </description>
+    </item>
+    
+    <item>
+      <title>Various drone videos (Youtube)</title>
+      <link>https://mgei.github.io/post/horse-videos/</link>
+      <pubDate>Wed, 30 May 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgei.github.io/post/horse-videos/</guid>
+      <description> CS Biel-Benken 2017 R/N110  Youtube video https://www.youtube.com/watch?v=RiuIP5MDxRg
+    CS Delémont 2018 R/N110  Youtube video https://www.youtube.com/watch?v=YfstjN6kGR0
+    Horse tracking AI using YOLOv2  Youtube video https://www.youtube.com/watch?v=YeICugaj5mU
+    </description>
+    </item>
+    
+    <item>
+      <title>Various drone videos (Youtube)</title>
+      <link>https://mgei.github.io/post/drone-videos/</link>
+      <pubDate>Fri, 29 Dec 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgei.github.io/post/drone-videos/</guid>
+      <description> Luftaufnahme Drohne Nacht - Basel (2017)  Youtube video https://www.youtube.com/watch?v=3EPW0H2oKNI
+    Walking in Belfort (DJI active track, 2017)  Youtube video https://www.youtube.com/watch?v=QvRpSElDQes
+    DJI Spark active tracking a horse (2017)  Youtube video https://www.youtube.com/watch?v=9a4S7F4jqZc
+    Fernsehturm St. Chrischona - Drohnenaufnahme (2017)  Youtube video https://www.youtube.com/watch?v=9a4S7F4jqZc
+    </description>
+    </item>
+    
+    <item>
+      <title>Hello World</title>
+      <link>https://mgei.github.io/post/hello-world/</link>
+      <pubDate>Sun, 01 Jan 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgei.github.io/post/hello-world/</guid>
+      <description>Hello Page</description>
     </item>
     
   </channel>

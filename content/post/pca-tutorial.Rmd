@@ -1,0 +1,15 @@
+---
+slug: "pca-tutorial"
+date: "2018-12-12"
+title: "Principal Component Analysis in R for Portfolio Diversification"
+tags: ["R", "PCA", "finance", "stock market", "Youtube"]
+authors: [mgei]
+---
+
+> Youtube video https://www.youtube.com/watch?v=yrH5A0ZPxf0
+
+```{r, eval=TRUE, echo=F}
+blogdown::shortcode("youtube", "yrH5A0ZPxf0")
+```
+
+I perform a PCA on a set of six MSCI indices. First, I go download the data and import it into R with readxl. Then I look at the data and the returns with some very basic techniques like plotting the performance with ggplot and tidyquant. Later I perform a PCA and also apply a varimax transformation on the loadings (the eigenvectors). Lastly, I look at how an equal-weighted portfolio performed versus a portfolio with components selected based on the PCA/varimax results. It's not fully as desired but (we want higher Sharpe ratio of course), but interesting nevertheless.

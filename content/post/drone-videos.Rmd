@@ -1,0 +1,39 @@
+---
+slug: "drone-videos"
+date: "2017-12-29"
+title: "Various drone videos (Youtube)"
+tags: ["drone videos", "Youtube"]
+authors: [mgei]
+---
+
+# Luftaufnahme Drohne Nacht - Basel (2017)
+
+> Youtube video https://www.youtube.com/watch?v=3EPW0H2oKNI
+
+```{r, eval=TRUE, echo=F}
+blogdown::shortcode("youtube", "3EPW0H2oKNI")
+```
+
+# Walking in Belfort (DJI active track, 2017)
+
+> Youtube video https://www.youtube.com/watch?v=QvRpSElDQes
+
+```{r, eval=TRUE, echo=F}
+blogdown::shortcode("youtube", "QvRpSElDQes")
+```
+
+# DJI Spark active tracking a horse (2017)
+
+> Youtube video https://www.youtube.com/watch?v=9a4S7F4jqZc
+
+```{r, eval=TRUE, echo=F}
+blogdown::shortcode("youtube", "9a4S7F4jqZc")
+```
+
+# Fernsehturm St. Chrischona - Drohnenaufnahme (2017)
+
+> Youtube video https://www.youtube.com/watch?v=9a4S7F4jqZc
+
+```{r, eval=TRUE, echo=F}
+blogdown::shortcode("youtube", "aV031at2Wlk")
+```

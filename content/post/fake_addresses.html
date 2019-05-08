@@ -1,0 +1,94 @@
+---
+slug: "mock-addresses"
+date: "2019-01-14"
+title: "Generate mock addresses with realistic names and locations"
+tags: ["R", "spatial", "mock data", "Youtube"]
+authors: [mgei]
+---
+
+<script src="/rmarkdown-libs/htmlwidgets/htmlwidgets.js"></script>
+<script src="/rmarkdown-libs/jquery/jquery.min.js"></script>
+<link href="/rmarkdown-libs/leaflet/leaflet.css" rel="stylesheet" />
+<script src="/rmarkdown-libs/leaflet/leaflet.js"></script>
+<link href="/rmarkdown-libs/leafletfix/leafletfix.css" rel="stylesheet" />
+<script src="/rmarkdown-libs/Proj4Leaflet/proj4-compressed.js"></script>
+<script src="/rmarkdown-libs/Proj4Leaflet/proj4leaflet.js"></script>
+<link href="/rmarkdown-libs/rstudio_leaflet/rstudio_leaflet.css" rel="stylesheet" />
+<script src="/rmarkdown-libs/leaflet-binding/leaflet.js"></script>
+
+
+<blockquote>
+<p>Originally published on a Github gist: <a href="https://gist.github.com/mgei/0269fb9e4120be24af6b5d1d344b89b6" class="uri">https://gist.github.com/mgei/0269fb9e4120be24af6b5d1d344b89b6</a></p>
+</blockquote>
+<div id="fake-name-generator" class="section level1">
+<h1>Fake name generator</h1>
+<p><a href="https://www.fakenamegenerator.com/order.php">Fake Name Generator</a> allows to generate mock names/addresses. One can choose from plenty of fields to include besides names and addresses, such as date of birth, phone number, ID number, and also lon/lat coordinates.</p>
+<p>For the following purpose we will order as many addresses as possible and should not forget to include longitude and latitude. Once this is done, we get an e-mail notification with the download link. Do not worry, it is free. It is trustworthy, I have not got any newsletter spam after ordering.</p>
+</div>
+<div id="r-for-subsetting-by-location" class="section level1">
+<h1>R for subsetting by location</h1>
+<p>In the next step we will load the data into R. This will allow us to subset the entries in a realistic way. Imagine we are locally operating a company, a hospital or similar. Our clients or patients are likely to come from nearby. The further a person lives, the less likely he is to be your customer. That’s what we want to simulate.</p>
+<pre class="r"><code>library(tidyverse)
+library(lubridate)
+library(leaflet)</code></pre>
+<pre class="r"><code>addresses &lt;- read_csv(&quot;postdata/fakeaddresses/FakeNameGenerator.com_f201506b.csv&quot;)</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   Gender = col_character(),
+##   Title = col_character(),
+##   GivenName = col_character(),
+##   Surname = col_character(),
+##   StreetAddress = col_character(),
+##   City = col_character(),
+##   ZipCode = col_double(),
+##   CountryFull = col_character(),
+##   TelephoneNumber = col_character(),
+##   Birthday = col_character(),
+##   Age = col_double(),
+##   Latitude = col_double(),
+##   Longitude = col_double()
+## )</code></pre>
+<pre class="r"><code>addresses &lt;- addresses %&gt;% mutate(Birthday = mdy(Birthday),
+                                  Title = case_when(Title == &quot;Mr.&quot; ~ &quot;Herr&quot;,
+                                  Title == &quot;Mrs.&quot; ~ &quot;Frau&quot;,
+                                  Title == &quot;Ms.&quot; ~ &quot;Frau&quot;,
+                                  Title == &quot;Dr.&quot; &amp; Gender == &quot;female&quot; ~ &quot;Frau Dr.&quot;,
+                                  Title == &quot;Dr.&quot; &amp; Gender == &quot;male&quot; ~ &quot;Herr Dr.&quot;,
+                                  T ~ Title))
+
+head(addresses)</code></pre>
+<pre><code>## # A tibble: 6 x 13
+##   Gender Title GivenName Surname StreetAddress City  ZipCode CountryFull
+##   &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;     &lt;chr&gt;   &lt;chr&gt;         &lt;chr&gt;   &lt;dbl&gt; &lt;chr&gt;      
+## 1 male   Herr  Erik      Lang    Kronwiesenwe… Kreu…    4500 Switzerland
+## 2 male   Herr  David     Leroy   Wolfensbergs… Ried…    4533 Switzerland
+## 3 female Frau  Birgit    Fisher  Casut 74      Lied…    4436 Switzerland
+## 4 female Frau  Katharina Krause  Wingertweg 1… Enge…    6391 Switzerland
+## 5 female Frau  Lea       Koch    Seefeldstras… Klos…    7249 Switzerland
+## 6 female Frau  Germaine  Dodier  Üerklisweg 56 Brugg    8740 Switzerland
+## # … with 5 more variables: TelephoneNumber &lt;chr&gt;, Birthday &lt;date&gt;,
+## #   Age &lt;dbl&gt;, Latitude &lt;dbl&gt;, Longitude &lt;dbl&gt;</code></pre>
+<p>Next we define our own location. Around where we are we want the most addresses. Therefore, we add a column <em>distance</em>.</p>
+<pre class="r"><code>mylat &lt;- 47.5596
+mylon &lt;- 7.5886
+
+addresses &lt;- addresses %&gt;% 
+  mutate(distance = sqrt((Longitude-mylon)^2+(Latitude-mylat)^2))</code></pre>
+<p>Finally, we use dplyr’s <code>sample_n()</code> to subsample the addresses in an inverse exponential way and plot it in a leaflet map.</p>
+<pre class="r"><code>patients &lt;- addresses %&gt;% sample_n(100, weight = 1/distance^2)
+
+patients %&gt;% 
+  leaflet() %&gt;% 
+  setView(lng = mylon, lat = mylat, zoom = 10) %&gt;% 
+  addTiles() %&gt;% 
+  addCircleMarkers(label = ~str_c(GivenName, Surname, StreetAddress, City, sep = &quot; &quot;),
+                   radius = 2, color = &quot;red&quot;) %&gt;% 
+  addMarkers(label = &quot;Me&quot;, lng = ~mylon, lat = ~mylat)</code></pre>
+<pre><code>## Assuming &quot;Longitude&quot; and &quot;Latitude&quot; are longitude and latitude, respectively</code></pre>
+<div id="htmlwidget-1" style="width:672px;height:480px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-1">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"setView":[[47.5596,7.5886],10,[]],"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addCircleMarkers","args":[[47.561405,47.558661,47.555182,47.450089,47.56346,47.569643,47.416498,47.569413,47.503331,47.551327,47.454264,47.557945,47.542128,47.573826,47.208375,47.622039,47.503197,47.563678,47.626974,47.542142,47.538656,47.399044,47.584676,47.558279,47.575762,47.573059,47.577318,47.523857,47.555054,46.399456,47.606322,47.431159,47.6095,47.530537,47.130863,47.526081,47.563118,47.614139,47.441332,46.713853,47.387043,47.541491,47.574983,47.577867,47.433465,46.885519,47.361064,47.139043,47.604339,47.569553,47.50202,47.542964,47.544303,47.569355,47.5856,47.553804,46.799598,47.563824,47.516516,47.566917,47.475735,47.487971,47.533556,47.65992,47.561124,47.588734,47.541389,47.476953,47.009206,47.573673,47.260116,47.550561,47.017467,46.047314,47.543775,47.588654,47.509408,47.481609,47.506497,47.585439,47.519441,47.510097,47.565718,47.574358,47.60018,47.565249,47.30317,47.485444,47.280207,47.511398,47.289245,47.18064,47.622741,47.237038,46.916793,47.178525,47.477742,47.501767,47.642354,47.550581],[7.592303,7.510647,7.563883,8.305073,7.573216,7.595848,7.886145,7.579406,7.578087,7.58105,7.504551,7.607284,7.591028,7.604937,7.945456,7.517576,7.527678,7.642709,7.529764,7.600017,7.597982,7.476549,7.638125,7.596686,7.582729,7.595032,7.589925,7.611819,7.57953,7.906791,7.603935,7.512058,7.546308,7.87746,7.640481,7.581644,7.598474,7.521608,7.485464,6.929719,7.747974,7.524295,7.56895,7.625725,7.860202,7.480387,7.75473,7.522202,8.777972,7.658723,7.477045,7.768546,7.542889,7.57706,7.555354,7.547647,7.614075,7.509301,7.58587,7.564617,7.646213,7.542908,7.573059,7.683632,7.605945,7.604532,7.562742,7.630229,7.205511,7.55021,7.642297,7.615492,7.225707,7.228409,7.548835,7.61906,7.6614,8.14792,7.669901,7.608061,7.584736,7.833574,7.604323,7.525952,7.574211,7.601322,7.879637,7.756909,8.459867,7.620834,7.152198,7.55604,7.608144,7.952785,7.126055,7.78159,7.60289,7.614658,7.590136,7.56136],2,null,null,{"interactive":true,"className":"","stroke":true,"color":"red","weight":5,"opacity":0.5,"fill":true,"fillColor":"red","fillOpacity":0.2},null,null,null,null,["Gilles Gervais Kornquaderweg 66 Reinach","Ulrich Durr Breitenstrasse 22 Basel","Tom Frankfurter Mittlerer Thalackerweg 16 Rümlang","Christin Neumann Via Vigizzi 61 Unterehrendingen","Jesper Thériault Obere Bahnhofstrasse 40 Basel","Benjamin Eichel Breitenstrasse 25 Basel","Karolin Theiss Brunnenstrasse 31 Rothenfluh","Faustin Lamarre Breitenstrasse 124 Basel","Ralf Schwab Breitenstrasse 17 Basel","Clarimunda Marleau Erlenweg 117 Benken","Andreas Gaertner Casut 48 Liesberg","Jennifer Krause Breitenstrasse 132 Basel","Xavier Faubert Breitenstrasse 59 Basel","Jana Zimmerman Semperweg 84 Birsfelden","Eliot Labbé Sondanella 5 Grod","Heike Decker Breitenstrasse 118 Basel","Klaus Faber Neubertbogen 93 Röschenz","Victoire Plouffe Breitenstrasse 17 Basel","Annett Koertig Wiesenstrasse 90 Basel","Karolin Wirtz Erlenweg 27 Benken","Vallis Fecteau Via Pestariso 119 St. Pantaleon","Michèle Étoile Neubertbogen 29 Roches","Christian Dubois Im Sandbüel 26 Füllinsdorf","Pierre Mathieu Breitenstrasse 115 Basel","Parfait Lajeunesse Grossmatt 89 Biel-Benken","Erik Müller Semperweg 3 Birsfelden","Avelaine Mercure Kornquaderweg 134 Reinach","Albertine Pouchard Breitenstrasse 125 Basel","Mariette Michaud Breitenstrasse 143 Basel","Anja Saenger Üerklisweg 128 Brigerbad","Olivie DeGrasse Jakobstrasse 137 Oberwil","Simone Nussbaum Semperweg 69 Blauen","Julia Duerr Wiesenstrasse 128 Basel","Anne Therrien Via Schliffras 32 Gelterkinden","Petra Ackermann Kronwiesenweg 99 Kräiligen","Belle Riel Breitenstrasse 3 Basel","Talbot Cantin Breitenstrasse 57 Basel","Aleron Blanchard Breitenstrasse 76 Basel","Leon Eisenhower Wiesenstrasse 121 Bärschwil","Hamilton Garceau Im Wingert 42 Lentigny","Loyal Duhamel Schuepisstrasse 146 Ifenthal","Danielle Favreau Semperweg 139 Blauen","Klaus Neustadt Breitenstrasse 128 Basel","Niklas Fischer Wiesenstrasse 106 Basel","Jacques Giroux Jakobstrasse 102 Olten","Barry Racicot Valéestrasse 94 Ostermundigen","Sebastian Baader Brucknerweg 35 Hauenstein-Ifenthal","Fabienne Dupuy Stradun 81 Gossliwil","Heike Pfeffer Schulstrasse 108 Winterthur","Max Schröder Breitenstrasse 101 Basel","Marcel Cliche Quadra 45 Ettingen","Stephanie Hertz Allmenrüti 130 Seltisberg","Nadine Naumann Breitenstrasse 7 Basel","Christophe Norbert Breitenstrasse 108 Basel","Ray Leroux Breitenstrasse 127 Basel","Anna Wannemaker Via dalla Staziun 48 Dornach","Romaine Fréchette Seefeldstrasse 13 Kienersrüti","Mariette Robert Breitenstrasse 7 Basel","Ancelote Thériault Breitenstrasse 21 Basel","Lotye Margand Breitenstrasse 44 Basel","Moore Lanteigne Via Schliffras 89 Gempen","Stephan Ziegler Caltgadira 44 Nunningen","Rabican Côté Gerbiweg 32 Büren","Klaus Wechsler Breitenstrasse 54 Basel","Sylvie Roussel Breitenstrasse 36 Basel","Kristin Probst Breitenstrasse 93 Basel","Roux Cormier Via Camischolas sura 28 Dittingen","Thomas Schwartz Quadra 8 Ettingen","Calandre Marceau Boldistrasse 98 Niederried bei Kallnach","Holly Garnier Breitenstrasse 14 Basel","Niklas Schroeder Semperweg 61 Bleichenberg","Xavierre Margand Breitenstrasse 123 Basel","Robert Weisz Scheidweg 117 Gümmenen","Calandre Margand Via Gabbietta 86 Versegères","Carine Monjeau Breitenstrasse 135 Basel","Claudia Rothschild Wolfensbergstrasse 43 Riehen","Johanna Achen Casa Gielgia 24 Muttenz","Raina Bazinet Üerklisweg 77 Brunegg","Christin Propst Breitenstrasse 15 Basel","Ralf Grunewald Kammelenbergstrasse 22 Flüh","Alexandrin Avare Breitenstrasse 91 Basel","Tobias Hofmann Mattenstrasse 121 Sissach","Oriel Chenard Gartenhof 117 Arlesheim","Ines Schmitz Breitenstrasse 29 Basel","Anna Berg Breitenstrasse 39 Basel","Russell Rodrigue Breitenstrasse 148 Basel","Ute Seiler Fortunastrasse 79 Eptingen","Cécile Riel Rasenstrasse 82 Hersberg","Dorene Mainville Wolfensbergstrasse 52 Rifferswil","Jonas Krueger Breitenstrasse 63 Basel","Torsten Fuerst Via Vigizzi 142 Undervelier","Lea Nacht Damunt 81 Oberramsern","Petra Schäfer Breitenstrasse 123 Basel","Varden Brochu Mülhauserstrasse 37 Murgenthal","Sylvie Vadnais Bösch 14 Cudrefin","Soren Rhéaume Neubertbogen 45 Roggwil","Sarah Baecker Breitenstrasse 72 Basel","Jens Barth Wolfensbergstrasse 137 Riehen","Paige Pinette Breitenstrasse 26 Basel","Diana Kruger Breitenstrasse 45 Basel"],{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addMarkers","args":[47.5596,7.5886,null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},null,null,null,null,"Me",{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[46.047314,47.65992],"lng":[6.929719,8.777972]}},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="youtube-tutorial" class="section level1">
+<h1>Youtube tutorial</h1>
+{{% youtube "AGb5Yk_d8Lk" %}}
+</div>

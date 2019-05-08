@@ -1,0 +1,9 @@
+---
+slug: "econovo-al-neuroradiology"
+date: "2018-11-20"
+title: "(de) Die ärztliche Leistung in der Neuroradiologie"
+tags: ["Econovo", "business intelligence", "radiology", "healthcare"]
+authors: [mgei]
+---
+  
+> Published here: https://www.econovo.ch/en/2018/11/20/al-neuroradiologie/

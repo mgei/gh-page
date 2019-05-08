@@ -47,20 +47,65 @@
     </item>
     
     <item>
-      <title>misc</title>
-      <link>https://mgei.github.io/tags/misc/</link>
-      <pubDate>Wed, 08 May 2019 00:00:00 +0000</pubDate>
+      <title>finance</title>
+      <link>https://mgei.github.io/tags/finance/</link>
+      <pubDate>Mon, 06 May 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://mgei.github.io/tags/misc/</guid>
+      <guid>https://mgei.github.io/tags/finance/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>page</title>
-      <link>https://mgei.github.io/tags/page/</link>
-      <pubDate>Wed, 08 May 2019 00:00:00 +0000</pubDate>
+      <title>plotting</title>
+      <link>https://mgei.github.io/tags/plotting/</link>
+      <pubDate>Mon, 06 May 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://mgei.github.io/tags/page/</guid>
+      <guid>https://mgei.github.io/tags/plotting/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>stock market</title>
+      <link>https://mgei.github.io/tags/stock-market/</link>
+      <pubDate>Mon, 06 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgei.github.io/tags/stock-market/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>tidyquant</title>
+      <link>https://mgei.github.io/tags/tidyquant/</link>
+      <pubDate>Mon, 06 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgei.github.io/tags/tidyquant/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>PCA</title>
+      <link>https://mgei.github.io/tags/pca/</link>
+      <pubDate>Tue, 23 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgei.github.io/tags/pca/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>linear model</title>
+      <link>https://mgei.github.io/tags/linear-model/</link>
+      <pubDate>Tue, 23 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgei.github.io/tags/linear-model/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Youtube</title>
+      <link>https://mgei.github.io/tags/youtube/</link>
+      <pubDate>Mon, 22 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgei.github.io/tags/youtube/</guid>
       <description></description>
     </item>
     
@@ -83,15 +128,6 @@
     </item>
     
     <item>
-      <title>linear model</title>
-      <link>https://mgei.github.io/tags/linear-model/</link>
-      <pubDate>Mon, 22 Apr 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://mgei.github.io/tags/linear-model/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>spatial</title>
       <link>https://mgei.github.io/tags/spatial/</link>
       <pubDate>Mon, 22 Apr 2019 00:00:00 +0000</pubDate>
@@ -110,20 +146,29 @@
     </item>
     
     <item>
-      <title>OSRM</title>
-      <link>https://mgei.github.io/tags/osrm/</link>
-      <pubDate>Wed, 27 Mar 2019 00:00:00 +0000</pubDate>
+      <title>Econovo</title>
+      <link>https://mgei.github.io/tags/econovo/</link>
+      <pubDate>Sun, 14 Apr 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://mgei.github.io/tags/osrm/</guid>
+      <guid>https://mgei.github.io/tags/econovo/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Switzerland</title>
       <link>https://mgei.github.io/tags/switzerland/</link>
-      <pubDate>Wed, 27 Mar 2019 00:00:00 +0000</pubDate>
+      <pubDate>Sun, 14 Apr 2019 00:00:00 +0000</pubDate>
       
       <guid>https://mgei.github.io/tags/switzerland/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>OSRM</title>
+      <link>https://mgei.github.io/tags/osrm/</link>
+      <pubDate>Wed, 27 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgei.github.io/tags/osrm/</guid>
       <description></description>
     </item>
     
@@ -151,6 +196,177 @@
       <pubDate>Wed, 27 Mar 2019 00:00:00 +0000</pubDate>
       
       <guid>https://mgei.github.io/tags/leaflet/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>API</title>
+      <link>https://mgei.github.io/tags/api/</link>
+      <pubDate>Thu, 21 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgei.github.io/tags/api/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>cluster analysis</title>
+      <link>https://mgei.github.io/tags/cluster-analysis/</link>
+      <pubDate>Mon, 18 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgei.github.io/tags/cluster-analysis/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>business intelligence</title>
+      <link>https://mgei.github.io/tags/business-intelligence/</link>
+      <pubDate>Fri, 01 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgei.github.io/tags/business-intelligence/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>due diligence</title>
+      <link>https://mgei.github.io/tags/due-diligence/</link>
+      <pubDate>Fri, 01 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgei.github.io/tags/due-diligence/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>network analysis</title>
+      <link>https://mgei.github.io/tags/network-analysis/</link>
+      <pubDate>Fri, 01 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgei.github.io/tags/network-analysis/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>ggplot2</title>
+      <link>https://mgei.github.io/tags/ggplot2/</link>
+      <pubDate>Wed, 16 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgei.github.io/tags/ggplot2/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>healthcare</title>
+      <link>https://mgei.github.io/tags/healthcare/</link>
+      <pubDate>Mon, 14 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgei.github.io/tags/healthcare/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>mock data</title>
+      <link>https://mgei.github.io/tags/mock-data/</link>
+      <pubDate>Mon, 14 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgei.github.io/tags/mock-data/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>radiology</title>
+      <link>https://mgei.github.io/tags/radiology/</link>
+      <pubDate>Mon, 14 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgei.github.io/tags/radiology/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>tariffs</title>
+      <link>https://mgei.github.io/tags/tariffs/</link>
+      <pubDate>Mon, 14 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgei.github.io/tags/tariffs/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>geocode</title>
+      <link>https://mgei.github.io/tags/geocode/</link>
+      <pubDate>Wed, 12 Dec 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgei.github.io/tags/geocode/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>AI</title>
+      <link>https://mgei.github.io/tags/ai/</link>
+      <pubDate>Wed, 05 Dec 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgei.github.io/tags/ai/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>deep learning</title>
+      <link>https://mgei.github.io/tags/deep-learning/</link>
+      <pubDate>Wed, 05 Dec 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgei.github.io/tags/deep-learning/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Tarmed</title>
+      <link>https://mgei.github.io/tags/tarmed/</link>
+      <pubDate>Wed, 19 Sep 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgei.github.io/tags/tarmed/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>medical care</title>
+      <link>https://mgei.github.io/tags/medical-care/</link>
+      <pubDate>Wed, 19 Sep 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgei.github.io/tags/medical-care/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>horse videos</title>
+      <link>https://mgei.github.io/tags/horse-videos/</link>
+      <pubDate>Wed, 30 May 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgei.github.io/tags/horse-videos/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>drone videos</title>
+      <link>https://mgei.github.io/tags/drone-videos/</link>
+      <pubDate>Fri, 29 Dec 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgei.github.io/tags/drone-videos/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>misc</title>
+      <link>https://mgei.github.io/tags/misc/</link>
+      <pubDate>Sun, 01 Jan 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgei.github.io/tags/misc/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>page</title>
+      <link>https://mgei.github.io/tags/page/</link>
+      <pubDate>Sun, 01 Jan 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgei.github.io/tags/page/</guid>
       <description></description>
     </item>
     

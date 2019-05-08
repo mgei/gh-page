@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>mock data on mgei.github.io</title>
+    <link>https://mgei.github.io/tags/mock-data/</link>
+    <description>Recent content in mock data on mgei.github.io</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Mon, 14 Jan 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://mgei.github.io/tags/mock-data/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Generate mock addresses with realistic names and locations</title>
+      <link>https://mgei.github.io/post/mock-addresses/</link>
+      <pubDate>Mon, 14 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgei.github.io/post/mock-addresses/</guid>
+      <description>Originally published on a Github gist: https://gist.github.com/mgei/0269fb9e4120be24af6b5d1d344b89b6
+ Fake name generator Fake Name Generator allows to generate mock names/addresses. One can choose from plenty of fields to include besides names and addresses, such as date of birth, phone number, ID number, and also lon/lat coordinates.
+For the following purpose we will order as many addresses as possible and should not forget to include longitude and latitude.</description>
+    </item>
+    
+  </channel>
+</rss>

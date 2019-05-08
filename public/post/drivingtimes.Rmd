@@ -2,7 +2,7 @@
 slug: "drivingtimes"
 date: "2019-03-27"
 title: "How far to the closest hospital?"
-tags: ["OSRM", "leaflet", "ggmap", "R", "hospitals", "Switzerland", "spatial"]
+tags: ["OSRM", "leaflet", "ggmap", "R", "hospitals", "Switzerland", "spatial", "Youtube"]
 authors: [mgei]
 ---
 
@@ -623,4 +623,10 @@ finalmap
 ```
 
 
-How can we interpret this? We see that the hospital coverage is pretty good in Switzerland. Only at a few places the nearest hospital is further than an hour away. 
+How can we interpret this? We see that the hospital coverage is pretty good in Switzerland. Only at a few places the nearest hospital is further than an hour away.
+
+# Youtube tutorial
+
+```{r, eval=TRUE, echo=F}
+blogdown::shortcode("youtube", "zbEZDNlFJRY")
+```

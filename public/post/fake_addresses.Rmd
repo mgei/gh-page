@@ -1,0 +1,76 @@
+---
+slug: "mock-addresses"
+date: "2019-01-14"
+title: "Generate mock addresses with realistic names and locations"
+tags: ["R", "spatial", "mock data", "Youtube"]
+authors: [mgei]
+---
+
+> Originally published on a Github gist: https://gist.github.com/mgei/0269fb9e4120be24af6b5d1d344b89b6
+
+# Fake name generator
+
+[Fake Name Generator](https://www.fakenamegenerator.com/order.php) allows to generate mock names/addresses. One can choose from plenty of fields to include besides names and addresses, such as date of birth, phone number, ID number, and also lon/lat coordinates.
+
+For the following purpose we will order as many addresses as possible and should not forget to include longitude and latitude. Once this is done, we get an e-mail notification with the download link. Do not worry, it is free. It is trustworthy, I have not got any newsletter spam after ordering.
+
+# R for subsetting by location
+
+In the next step we will load the data into R. This will allow us to subset the entries in a realistic way. Imagine we are locally operating a company, a hospital or similar. Our clients or patients are likely to come from nearby. The further a person lives, the less likely he is to be your customer. That's what we want to simulate.
+
+
+```{r setup, warning=F, message=F}
+library(tidyverse)
+library(lubridate)
+library(leaflet)
+```
+
+
+```{r data}
+
+addresses <- read_csv("postdata/fakeaddresses/FakeNameGenerator.com_f201506b.csv")
+  
+addresses <- addresses %>% mutate(Birthday = mdy(Birthday),
+                                  Title = case_when(Title == "Mr." ~ "Herr",
+                                  Title == "Mrs." ~ "Frau",
+                                  Title == "Ms." ~ "Frau",
+                                  Title == "Dr." & Gender == "female" ~ "Frau Dr.",
+                                  Title == "Dr." & Gender == "male" ~ "Herr Dr.",
+                                  T ~ Title))
+
+head(addresses)
+
+```
+
+Next we define our own location. Around where we are we want the most addresses. Therefore, we add a column *distance*.
+
+```{r loc}
+mylat <- 47.5596
+mylon <- 7.5886
+
+addresses <- addresses %>% 
+  mutate(distance = sqrt((Longitude-mylon)^2+(Latitude-mylat)^2))
+
+```
+
+Finally, we use dplyr's `sample_n()` to subsample the addresses in an inverse exponential way and plot it in a leaflet map.
+
+```{r subsample}
+
+patients <- addresses %>% sample_n(100, weight = 1/distance^2)
+
+patients %>% 
+  leaflet() %>% 
+  setView(lng = mylon, lat = mylat, zoom = 10) %>% 
+  addTiles() %>% 
+  addCircleMarkers(label = ~str_c(GivenName, Surname, StreetAddress, City, sep = " "),
+                   radius = 2, color = "red") %>% 
+  addMarkers(label = "Me", lng = ~mylon, lat = ~mylat)
+
+```
+
+# Youtube tutorial
+
+```{r, eval=TRUE, echo=F}
+blogdown::shortcode("youtube", "AGb5Yk_d8Lk")
+```

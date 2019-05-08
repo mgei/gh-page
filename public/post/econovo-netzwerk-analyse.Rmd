@@ -1,0 +1,9 @@
+---
+slug: "econovo-netzwerk-analyse"
+date: "2019-02-01"
+title: "(de) Die Zusammensetzung des Umsatzes - eine Netzwerkanalyse"
+tags: ["network analysis", "due diligence", "business intelligence"]
+authors: [mgei]
+---
+
+> Published here: https://www.econovo.ch/en/2019/02/01/netzwerk-analyse/
