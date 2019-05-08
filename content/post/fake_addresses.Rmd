@@ -2,7 +2,7 @@
 slug: "mock-addresses"
 date: "2019-01-14"
 title: "Generate mock addresses with realistic names and locations"
-tags: ["R", "spatial", "mock data", "Youtube"]
+tags: ["R", "spatial", "mock data", "Youtube", "leaflet", "maps"]
 authors: [mgei]
 ---
 

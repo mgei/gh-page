@@ -2,7 +2,7 @@
 slug: "pca-tutorial"
 date: "2018-12-12"
 title: "Principal Component Analysis in R for Portfolio Diversification"
-tags: ["R", "PCA", "finance", "stock market", "Youtube"]
+tags: ["R", "PCA", "finance", "stock market", "Youtube", "statistics"]
 authors: [mgei]
 ---
 

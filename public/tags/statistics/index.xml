@@ -21,5 +21,15 @@
 As we will see, in four cantons lawyers outnumber physicians.</description>
     </item>
     
+    <item>
+      <title>Principal Component Analysis in R for Portfolio Diversification</title>
+      <link>https://mgei.github.io/post/pca-tutorial/</link>
+      <pubDate>Wed, 12 Dec 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgei.github.io/post/pca-tutorial/</guid>
+      <description>Youtube video https://www.youtube.com/watch?v=yrH5A0ZPxf0
+   I perform a PCA on a set of six MSCI indices. First, I go download the data and import it into R with readxl. Then I look at the data and the returns with some very basic techniques like plotting the performance with ggplot and tidyquant. Later I perform a PCA and also apply a varimax transformation on the loadings (the eigenvectors). Lastly, I look at how an equal-weighted portfolio performed versus a portfolio with components selected based on the PCA/varimax results.</description>
+    </item>
+    
   </channel>
 </rss>

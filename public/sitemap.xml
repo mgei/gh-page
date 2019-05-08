@@ -213,6 +213,12 @@
   </url>
   
   <url>
+    <loc>https://mgei.github.io/tags/dplyr/</loc>
+    <lastmod>2019-03-21T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://mgei.github.io/post/econovo-fallzahlen-cluster/</loc>
     <lastmod>2019-03-18T00:00:00+00:00</lastmod>
   </url>
@@ -274,6 +280,12 @@
   
   <url>
     <loc>https://mgei.github.io/tags/healthcare/</loc>
+    <lastmod>2019-01-14T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://mgei.github.io/tags/maps/</loc>
     <lastmod>2019-01-14T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
@@ -378,6 +390,12 @@
   
   <url>
     <loc>https://mgei.github.io/tags/horse-videos/</loc>
+    <lastmod>2018-05-30T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://mgei.github.io/tags/video/</loc>
     <lastmod>2018-05-30T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>

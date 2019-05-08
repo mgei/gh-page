@@ -2,7 +2,7 @@
 slug: "tel-search-api"
 date: "2019-03-21"
 title: "R function for accessing the tel.search.ch API"
-tags: ["R", "API"]
+tags: ["R", "API", "dplyr"]
 authors: [mgei]
 ---
 

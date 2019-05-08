@@ -7,7 +7,7 @@ menu:
 weight: 4
 type: page
 layout: search
-#outputs:
-#  - html
-#  - json
+outputs:
+ - html
+ - json
 ---
