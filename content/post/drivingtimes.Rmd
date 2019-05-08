@@ -23,7 +23,11 @@ Here's what we want to create:
 
 ```{r previewloadplotfinal, echo=F}
 
-finalmap <- readRDS("postdata/drivingtimes/finalmap.RDS")
+# finalmap <- readRDS("postdata/drivingtimes/finalmap.RDS")
+
+# finalmap %>% saveRDS("postdata/drivingtimes/finalmap2.RDS")
+
+finalmap <- readRDS("postdata/drivingtimes/finalmap2.RDS")
 
 finalmap
 
@@ -612,7 +616,7 @@ finalmap %>% write_rds("data/finalmap.RDS")
 
 ```{r loadplotfinal, echo=F}
 
-finalmap <- readRDS("postdata/drivingtimes/finalmap.RDS")
+finalmap <- readRDS("postdata/drivingtimes/finalmap2.RDS")
 
 finalmap 
 
