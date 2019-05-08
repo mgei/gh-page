@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 baseURL = "https://mgei.github.io"
 title = "mgei.github.io"
 # for smart copyright line, leave this blank and check [params.copyright]
@@ -145,3 +146,153 @@ hrefTargetBlank = true
 lang = "en"
 languageName = "English"
 weight = 1
+||||||| merged common ancestors
+=======
+baseURL = "https://mgei.github.io"
+title = "mgei's Github Page"
+# for smart copyright line, leave this blank and check [params.copyright]
+copyright = ""
+
+ignoreFiles = [ "\\.foo$", "\\.boo$" ]
+
+theme = "minimo"
+
+disqusShortname = ""
+googleAnalytics = ""
+
+Paginate = 5
+preserveTaxonomyNames = true
+
+enableRobotsTXT = true # generate robots.txt
+
+# Syntax Highlighting ( https://gohugo.io/content-management/syntax-highlighting/ )
+pygmentsCodefences = true
+
+enableEmoji = false
+
+# Missing translations will default to this content language
+defaultContentLanguage = "en"
+
+[params.info]
+description = "Martin's Website"
+title404 = "Nothing's here!"
+
+[params.assets]
+favicon = "favicon.ico"
+customCSS = ["css/custom.css"]
+customJS = ["js/custom.js"]
+gopher = "" # used in 404 template ( Generator: https://gopherize.me )
+
+[params.copyright]
+prefix = ""
+holder = "Martin Geissmann"
+startYear = "2019"
+suffix = ""
+
+[params.settings]
+# date & time format: https://golang.org/pkg/time/
+dateFormat = "2006, Jan 02"
+listDateFormat = "2006, Jan 02"
+archiveDateFormat = "Jan 02"
+hideEntryNavigation = ["page"] # boolean / array of sections
+hideEntryMeta = ["page"] # boolean / array of sections
+showReadingTime = false
+showLastmod = true
+taxonomyCloudShuffle = true
+accentColor = "#ffcd00"
+hideMainMenu = false
+rtl = false
+
+[params.sidebar]
+enable = true
+
+[params.widgets]
+header = ["breadcrumbs"] # 
+homepage = ["recent_posts"]
+sidebar = ["about","sidebar_menu","taxonomy_cloud"] # "search"
+footer = ["social_menu"]
+
+[params.opengraph.facebook]
+admins = [] # array of Facebook IDs
+appID = ""
+pageID = ""
+
+[params.opengraph.twitter]
+page = "" # Twitter page username
+
+[params.seo]
+# Title Separator: - – — · • * ⋆ | ~ « » < >
+titleSeparator = "•"
+
+[params.social]
+codepen = ""
+email = "mg@econovo.ch"
+facebook = ""
+github = "mgei"
+gitlab = "mgei"
+instagram = ""
+linkedin = "martin-geissmann-59034a10b"
+twitter = ""
+telegram = ""
+google_scholar = ""
+youtube = "UCUYqJUnI_P0XYk6_FRyvb2w"
+
+[params.comments]
+enable = false
+
+# Isso: https://posativ.org/isso/
+[params.comments.isso]
+enable = false
+scriptSrc = "" # "https://isso.example.com/js/embed.min.js"
+dataAttrs = "" # "data-isso='https://isso.example.com' data-isso-require-author='true'"
+
+[params.comments.staticman]
+enable = false
+apiEndpoint = "https://api.staticman.net/v2/entry"
+maxDepth = 2
+username = "MunifTanjim"
+repository = "minimo"
+branch = "master"
+
+# Utterances: https://utteranc.es
+[params.comments.utterances]
+enable = false
+issueTerm = "pathname" # pathname / url / title
+
+[params.comments.utterances.github]
+username = "MunifTanjim"
+repository = "minimo"
+
+[params.search]
+client = "fuse" # algolia / fuse / lunr
+
+[params.search.algolia]
+appId = ""
+indexName = ""
+searchApiKey = ""
+
+[taxonomies]
+author = "authors"
+category = "categories"
+series = "series"
+tag = "tags"
+
+[permalinks]
+page = "/:slug/"
+
+#[[menu.main]]
+#name = "Repo"
+#weight = -10
+#identifier = "repository"
+#url = "https://github.com/MunifTanjim/minimo"
+
+[blackfriday]
+hrefTargetBlank = true
+
+[languages]
+# edit this block for your own language
+[languages.en]
+lang = "en"
+languageName = "English"
+weight = 1
+>>>>>>> 4c60c5299ef896d84aa63d7c1e9e3287d16c2e42
