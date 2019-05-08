@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang='en'><head>
+  <meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'>
+<meta name='description' content='R / Blogdown / Hugo The website you are looking at is made with R and blogdown. Blogdown allows to use the static website generator Hugo with R Markdown documents (*.Rmd) instead of only pure markdown (*.md). So one can easily integrate R code which is rendered like a HTML R Markdown document.
+The theme used here is Minimo.
+ Github pages This website hosted on Github. It’s open source, the code is available here.'>
+<meta name='theme-color' content='#369b6c'>
+
+<meta property='og:title' content='How I made this Github page • Martin Geissmann'>
+<meta property='og:description' content='R / Blogdown / Hugo The website you are looking at is made with R and blogdown. Blogdown allows to use the static website generator Hugo with R Markdown documents (*.Rmd) instead of only pure markdown (*.md). So one can easily integrate R code which is rendered like a HTML R Markdown document.
+The theme used here is Minimo.
+ Github pages This website hosted on Github. It’s open source, the code is available here.'>
+<meta property='og:url' content='/post/github-page/'>
+<meta property='og:site_name' content='mgei.github.io'>
+<meta property='og:type' content='article'><meta property='og:image' content='https://www.gravatar.com/avatar/a525a84fae399669fa8861e2661df00b?s=256'><meta property='article:section' content='post'><meta property='article:tag' content='github-page'><meta property='article:tag' content='hugo'><meta property='article:tag' content='blogdown'><meta property='article:tag' content='R'><meta property='article:published_time' content='2019-05-09T00:00:00Z'/><meta property='article:modified_time' content='2019-05-09T00:00:00Z'/><meta name='twitter:card' content='summary'>
+
+<meta name="generator" content="Hugo 0.55.5" />
+
+  <title>How I made this Github page • Martin Geissmann</title>
+  <link rel='canonical' href='/post/github-page/'>
+  
+  
+  <link rel='icon' href='/favicon.ico'>
+<link rel='stylesheet' href='/assets/css/main.fb20af92.css'><link rel='stylesheet' href='/css/custom.css'><style>
+:root{--color-accent:#369b6c;}
+</style>
+  
+
+</head>
+<body class='page type-post has-sidebar'>
+
+  <div class='site'><div id='sidebar' class='sidebar'>
+  <a class='screen-reader-text' href='#main-menu'>Skip to Main Menu</a>
+
+  <div class='container'><section class='widget widget-about sep-after'>
+  <header>
+    
+    <div class='logo'>
+      <a href='/'>
+        <img src='/images/logo.png' style='border-radius: 50%;'>
+      </a>
+    </div>
+    
+    <h2 class='title site-title '>
+      <a href='/'>
+      mgei.github.io
+      </a>
+    </h2>
+    <div class='desc'>
+    Martin Geissmann&#39;s personal site
+    </div>
+  </header>
+
+</section>
+<section class='widget widget-sidebar_menu sep-after'><nav id='sidebar-menu' class='menu sidebar-menu' aria-label='Sidebar Menu'>
+    <div class='container'>
+      <ul><li class='item'>
+  <a href='/'>Home</a></li><li class='item'>
+  <a href='/post/'>Archive</a></li><li class='item'>
+  <a href='/search/'>Search</a></li><li class='item'>
+  <a href='/about/'>About</a></li></ul>
+    </div>
+  </nav>
+
+</section><section class='widget widget-taxonomy_cloud sep-after'>
+  <header>
+    <h4 class='title widget-title'>Tags</h4>
+  </header>
+
+  <div class='container list-container'>
+  <ul class='list taxonomy-cloud'><li>
+        <a href='/tags/blogdown/' style='font-size:1em'>blogdown</a>
+      </li><li>
+        <a href='/tags/ggmap/' style='font-size:1em'>ggmap</a>
+      </li><li>
+        <a href='/tags/ggplot/' style='font-size:1em'>ggplot</a>
+      </li><li>
+        <a href='/tags/github-page/' style='font-size:1em'>github-page</a>
+      </li><li>
+        <a href='/tags/hospitals/' style='font-size:1em'>hospitals</a>
+      </li><li>
+        <a href='/tags/hugo/' style='font-size:1em'>hugo</a>
+      </li><li>
+        <a href='/tags/lawyers/' style='font-size:1em'>lawyers</a>
+      </li><li>
+        <a href='/tags/leaflet/' style='font-size:1em'>leaflet</a>
+      </li><li>
+        <a href='/tags/linear-model/' style='font-size:1em'>linear model</a>
+      </li><li>
+        <a href='/tags/md/' style='font-size:1em'>md</a>
+      </li><li>
+        <a href='/tags/misc/' style='font-size:1em'>misc</a>
+      </li><li>
+        <a href='/tags/osrm/' style='font-size:1em'>OSRM</a>
+      </li><li>
+        <a href='/tags/page/' style='font-size:1em'>page</a>
+      </li><li>
+        <a href='/tags/r/' style='font-size:2em'>R</a>
+      </li><li>
+        <a href='/tags/spatial/' style='font-size:1.5em'>spatial</a>
+      </li><li>
+        <a href='/tags/statistics/' style='font-size:1em'>statistics</a>
+      </li><li>
+        <a href='/tags/switzerland/' style='font-size:1em'>Switzerland</a>
+      </li><li>
+        <a href='/tags/syntax/' style='font-size:1em'>syntax</a>
+      </li></ul>
+</div>
+
+
+</section>
+</div>
+
+  <div class='sidebar-overlay'></div>
+</div><div class='main'><a class='screen-reader-text' href='#content'>Skip to Content</a>
+
+<button id='sidebar-toggler' class='sidebar-toggler' aria-controls='sidebar'>
+  <span class='screen-reader-text'>Toggle Sidebar</span>
+  <span class='open'><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <line x1="3" y1="12" x2="21" y2="12" />
+  <line x1="3" y1="6" x2="21" y2="6" />
+  <line x1="3" y1="18" x2="21" y2="18" />
+  
+</svg>
+</span>
+  <span class='close'><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <line x1="18" y1="6" x2="6" y2="18" />
+  <line x1="6" y1="6" x2="18" y2="18" />
+  
+</svg>
+</span>
+</button><div class='header-widgets'>
+        <div class='container'>
+    
+    <style>.widget-breadcrumbs li:after{content:'\2f '}</style>
+  <section class='widget widget-breadcrumbs sep-after'>
+    <nav id='breadcrumbs'>
+      <ol><li><a href='/'>Home</a></li><li><span>How I made this Github page</span></li></ol>
+    </nav>
+  </section></div>
+      </div>
+
+      <header id='header' class='header site-header'>
+        <div class='container sep-after'>
+          <div class='header-info'><p class='site-title title'>mgei.github.io</p><p class='desc site-desc'>Martin Geissmann&#39;s personal site</p>
+          </div>
+        </div>
+      </header>
+
+      <main id='content'>
+
+
+<article lang='en' class='entry'>
+  <header class='header entry-header'>
+  <div class='container sep-after'>
+    <div class='header-info'>
+      <h1 class='title'>How I made this Github page</h1>
+      
+
+    </div>
+    <div class='entry-meta'>
+  <span class='posted-on'><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+  <line x1="16" y1="2" x2="16" y2="6"/>
+  <line x1="8" y1="2" x2="8" y2="6"/>
+  <line x1="3" y1="10" x2="21" y2="10"/>
+  
+</svg>
+<span class='screen-reader-text'>Posted on </span>
+  <time class='entry-date' datetime='2019-05-09T00:00:00Z'>09 May 2019</time>
+</span>
+
+  <span class='byline'><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <path d="M21,21V20c0-2.76-4-5-9-5s-9,2.24-9,5v1"/>
+  <path d="M16,6.37A4,4,0,1,1,12.63,3,4,4,0,0,1,16,6.37Z"/>
+  
+</svg>
+<span class='screen-reader-text'> by </span><a href='/authors/mgei'>Martin Geissmann</a></span>
+  
+
+</div>
+
+
+  </div>
+</header>
+
+  
+  
+
+  <div class='container entry-content'>
+  
+
+
+<div id="r-blogdown-hugo" class="section level2">
+<h2>R / Blogdown / Hugo</h2>
+<p>The website you are looking at is made with R and <a href="https://github.com/rstudio/blogdown">blogdown</a>. Blogdown allows to use the static website generator <a href="https://gohugo.io/">Hugo</a> with R Markdown documents (*.Rmd) instead of only pure markdown (*.md). So one can easily integrate R code which is rendered like a HTML R Markdown document.</p>
+<p>The theme used here is <a href="https://github.com/MunifTanjim/minimo">Minimo</a>.</p>
+</div>
+<div id="github-pages" class="section level2">
+<h2>Github pages</h2>
+<p>This website hosted on Github. It’s open source, the code is available <a href="https://github.com/mgei/gh-page">here</a>.</p>
+<p>When building the site in R with <code>blogdown::build_site()</code>, the web files go into the <em>public</em> folder. Personal Github pages seem not to allow to redirect the web directory to another folder, even though suggested so <a href="https://help.github.com/en/articles/configuring-a-publishing-source-for-github-pages">here</a>. Therefore, I have a second repository (<a href="https://github.com/mgei/mgei.github.io">mgei/mgei.github.io</a>) that is to publish the site.</p>
+</div>
+<div id="creation" class="section level2">
+<h2>Creation</h2>
+<p>The Minimo theme is fairly simple. To note is that there is a main menu on top (which here is deactivated<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>) and a sidebar menu.</p>
+<p>Sites, posts etc. go into the <em>content</em> directory. Note that for showing up in the relevant menu the YAML is to indicate so, e.g.</p>
+<pre><code>---
+title: About
+menu:
+  main:
+  sidebar:
+    identifier: about
+weight: 4
+type: page
+---</code></pre>
+<p>I keep posts in the post directory. Here it’s TOML (<a href="https://gist.github.com/oconnor663/9aeb4ed56394cb013a20">TOML vs YAML</a>) because that’s how the samle post was, so I kept it, e.g. for this post:</p>
+<pre><code>---
+slug: &quot;github-page&quot;
+date: &quot;2019-05-09&quot;
+draft: false
+title: &quot;How I made this Github page&quot;
+tags: [&quot;github&quot;, &quot;page&quot;, &quot;hugo&quot;, &quot;blogdown&quot;, &quot;R&quot;]
+authors: [mgei]
+---</code></pre>
+<p>For a new post simply copy an existing one and go from there.</p>
+<p>The authors are defined in <em>data/authors/</em>.</p>
+<p>Widgets such as search came with the theme. The config is in <em>data/config/widgets.toml</em>.</p>
+<p>The relevant theme folder can be replaced with newer versions (<a href="https://minimo.netlify.com/docs/updating/">update guide</a>).</p>
+<p>The only thing edited in <em>theme</em> is <em>themes/minimo/layouts/partials/widgets/about.html</em> added <code>style='border-radius: 50%;'</code> to the img tag.</p>
+<p>Custom CSS could be added in <em>static/css/custom.css</em>.</p>
+<div id="minimo-syntax-highlighting-for-r" class="section level3">
+<h3>Minimo syntax highlighting for R</h3>
+<p>The solution is given <a href="https://github.com/MunifTanjim/minimo/issues/100#issuecomment-368229189">here</a> by the theme creator.</p>
+<p>Add this to <em>footer.html</em> (<em>themees/minimo/layouts/partials/</em>):</p>
+<pre class="html"><code>&lt;link rel=&quot;stylesheet&quot; href=&quot;//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css&quot;&gt;
+&lt;script src=&quot;//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js&quot;&gt;&lt;/script&gt;
+&lt;script&gt;hljs.initHighlightingOnLoad();&lt;/script&gt;</code></pre>
+<p>More general information on syntax highlighting (that did not lead to the desired outcome for me):</p>
+<ul>
+<li><a href="https://github.com/yihui/hugo-xmin/pull/5" class="uri">https://github.com/yihui/hugo-xmin/pull/5</a></li>
+<li><a href="https://bookdown.org/yihui/blogdown/templates.html" class="uri">https://bookdown.org/yihui/blogdown/templates.html</a></li>
+</ul>
+</div>
+<div id="open-links-in-new-tab-target-blank" class="section level3">
+<h3>Open links in new tab (target blank)</h3>
+<p>In <em>config.toml</em> there’s the option to force links to open in a new tab by setting <code>hrefTargetBlank = true</code>. This works fine for *.md files, however it does not work for *.Rmd.</p>
+<p>The solution which I found <a href="https://yihui.name/en/2018/09/target-blank/">here</a> is to add the following to <em>static/js/custom.js</em>. This makes <em>external</em> links open in a new tab.</p>
+<pre class="js"><code>(function() {
+  var links = document.getElementsByTagName(&#39;a&#39;);
+  for (var i = 0; i &lt; links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute(&#39;href&#39;))) {
+      links[i].target = &#39;_blank&#39;;
+    }
+  }
+})();</code></pre>
+<p>On a more general note, in R Markdown to have a link open in a new tab one would do like this:</p>
+<pre class="md"><code>[Google](https://www.google.com){target=&quot;_blank&quot;}</code></pre>
+</div>
+</div>
+<div id="build-and-depoly" class="section level2">
+<h2>Build and depoly</h2>
+<p>For local preview we can do the following</p>
+<pre class="r"><code>library(blogdown)
+
+serve_site()
+
+# preview is on, you can also open it in the browser on localhost:4321
+
+stop_server()</code></pre>
+<p>While editing and saving, having the site opened with <code>serve_site()</code> allows for immediate preview if you use R Studio.</p>
+<p>To build the final version, note that you correctly specified <code>baseURL</code> in <em>config.toml</em>, run <code>build_site()</code>. This renders the site to <em>public</em>. Ideally it should be emptied first (<code>rm -rf public/*</code>).</p>
+<p>As explained at the top, Github pages do not seem to allow for deploying personal sites in other than the top directory and other than the master git branch. Therefore, we have a separate repository for content. There might be more elegant ways to do this (githooks, branches) but it works.</p>
+<p><em>depoly.sh</em></p>
+<pre><code>R -e &quot;blogdown::build_site()&quot;
+
+echo Please enter commit message
+
+read commitmessage
+
+git add .
+git commit -m &quot;$commitmessage&quot;
+git push
+
+cd public
+
+git add .
+git commit -m &quot;$commitmessage&quot;
+git push
+
+cd ..</code></pre>
+</div>
+<div id="how-to-install-hugo-on-ubuntu" class="section level2">
+<h2>How to install Hugo on Ubuntu</h2>
+<p>To install the latest version of Hugo on Ubuntu, first go check what the current release is: <a href="https://github.com/gohugoio/hugo/releases" class="uri">https://github.com/gohugoio/hugo/releases</a></p>
+<p>At the time of writing the latest version is 0.55.5. Here’s what will get it installed:</p>
+<pre><code>export VER=&quot;0.55.5&quot; 
+wget https://github.com/gohugoio/hugo/releases/download/v0.55.5/hugo_${VER}_Linux-64bit.deb
+sudo dpkg -i hugo_${VER}_Linux-64bit.deb
+which hugo</code></pre>
+</div>
+<div id="documentation" class="section level2">
+<h2>Documentation</h2>
+<ul>
+<li>Blogdown reference: <a href="https://bookdown.org/yihui/blogdown/" class="uri">https://bookdown.org/yihui/blogdown/</a></li>
+<li>Hugo themes: <a href="https://themes.gohugo.io/" class="uri">https://themes.gohugo.io/</a> (always choose on which has recent updates on Github)</li>
+<li>My personal notes on creating a Hugo website: <a href="https://gist.github.com/mgei/c6f31cecf45c7b4d58567dffbe95ed31" class="uri">https://gist.github.com/mgei/c6f31cecf45c7b4d58567dffbe95ed31</a></li>
+<li>Minimo theme sample and documentation: <a href="https://minimo.netlify.com/" class="uri">https://minimo.netlify.com/</a></li>
+<li>An other guy’s blog using Minimo: <a href="https://dmerej.info/blog/" class="uri">https://dmerej.info/blog/</a> code on Github: <a href="https://github.com/dmerejkowsky/blog" class="uri">https://github.com/dmerejkowsky/blog</a></li>
+</ul>
+</div>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p><em>config.toml</em> <code>hideMainMenu = true</code><a href="#fnref1" class="footnote-back">↩</a></p></li>
+</ol>
+</div>
+
+</div>
+
+  
+<footer class='entry-footer'>
+  <div class='container sep-before'><div class='tags'><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <path d="M20.59,13.41l-7.17,7.17a2,2,0,0,1-2.83,0L2,12V2H12l8.59,8.59A2,2,0,0,1,20.59,13.41Z"/>
+  <line x1="7" y1="7" x2="7" y2="7"/>
+  
+</svg>
+<span class='screen-reader-text'>Tags: </span><a class='tag' href='/tags/github-page/'>github-page</a>, <a class='tag' href='/tags/hugo/'>hugo</a>, <a class='tag' href='/tags/blogdown/'>blogdown</a>, <a class='tag' href='/tags/r/'>R</a></div>
+
+  </div>
+</footer>
+
+
+</article>
+
+<nav class='entry-nav'>
+  <div class='container'><div class='prev-entry sep-before'>
+      <a href='/post/syntaxtest/'>
+        <span aria-hidden='true'><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <line x1="20" y1="12" x2="4" y2="12"/>
+  <polyline points="10 18 4 12 10 6"/>
+  
+</svg>
+ Previous</span>
+        <span class='screen-reader-text'>Previous post: </span>Syntax testing</a>
+    </div><div class='next-entry sep-before'>
+      <a href='/post/hello-world/'>
+        <span class='screen-reader-text'>Next post: </span>Hello World<span aria-hidden='true'>Next <svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <line x1="4" y1="12" x2="20" y2="12"/>
+  <polyline points="14 6 20 12 14 18"/>
+  
+</svg>
+</span>
+      </a>
+    </div></div>
+</nav>
+
+
+
+
+      </main>
+
+      <footer id='footer' class='footer'>
+        <div class='container sep-before'><section class='widget widget-social_menu sep-after'><nav aria-label='Social Menu'>
+    <ul><li>
+        <a href='mailto:mg@econovo.ch' target='_blank' rel='noopener'>
+          <span class='screen-reader-text'>Contact via Email</span><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+  <polyline points="22,6 12,13 2,6"/>
+  
+</svg>
+</a>
+      </li><li>
+        <a href='https://github.com/mgei' target='_blank' rel='noopener'>
+          <span class='screen-reader-text'>Open Github account in new tab</span><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+  
+</svg>
+</a>
+      </li><li>
+        <a href='https://twitter.com//' target='_blank' rel='noopener'>
+          <span class='screen-reader-text'>Open Twitter account in new tab</span><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/>
+  
+</svg>
+</a>
+      </li><li>
+        <a href='https://linkedin.com/in/martin-geissmann-59034a10b' target='_blank' rel='noopener'>
+          <span class='screen-reader-text'>Open Linkedin account in new tab</span><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+  <rect x="2" y="9" width="4" height="12"/>
+  <circle cx="4" cy="4" r="2"/>
+  
+</svg>
+</a>
+      </li><li>
+        <a href='https://www.youtube.com/channel/UCUYqJUnI_P0XYk6_FRyvb2w' target='_blank' rel='noopener'>
+          <span class='screen-reader-text'>Open Youtube account in new tab</span><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z" />
+  <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02" />
+  
+</svg>
+</a>
+      </li></ul>
+  </nav>
+</section><div class='copyright'>
+  <p> &copy; 2019 mgei.github.io </p>
+</div>
+
+        </div>
+      </footer>
+
+    </div>
+  </div><script>window.__assets_js_src="/assets/js/"</script>
+
+<script src='/assets/js/main.9e5c4cf4.js'></script><script src='/js/custom.js'></script>
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+</body>
+
+</html>
+

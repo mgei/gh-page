@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>syntax on mgei.github.io</title>
+    <link>/tags/syntax/</link>
+    <description>Recent content in syntax on mgei.github.io</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Wed, 08 May 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/syntax/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Syntax testing</title>
+      <link>/post/syntaxtest/</link>
+      <pubDate>Wed, 08 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/post/syntaxtest/</guid>
+      <description>test Syntax test
+library(dplyr) ## ## Attaching package: &amp;#39;dplyr&amp;#39; ## The following objects are masked from &amp;#39;package:stats&amp;#39;: ## ## filter, lag ## The following objects are masked from &amp;#39;package:base&amp;#39;: ## ## intersect, setdiff, setequal, union # compute averages mtcars %&amp;gt;% group_by(cyl) %&amp;gt;% summarise(avg_mpg = mean(mpg, na.rm = T)) ## # A tibble: 3 x 2 ## cyl avg_mpg ## &amp;lt;dbl&amp;gt; &amp;lt;dbl&amp;gt; ## 1 4 26.7 ## 2 6 19.7 ## 3 8 15.</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,1112 @@
+<!DOCTYPE html>
+<html lang='en'><head>
+  <meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'>
+<meta name='description' content='Originally published on RPubs: http://rpubs.com/mgei/lawyers
+ Intro In 2017 Switzerland had 18’858 free physician working in individual doctor’s offices (Aerzte mit Praxistätigkeit as opposed to doctors employed by hospitals). Also Switzerland currently has 12’967 registered lawyers.1 Relative to the number of inhabitants of nearly 8.5 million (2017), that’s on average 2.2 physicians and 1.5 lawyers per 1’000 inhabitants.
+As we will see, in four cantons lawyers outnumber physicians.'>
+<meta name='theme-color' content='#369b6c'>
+
+<meta property='og:title' content='Analyzing the Swiss cantons with more lawyers than medical doctors • Martin Geissmann'>
+<meta property='og:description' content='Originally published on RPubs: http://rpubs.com/mgei/lawyers
+ Intro In 2017 Switzerland had 18’858 free physician working in individual doctor’s offices (Aerzte mit Praxistätigkeit as opposed to doctors employed by hospitals). Also Switzerland currently has 12’967 registered lawyers.1 Relative to the number of inhabitants of nearly 8.5 million (2017), that’s on average 2.2 physicians and 1.5 lawyers per 1’000 inhabitants.
+As we will see, in four cantons lawyers outnumber physicians.'>
+<meta property='og:url' content='/post/lawyer-physicians/'>
+<meta property='og:site_name' content='mgei.github.io'>
+<meta property='og:type' content='article'><meta property='og:image' content='https://www.gravatar.com/avatar/a525a84fae399669fa8861e2661df00b?s=256'><meta property='article:section' content='post'><meta property='article:tag' content='R'><meta property='article:tag' content='linear model'><meta property='article:tag' content='spatial'><meta property='article:tag' content='lawyers'><meta property='article:tag' content='statistics'><meta property='article:tag' content='ggplot'><meta property='article:published_time' content='2019-04-22T00:00:00Z'/><meta property='article:modified_time' content='2019-04-22T00:00:00Z'/><meta name='twitter:card' content='summary'>
+
+<meta name="generator" content="Hugo 0.55.5" />
+
+  <title>Analyzing the Swiss cantons with more lawyers than medical doctors • Martin Geissmann</title>
+  <link rel='canonical' href='/post/lawyer-physicians/'>
+  
+  
+  <link rel='icon' href='/favicon.ico'>
+<link rel='stylesheet' href='/assets/css/main.fb20af92.css'><link rel='stylesheet' href='/css/custom.css'><style>
+:root{--color-accent:#369b6c;}
+</style>
+  
+
+</head>
+<body class='page type-post has-sidebar'>
+
+  <div class='site'><div id='sidebar' class='sidebar'>
+  <a class='screen-reader-text' href='#main-menu'>Skip to Main Menu</a>
+
+  <div class='container'><section class='widget widget-about sep-after'>
+  <header>
+    
+    <div class='logo'>
+      <a href='/'>
+        <img src='/images/logo.png' style='border-radius: 50%;'>
+      </a>
+    </div>
+    
+    <h2 class='title site-title '>
+      <a href='/'>
+      mgei.github.io
+      </a>
+    </h2>
+    <div class='desc'>
+    Martin Geissmann&#39;s personal site
+    </div>
+  </header>
+
+</section>
+<section class='widget widget-sidebar_menu sep-after'><nav id='sidebar-menu' class='menu sidebar-menu' aria-label='Sidebar Menu'>
+    <div class='container'>
+      <ul><li class='item'>
+  <a href='/'>Home</a></li><li class='item'>
+  <a href='/post/'>Archive</a></li><li class='item'>
+  <a href='/search/'>Search</a></li><li class='item'>
+  <a href='/about/'>About</a></li></ul>
+    </div>
+  </nav>
+
+</section><section class='widget widget-taxonomy_cloud sep-after'>
+  <header>
+    <h4 class='title widget-title'>Tags</h4>
+  </header>
+
+  <div class='container list-container'>
+  <ul class='list taxonomy-cloud'><li>
+        <a href='/tags/blogdown/' style='font-size:1em'>blogdown</a>
+      </li><li>
+        <a href='/tags/ggmap/' style='font-size:1em'>ggmap</a>
+      </li><li>
+        <a href='/tags/ggplot/' style='font-size:1em'>ggplot</a>
+      </li><li>
+        <a href='/tags/github-page/' style='font-size:1em'>github-page</a>
+      </li><li>
+        <a href='/tags/hospitals/' style='font-size:1em'>hospitals</a>
+      </li><li>
+        <a href='/tags/hugo/' style='font-size:1em'>hugo</a>
+      </li><li>
+        <a href='/tags/lawyers/' style='font-size:1em'>lawyers</a>
+      </li><li>
+        <a href='/tags/leaflet/' style='font-size:1em'>leaflet</a>
+      </li><li>
+        <a href='/tags/linear-model/' style='font-size:1em'>linear model</a>
+      </li><li>
+        <a href='/tags/md/' style='font-size:1em'>md</a>
+      </li><li>
+        <a href='/tags/misc/' style='font-size:1em'>misc</a>
+      </li><li>
+        <a href='/tags/osrm/' style='font-size:1em'>OSRM</a>
+      </li><li>
+        <a href='/tags/page/' style='font-size:1em'>page</a>
+      </li><li>
+        <a href='/tags/r/' style='font-size:2em'>R</a>
+      </li><li>
+        <a href='/tags/spatial/' style='font-size:1.5em'>spatial</a>
+      </li><li>
+        <a href='/tags/statistics/' style='font-size:1em'>statistics</a>
+      </li><li>
+        <a href='/tags/switzerland/' style='font-size:1em'>Switzerland</a>
+      </li><li>
+        <a href='/tags/syntax/' style='font-size:1em'>syntax</a>
+      </li></ul>
+</div>
+
+
+</section>
+</div>
+
+  <div class='sidebar-overlay'></div>
+</div><div class='main'><a class='screen-reader-text' href='#content'>Skip to Content</a>
+
+<button id='sidebar-toggler' class='sidebar-toggler' aria-controls='sidebar'>
+  <span class='screen-reader-text'>Toggle Sidebar</span>
+  <span class='open'><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <line x1="3" y1="12" x2="21" y2="12" />
+  <line x1="3" y1="6" x2="21" y2="6" />
+  <line x1="3" y1="18" x2="21" y2="18" />
+  
+</svg>
+</span>
+  <span class='close'><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <line x1="18" y1="6" x2="6" y2="18" />
+  <line x1="6" y1="6" x2="18" y2="18" />
+  
+</svg>
+</span>
+</button><div class='header-widgets'>
+        <div class='container'>
+    
+    <style>.widget-breadcrumbs li:after{content:'\2f '}</style>
+  <section class='widget widget-breadcrumbs sep-after'>
+    <nav id='breadcrumbs'>
+      <ol><li><a href='/'>Home</a></li><li><span>Analyzing the Swiss cantons with more lawyers than medical doctors</span></li></ol>
+    </nav>
+  </section></div>
+      </div>
+
+      <header id='header' class='header site-header'>
+        <div class='container sep-after'>
+          <div class='header-info'><p class='site-title title'>mgei.github.io</p><p class='desc site-desc'>Martin Geissmann&#39;s personal site</p>
+          </div>
+        </div>
+      </header>
+
+      <main id='content'>
+
+
+<article lang='en' class='entry'>
+  <header class='header entry-header'>
+  <div class='container sep-after'>
+    <div class='header-info'>
+      <h1 class='title'>Analyzing the Swiss cantons with more lawyers than medical doctors</h1>
+      
+
+    </div>
+    <div class='entry-meta'>
+  <span class='posted-on'><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+  <line x1="16" y1="2" x2="16" y2="6"/>
+  <line x1="8" y1="2" x2="8" y2="6"/>
+  <line x1="3" y1="10" x2="21" y2="10"/>
+  
+</svg>
+<span class='screen-reader-text'>Posted on </span>
+  <time class='entry-date' datetime='2019-04-22T00:00:00Z'>22 Apr 2019</time>
+</span>
+
+  <span class='byline'><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <path d="M21,21V20c0-2.76-4-5-9-5s-9,2.24-9,5v1"/>
+  <path d="M16,6.37A4,4,0,1,1,12.63,3,4,4,0,0,1,16,6.37Z"/>
+  
+</svg>
+<span class='screen-reader-text'> by </span><a href='/authors/mgei'>Martin Geissmann</a></span>
+  
+
+</div>
+
+
+  </div>
+</header>
+
+  
+  
+
+  <div class='container entry-content'>
+  
+
+
+<blockquote>
+<p>Originally published on RPubs: <a href="http://rpubs.com/mgei/lawyers" class="uri">http://rpubs.com/mgei/lawyers</a></p>
+</blockquote>
+<div id="intro" class="section level1">
+<h1>Intro</h1>
+<p>In 2017 Switzerland had 18’858 free physician working in individual doctor’s offices (<em>Aerzte mit Praxistätigkeit</em> as opposed to doctors employed by hospitals). Also Switzerland currently has 12’967 registered lawyers.<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> Relative to the number of inhabitants of nearly 8.5 million (2017), that’s on average 2.2 physicians and 1.5 lawyers per 1’000 inhabitants.</p>
+<p>As we will see, in four cantons lawyers outnumber physicians.</p>
+<p><img src="/post/lawyers-physicians_files/figure-html/preview-1.png" width="672" /></p>
+<p>In the following we try to come up with a linear model explaining the density of lawyers per cantons.</p>
+<p>A non-technical version of this analysis can be found here: <a href="https://www.econovo.ch/de/2019/04/14/anwaelte-aerzte/" class="uri">https://www.econovo.ch/de/2019/04/14/anwaelte-aerzte/</a> (German)</p>
+</div>
+<div id="data" class="section level1">
+<h1>Data</h1>
+<p>Load the relevant packages.</p>
+<pre class="r"><code>library(tidyverse)
+library(readxl)  # reading spreadsheets
+library(ggrepel) # non-overlapping labels in ggplot2
+library(scales)  # numbers and percents
+library(broom)   # to tidy up model output
+library(raster)  # geospatial
+library(ggmap)   # creating map 
+library(rgdal)   # gdal
+library(ggbeeswarm) # beeswarm ggplot</code></pre>
+<p>Load the lawyers data. We collected the data <a href="https://www.sav-fsa.ch/de/anwaltsrecht/anwaltsregister.html">individually</a>.</p>
+<p>Each canton provides access a list of registered lawyers. Unfortunately, there is no central aggregation or statistics. We therefore had to collect the data individually by consulting each canton’s list individually. Most provide the list as a HTML so it is not too difficult to copy-paste it to the spreadsheet program of your choice and count the rows. Some cantons only provide the list as PDF, which makes it a bit harder, especially if it spreads on several pages and marking is not possible. The worse was Zurich with a &gt;300 pages PDF. It finally worked with <a href="https://github.com/tabulapdf/tabula">Tabula</a>.</p>
+<pre class="r"><code>lawyers &lt;- read_excel(&quot;postdata/lawyer/anwaltsliste.xlsx&quot;)</code></pre>
+<p>Load the doctors <a href="https://www.bfs.admin.ch/bfs/de/home/statistiken/kataloge-datenbanken/tabellen.assetdetail.6087330.html">data</a>:</p>
+<pre class="r"><code>doctors45 &lt;- read_excel(&quot;postdata/lawyer/je-d-14.04.05.03.xlsx&quot;, sheet = &quot;1945-1989&quot;, 
+                       skip = 3, n_max = 42) %&gt;% 
+  rename(Region = 1) %&gt;% 
+  filter(!is.na(Region)) %&gt;% 
+  mutate(Region = str_remove_all(Region, &quot;\\d|\\)&quot;) %&gt;% 
+           str_replace(&quot;I. Rh.&quot;, &quot;Innerrhoden&quot;) %&gt;%
+           str_replace(&quot;A. Rh.&quot;, &quot;Ausserrhoden&quot;) %&gt;%
+           str_trim())
+
+
+doctors90 &lt;- read_excel(&quot;postdata/lawyer/je-d-14.04.05.03.xlsx&quot;, sheet = &quot;1990-2017&quot;,
+                       skip = 3, n_max = 32) %&gt;% 
+  rename(Region = 1, `2008` = `20084`) %&gt;% 
+  filter(!is.na(Region)) %&gt;% 
+  mutate(Region = str_remove_all(Region, &quot;\\d|\\)&quot;) %&gt;% 
+           str_replace(&quot;I. Rh.&quot;, &quot;Innerrhoden&quot;) %&gt;%
+           str_replace(&quot;A. Rh.&quot;, &quot;Ausserrhoden&quot;) %&gt;%
+           str_trim())</code></pre>
+<p>Read in the cantons, see <a href="https://en.wikipedia.org/wiki/Cantons_of_Switzerland#List">Wikipedia</a>.</p>
+<pre class="r"><code>cantons &lt;- tibble(
+  KT = c(&quot;ZH&quot;,&quot;BE&quot;,&quot;LU&quot;,&quot;UR&quot;,&quot;SZ&quot;,&quot;OW&quot;,&quot;NW&quot;,&quot;GL&quot;,&quot;ZG&quot;,&quot;FR&quot;,&quot;SO&quot;,&quot;BS&quot;,&quot;BL&quot;,&quot;SH&quot;,&quot;AR&quot;,
+         &quot;AI&quot;,&quot;SG&quot;,&quot;GR&quot;,&quot;AG&quot;,&quot;TG&quot;,&quot;TI&quot;,&quot;VD&quot;,&quot;VS&quot;,&quot;NE&quot;,&quot;GE&quot;,&quot;JU&quot;),
+  Kanton = c(&quot;Zürich&quot;,&quot;Bern&quot;,&quot;Luzern&quot;,&quot;Uri&quot;,&quot;Schwyz&quot;,&quot;Obwalden&quot;,&quot;Nidwalden&quot;,&quot;Glarus&quot;,
+             &quot;Zug&quot;,&quot;Freiburg&quot;,&quot;Solothurn&quot;,&quot;Basel-Stadt&quot;,&quot;Basel-Landschaft&quot;,&quot;Schaffhausen&quot;,
+             &quot;Appenzell Ausserrhoden&quot;,&quot;Appenzell Innerrhoden&quot;,&quot;St. Gallen&quot;,&quot;Graubünden&quot;,
+             &quot;Aargau&quot;,&quot;Thurgau&quot;,&quot;Tessin&quot;,&quot;Waadt&quot;,&quot;Wallis&quot;,&quot;Neuenburg&quot;,&quot;Genf&quot;,&quot;Jura&quot;))
+
+cantons %&gt;% 
+  left_join(doctors45, by = c(&quot;Kanton&quot; = &quot;Region&quot;)) %&gt;% 
+  left_join(doctors90, by = c(&quot;Kanton&quot; = &quot;Region&quot;)) %&gt;% 
+  gather(key = Jahr, value = Anzahl, -KT, -Kanton) %&gt;% 
+  mutate(Jahr = as.integer(Jahr),
+         Anzahl = as.integer(Anzahl)) -&gt; doctors
+
+cantons %&gt;% 
+  left_join(lawyers, by = c(&quot;KT&quot; = &quot;Kanton&quot;)) -&gt; lawyers</code></pre>
+<p>Data for Swiss inhabitants per cantons, data also from the <a href="https://www.bfs.admin.ch/bfs/de/home/statistiken/kataloge-datenbanken/tabellen.assetdetail.4662815.html">Swiss Statistical Office</a>.</p>
+<pre class="r"><code>inhab &lt;- read_excel(&quot;postdata/lawyer/je-d-21.03.02.xlsx&quot;,
+                    skip = 3, col_types = c(rep(&quot;text&quot;, 2),
+                                            rep(&quot;numeric&quot;, 27)))
+
+inhab %&gt;% 
+  rename(Kennzahl = 1) %&gt;% 
+  dplyr::select(-Schweiz) %&gt;% 
+  filter(Kennzahl == &quot;Einwohner in 1000&quot;) %&gt;% 
+  gather(Kanton, Einwohner1000, -Jahre, -Kennzahl) %&gt;% 
+  rename(Jahr = Jahre) %&gt;% 
+  mutate(Einwohner = Einwohner1000*1000) %&gt;% 
+  dplyr::select(-Kennzahl, -Einwohner1000) -&gt; inhab</code></pre>
+<p>GDP data per canton <a href="https://www.bfs.admin.ch/bfs/de/home/statistiken/kataloge-datenbanken/tabellen.assetdetail.6369918.html">data</a>:</p>
+<pre class="r"><code>gdp &lt;- read_excel(&quot;postdata/lawyer/je-d-04.02.06.01.xlsx&quot;,
+                  skip = 2, n_max = 28) %&gt;% 
+  mutate(Kanton = str_replace(Kanton, &quot;I. Rh.&quot;, &quot;Innerrhoden&quot;) %&gt;%
+           str_replace(&quot;A. Rh.&quot;, &quot;Ausserrhoden&quot;)) %&gt;%
+  # we only need the latest which is 2016
+  dplyr::select(Kanton, BIP = `2016p`)
+
+cantons %&gt;% 
+  left_join(gdp, by = &quot;Kanton&quot;) -&gt; gdp</code></pre>
+<p>Flow of patients for stationary care, <a href="https://www.bfs.admin.ch/bfs/de/home/statistiken/kataloge-datenbanken/tabellen.assetdetail.6406920.html">data</a>.</p>
+<pre class="r"><code>patientflow &lt;- read_excel(&quot;postdata/lawyer/je-d-14.04.01.02.03.xlsx&quot;,
+                          sheet = &quot;2017&quot;, skip = 6, n_max = 42, na = &quot;.&quot;) %&gt;% 
+  rename(Region = 1) %&gt;% 
+  filter(!is.na(Region)) %&gt;% 
+  mutate(Region = str_remove_all(Region, &quot;\\d|\\)&quot;) %&gt;% 
+           str_replace(&quot;I. Rh.&quot;, &quot;Innerrhoden&quot;) %&gt;%
+           str_replace(&quot;A. Rh.&quot;, &quot;Ausserrhoden&quot;) %&gt;%
+           str_trim())
+
+cantons %&gt;% 
+  left_join(patientflow, by = c(&quot;Kanton&quot; = &quot;Region&quot;)) %&gt;% 
+  dplyr::select(-Total, -Kanton, -Ausland, -Unbekannt) %&gt;%
+  column_to_rownames(&quot;KT&quot;) -&gt; origin_treatment_matrix
+
+# (rows: Behandlungskanton, cols: Herkunftskanton)
+origin_treatment_matrix %&gt;% 
+  colSums(na.rm = T) -&gt; treatment
+
+origin_treatment_matrix %&gt;% 
+  rowSums(na.rm = T) -&gt; origin
+
+flow &lt;- tibble(KT = names(treatment), treatment, origin) %&gt;% 
+  mutate(net_flow_abs = origin-treatment,
+         net_flow_rel = net_flow_abs/(origin))</code></pre>
+</div>
+<div id="analysis-for-switzerland" class="section level1">
+<h1>Analysis for Switzerland</h1>
+<p>Let’s have a fist glance. We look for stylized facts.</p>
+<p>Before we build any explanatory model, we should get a feel of the data. What pattern do we see? How can the pattern be explained with general knowledge about the industry, about demography, about politics etc. As the main goal later is not to come up with a model to predict out-of-sample observations, but to explain a maximum of the variance, we are to be careful on which variables to include. Only those explanatory variables should be looked at, which we previously think could have an influence.</p>
+<p>If we include random data, say the number of birds spotted per canton, or the average height of trees, we could find one that is a perfect predictor (high significance), however from a logical viewpoint, we should not include that variable. The correlation is likely to be random.</p>
+<div id="doctors-and-lawyers" class="section level2">
+<h2>Doctors and lawyers</h2>
+<pre class="r"><code>doctors %&gt;% 
+  filter(Jahr == 2017) %&gt;% 
+  left_join(lawyers, 
+            by = c(&quot;KT&quot;, &quot;Kanton&quot;), suffix = c(&quot;.med&quot;, &quot;.iur&quot;)) %&gt;% 
+  dplyr::select(KT, starts_with(&quot;Anzahl&quot;)) %&gt;% 
+  mutate(relativ = Anzahl.med/Anzahl.iur,
+         label = paste0(number(Anzahl.med, big.mark = &quot;&#39;&quot;), &quot; Ärzte / &quot;, 
+                        number(Anzahl.iur, big.mark = &quot;&#39;&quot;), &quot; Anwälte&quot;)) -&gt; rel
+
+rel %&gt;% 
+  left_join(inhab %&gt;% filter(Jahr == 2017) %&gt;% dplyr::select(-Jahr),
+            by = c(&quot;KT&quot; = &quot;Kanton&quot;)) %&gt;% 
+  mutate(med_per_1000 = Anzahl.med/Einwohner*1000,
+         iur_per_1000 = Anzahl.iur/Einwohner*1000) %&gt;% 
+  dplyr::select(KT, Einwohner, contains(&quot;per_1000&quot;)) -&gt; per_capita
+
+per_capita %&gt;% 
+  ggplot(aes(x = iur_per_1000, y = med_per_1000, size = Einwohner, color = KT)) +
+  geom_smooth(size = 1, color = &quot;grey&quot;, fullrange = T, method = &quot;lm&quot;, se = T, alpha = 0.1) +
+  geom_abline(intercept = 0, slope = 1, linetype = 2, color = &quot;grey&quot;) +
+  geom_point() +
+  geom_text_repel(aes(label = KT), size = 4) +
+  scale_x_continuous(expand = c(0,0), limits = c(0, 5)) +
+  scale_y_continuous(expand = c(0,0), limits = c(0, 5)) +
+  labs(title = &quot;Ärzte und Anwälte pro Wohnbevölkerung&quot;,
+       subtitle = &quot;Ärzte mit Praxistätigkeit (2017), Anwälte gem. kantonaler Anwaltslisten (2019)&quot;,
+       x = &quot;Anwälte pro 1&#39;000 Einwohner&quot;, y = &quot;Ärzte pro 1&#39;000 Einwohner&quot;,
+       caption = &quot;Daten: BfS, kant. Anwaltslisten, Grafik: econovo.ch&quot;) +
+  theme_bw() +
+  theme(legend.position = &quot;none&quot;)</code></pre>
+<p><img src="/post/lawyers-physicians_files/figure-html/scatterplot-1.png" width="672" /></p>
+<p>Interestingly the numbers not only vary absolutely but also proportionally to one another. The economically strong cantons Geneva, Basel-City und Zurich have an over proportional number of physicians and of lawyers. The correlation (Pearson) is at 0.796.</p>
+<pre class="r"><code>doctors %&gt;% 
+  filter(Jahr == 2017) %&gt;% 
+  left_join(lawyers, 
+            by = c(&quot;KT&quot;, &quot;Kanton&quot;), suffix = c(&quot;.med&quot;, &quot;.iur&quot;)) %&gt;% 
+  dplyr::select(KT, starts_with(&quot;Anzahl&quot;)) %&gt;% 
+  mutate(relativ = Anzahl.med/Anzahl.iur,
+         label = paste0(number(Anzahl.med, big.mark = &quot;&#39;&quot;), &quot; Ärzte / &quot;, 
+                        number(Anzahl.iur, big.mark = &quot;&#39;&quot;), &quot; Anwälte&quot;)) -&gt; rel
+
+rel %&gt;% 
+  ggplot(aes(x = reorder(KT, relativ), y = relativ-1)) +
+  geom_col(aes(fill = KT), alpha = 0.9) +
+  geom_text(aes(label = label, 
+                y = if_else((relativ-1) &gt; 0.8, 0.5, pmax((relativ-1) + 0.4, 0.4))),
+            size = 3) +
+  geom_hline(yintercept = 0, color = &quot;grey&quot;) +
+  coord_flip() +
+  labs(title = &quot;Ärzte-Anwälte Verhältnis&quot;,
+       subtitle = &quot;Ärzte mit Praxistätigkeit (2017), Anwälte gem. kantonaler Anwaltslisten (2019)&quot;,
+       x = &quot;&quot;, y = &quot;Anzahl Ärzte / Anzahl Anwälte - 1&quot;,
+       caption = &quot;Daten: BfS, kant. Anwaltslisten, Grafik: econovo.ch&quot;) +
+  theme_bw() +
+  theme(legend.position = &quot;none&quot;)</code></pre>
+<p><img src="/post/lawyers-physicians_files/figure-html/barchart-1.png" width="672" /></p>
+<p>In five cantons more lawyers than physicians are counted: Geneva as an outlier at almost 5 lawyers per 1 000 inhabitants, Zug, Neuchatel, Ticino und Uri. The latter is at the edge due to the small size.</p>
+<p>Relatively more doctors than lawyers are located in the Basel-Landschaft, Thurgau, Schaffhausen or Aargau. These tend to be outlying areas with negative net commuting.</p>
+</div>
+<div id="map-representation" class="section level2">
+<h2>Map representation</h2>
+<p><img src="/post/lawyers-physicians_files/figure-html/karte1-1.png" width="672" /></p>
+<p><img src="/post/lawyers-physicians_files/figure-html/karte2-1.png" width="672" /></p>
+<p><img src="/post/lawyers-physicians_files/figure-html/ratiomap-1.png" width="672" /></p>
+</div>
+<div id="a-linear-model" class="section level2">
+<h2>A linear model</h2>
+<p>We ask ourselves how to explain the number of lawyers. Due to the positive correlation with medical doctors that we have seen previously, this is the first explanatory variable we take into account. Furthermore, we suggest the following variables:</p>
+<ul>
+<li>the absolute population sizes</li>
+<li>GDP</li>
+<li>net flow of patients relative to the population in stationary (hospital) care</li>
+</ul>
+<pre class="r"><code>per_capita %&gt;% 
+  left_join(gdp, by = &quot;KT&quot;) %&gt;% 
+  mutate(bip_per_1 = BIP/Einwohner) -&gt; per_capita_gdp
+
+per_capita_gdp %&gt;% 
+  left_join(flow, by = &quot;KT&quot;) -&gt; per_capita_gdp_flow
+
+per_capita_gdp_flow %&gt;% 
+  ggplot(aes(x = reorder(KT, net_flow_abs), 
+             y = net_flow_abs, fill = KT)) + 
+  geom_col(alpha = 0.9) + 
+  geom_label(aes(label = percent(net_flow_rel)), size = 2.5) +
+  coord_flip() + 
+  scale_y_continuous(labels = scales::number) +
+  labs(title = &quot;Netto Fluss der hospitalisierten Patienten&quot;,
+       subtitle = &quot;nach Behandlungskanton 2017, Prozentangabe relativ zur Wohnbevölkerung&quot;,
+       x = &quot;&quot;, y = &quot;Netto Fluss ausserkantonaler Patienten&quot;,
+       caption = &quot;Daten: BfS, Grafik: econovo.ch&quot;) +
+  theme_bw() +
+  theme(legend.position = &quot;none&quot;)</code></pre>
+<p><img src="/post/lawyers-physicians_files/figure-html/flow2-1.png" width="672" /></p>
+<p>The stats show that in Basel-City, in Berne or in Zurich, the net flow of patients is positive. Besides the own population a significant part of the hospital patients are coming from other cantons. We assume that this mostly due to the attractiveness of the university hospitals.</p>
+<p>Let’s start with some linear models with the relative number of lawyers as dependent variable (<em>iur_per_1000</em>):</p>
+<pre class="r"><code>lmodel1 &lt;- lm(formula = iur_per_1000 ~ med_per_1000 + Einwohner, data = per_capita_gdp) 
+lmodel2 &lt;- lm(formula = iur_per_1000 ~ med_per_1000 + bip_per_1 + Einwohner, data = per_capita_gdp) 
+lmodel3 &lt;- lm(formula = iur_per_1000 ~ med_per_1000 + bip_per_1 + Einwohner + net_flow_rel, 
+              data = per_capita_gdp_flow) 
+
+library(sjPlot)
+library(sjmisc)
+library(sjlabelled)
+
+tab_model(lmodel1, lmodel2, lmodel3,
+          dv.labels = c(&quot;model 1&quot;, &quot;model 2&quot;, &quot;model 3&quot;),
+          show.ci = F, show.se = T)</code></pre>
+<table style="border-collapse:collapse; border:none;">
+<tr>
+<th style="border-top: double; text-align:center; font-style:normal; font-weight:bold; padding:0.2cm;  text-align:left; ">
+ 
+</th>
+<th colspan="3" style="border-top: double; text-align:center; font-style:normal; font-weight:bold; padding:0.2cm; ">
+model 1
+</th>
+<th colspan="3" style="border-top: double; text-align:center; font-style:normal; font-weight:bold; padding:0.2cm; ">
+model 2
+</th>
+<th colspan="3" style="border-top: double; text-align:center; font-style:normal; font-weight:bold; padding:0.2cm; ">
+model 3
+</th>
+</tr>
+<tr>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  text-align:left; ">
+Predictors
+</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  ">
+Estimates
+</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  ">
+std. Error
+</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  ">
+p
+</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  ">
+Estimates
+</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  ">
+std. Error
+</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  col7">
+p
+</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  col8">
+Estimates
+</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  col9">
+std. Error
+</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  0">
+p
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+(Intercept)
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.84
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.36
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+<strong>0.029</strong>
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.99
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.40
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">
+<strong>0.021</strong>
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col8">
+-1.09
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col9">
+0.52
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  0">
+<strong>0.048</strong>
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+med_per_1000
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+1.12
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.18
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+<strong>&lt;0.001
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.92
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.28
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">
+<strong>0.004</strong>
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col8">
+0.94
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col9">
+0.30
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  0">
+<strong>0.005</strong>
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Einwohner
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.00
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.00
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.664
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.00
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.00
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">
+0.897
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col8">
+-0.00
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col9">
+0.00
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  0">
+0.962
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+bip_per_1
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+6.48
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+7.21
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">
+0.378
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col8">
+7.01
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col9">
+7.53
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  0">
+0.363
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+net_flow_rel
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col8">
+-0.17
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col9">
+0.52
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  0">
+0.749
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm; border-top:1px solid;">
+Observations
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left; border-top:1px solid;" colspan="3">
+26
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left; border-top:1px solid;" colspan="3">
+26
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left; border-top:1px solid;" colspan="3">
+26
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
+R<sup>2</sup> / R<sup>2</sup> adjusted
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
+0.636 / 0.605
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
+0.649 / 0.601
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
+0.651 / 0.585
+</td>
+</tr>
+</table>
+<p>We find that there is no significant dependency on the additional variables. We can think that the reason for a higher number of lawyers is more related to regional specifications, such as international trade and organisations (e.g. Geneva), company and holding residence (Zug), or regional agglomerations (Zürich, Basel).</p>
+</div>
+<div id="conclusion-for-switzerland" class="section level2">
+<h2>Conclusion for Switzerland</h2>
+<p>While there are differences in both the density of lawyer and the density of medical doctors, the distribution of lawyers is more extreme. For the number of physicians per inhabitants, we find the outliers Geneva and Basel-city. Both cantons are also leading in the relative number of lawyers.</p>
+<pre class="r"><code>set.seed(6)
+
+per_capita %&gt;% 
+  gather(Feld, Wert, -KT, -Einwohner)  %&gt;% 
+  mutate(KT_label = if_else(Feld == &quot;iur_per_1000&quot; &amp; Wert&gt;2, 
+                            KT, &quot;&quot;),
+         Feld = if_else(Feld == &quot;iur_per_1000&quot;, &quot;Anwälte&quot;, &quot;Ärzte&quot;)) %&gt;% 
+  ggplot(aes(y = Wert, x = Feld)) +
+  geom_path(aes(color = KT, group = KT), alpha = 0.5) +
+  geom_violin(alpha = 0.8) +
+  geom_beeswarm(aes(color = KT), cex = 3, size = 3) +
+  geom_text_repel(aes(label = KT_label, color = KT), x = 0.75, direction = &quot;y&quot;, 
+                  size = 4, segment.color = NA) +
+  labs(title = &quot;Verteilung der Anwalts- und Ärztedichte&quot;,
+       subtitle = &quot;Ärzte mit Praxistätigkeit (2017), Anwälte gem. kantonaler Anwaltslisten (2019)&quot;,
+       x = &quot;&quot;, y = &quot;Anzahl pro Kanton&quot;,
+       caption = &quot;Daten: BfS, kant. Anwaltslisten, Grafik: econovo.ch&quot;) +
+  theme_bw() +
+  theme(legend.position = &quot;none&quot;)</code></pre>
+<p><img src="/post/lawyers-physicians_files/figure-html/camelplot-1.png" width="672" /></p>
+<p>The reason for the proportional and absolute count of lawyers in Ticino and in Neuchatel could not be explained with the parameters looked at here.</p>
+</div>
+</div>
+<div id="european-data" class="section level1">
+<h1>European data</h1>
+<p>Let’s look at data from other countries in Europe. Do we find the same pattern as within Switzerland, that the number of doctors is related to one for lawyers?</p>
+<p>We find data from the following sources:</p>
+<ul>
+<li>Number of lawyers in European Countries from <a href="https://www.ccbe.eu/actions/statistics/">CCBE</a></li>
+<li>Eurostat: <a href="https://ec.europa.eu/eurostat/statistics-explained/index.php/Healthcare_personnel_statistics_-_physicians">Healthcare personnel statistics - physicians</a></li>
+<li>Eurostat <a href="https://ec.europa.eu/eurostat/web/national-accounts/data/main-tables">GDP per capita</a></li>
+<li>Eurostat <a href="https://ec.europa.eu/eurostat/web/population-demography-migration-projections/data/main-tables">population</a></li>
+</ul>
+<p>Read in the number of lawyers first:</p>
+<pre class="r"><code>lawyers_eu &lt;- read_excel(&quot;postdata/lawyer/EU_number_of_lawyers.xlsx&quot;)</code></pre>
+<p>Read in number of medical doctors less hospital doctors.</p>
+<pre class="r"><code>doctors_eu &lt;- read_excel(&quot;postdata/lawyer/Physicians_Health2018-update.xlsx&quot;, sheet = &quot;Table 1&quot;,
+                         range = &quot;C9:D46&quot;, na = &quot;:&quot;)
+
+doctors_eu %&gt;%
+  rename(Country = 1) %&gt;% 
+  mutate(Country = str_remove_all(Country, &quot;\\s*\\([^\\)]+\\)&quot;) %&gt;% str_trim(),
+         Total = round(Total) %&gt;% as.integer()) -&gt; doctors_eu
+
+
+doctors_hosp_eu &lt;- read_excel(&quot;postdata/lawyer/Physicians_Health2018-update.xlsx&quot;, sheet = &quot;Table 2&quot;,
+                         range = &quot;C9:F46&quot;, na = &quot;:&quot;) %&gt;% 
+  mutate(`2016` = if_else(is.na(`2016`), `2011`, `2016`))
+
+doctors_hosp_eu %&gt;% 
+  rename(Country = 1) %&gt;% 
+  mutate(Country = str_remove_all(Country, &quot;\\s*\\([^\\)]+\\)&quot;) %&gt;% str_trim()) %&gt;% 
+  dplyr::select(Country, Total_hosp = `2016`) %&gt;% 
+  mutate(Total_hosp = round(Total_hosp) %&gt;% as.integer()) -&gt; doctors_hosp_eu
+
+left_join(doctors_eu, doctors_hosp_eu, by = &quot;Country&quot;) %&gt;% 
+  mutate(doctors = Total - Total_hosp) -&gt; doctors_eu</code></pre>
+<p>Read in GDP and population stats:</p>
+<pre class="r"><code>population_eu &lt;- read_tsv(&quot;postdata/lawyer/tps00001.tsv&quot;, na = &quot;:&quot;)
+
+population_eu %&gt;% 
+  dplyr::select(country_code = 1, pop = `2016`) %&gt;% 
+  separate(country_code, into = c(&quot;rm&quot;, &quot;country_code&quot;), sep = &quot;,&quot;) %&gt;% 
+  dplyr::select(-rm) %&gt;% 
+  mutate(pop = as.integer(pop)) -&gt; population_eu
+
+dgp_per_capita_eu &lt;- read_tsv(&quot;postdata/lawyer/tec00114.tsv&quot;) 
+
+dgp_per_capita_eu %&gt;% 
+  rename(country_code = 1) %&gt;% 
+  mutate(country_code = str_sub(country_code, -2)) %&gt;% 
+  dplyr::select(country_code, gdp_per_capita = `2016`) -&gt; dgp_per_capita_eu</code></pre>
+<p>Eurostat country <a href="https://ec.europa.eu/eurostat/statistics-explained/index.php/Glossary:Country_codes">codes</a> and join all the data together.</p>
+<pre class="r"><code>codes &lt;- tibble(Country = doctors_eu$Country,
+                country_code = c(&quot;BE&quot;, &quot;BG&quot;, &quot;CZ&quot;, &quot;DK&quot;, &quot;DE&quot;, &quot;EE&quot;, &quot;IE&quot;,
+                                 &quot;EL&quot;, &quot;ES&quot;, &quot;FR&quot;, &quot;HR&quot;, &quot;IT&quot;, &quot;CY&quot;, &quot;LV&quot;,
+                                 &quot;LT&quot;, &quot;LU&quot;, &quot;HU&quot;, &quot;MT&quot;, &quot;NL&quot;, &quot;AT&quot;, &quot;PL&quot;,
+                                 &quot;PT&quot;, &quot;RO&quot;, &quot;SI&quot;, &quot;SK&quot;, &quot;FI&quot;, &quot;SE&quot;, &quot;UK&quot;,
+                                 &quot;IS&quot;, &quot;LI&quot;, &quot;NO&quot;, &quot;CH&quot;,
+                                 &quot;ME&quot;, &quot;MK&quot;, &quot;AL&quot;, &quot;RS&quot;, &quot;TR&quot;))
+
+lawyers_eu %&gt;% 
+  left_join(doctors_eu, by = &quot;Country&quot;) %&gt;% 
+  mutate(Country = case_when(Country == &quot;Czech Republic&quot;  ~ &quot;Czechia&quot;,
+                             Country == &quot;Slovak Republic&quot; ~ &quot;Slovakia&quot;,
+                             T                            ~ Country)) %&gt;% 
+  full_join(codes, by = &quot;Country&quot;) %&gt;% arrange(Country) %&gt;% 
+  filter(!is.na(country_code)) %&gt;% 
+  left_join(population_eu, by = &quot;country_code&quot;) %&gt;% 
+  left_join(dgp_per_capita_eu, by = &quot;country_code&quot;) %&gt;% 
+  dplyr::select(Country, country_code, 
+                number_of_lawyers, number_of_doctors = doctors,
+                pop, gdp_per_capita) %&gt;% 
+  mutate(iur_per_1000 = number_of_lawyers/pop*1000,
+         med_per_1000 = number_of_doctors/pop*1000) -&gt; data_eu</code></pre>
+<p>Remove incomplete data:</p>
+<pre class="r"><code># incomplete ones
+data_eu %&gt;% 
+  filter(is.na(med_per_1000) | is.na(iur_per_1000)) %&gt;% 
+  `$` (&quot;Country&quot;)</code></pre>
+<pre><code>##  [1] &quot;Albania&quot;                                  
+##  [2] &quot;Belgium&quot;                                  
+##  [3] &quot;Czechia&quot;                                  
+##  [4] &quot;France&quot;                                   
+##  [5] &quot;Italy&quot;                                    
+##  [6] &quot;Luxembourg&quot;                               
+##  [7] &quot;Malta&quot;                                    
+##  [8] &quot;Montenegro&quot;                               
+##  [9] &quot;Netherlands&quot;                              
+## [10] &quot;Serbia&quot;                                   
+## [11] &quot;Slovakia&quot;                                 
+## [12] &quot;Sweden&quot;                                   
+## [13] &quot;The former Yugoslav Republic of Macedonia&quot;
+## [14] &quot;Turkey&quot;                                   
+## [15] &quot;United Kingdom&quot;</code></pre>
+<pre class="r"><code># complete ones
+data_eu %&gt;% 
+  filter(!is.na(med_per_1000), !is.na(iur_per_1000)) -&gt; data_eu
+
+data_eu %&gt;% 
+  `$` (&quot;Country&quot;)</code></pre>
+<pre><code>##  [1] &quot;Austria&quot;       &quot;Bulgaria&quot;      &quot;Croatia&quot;       &quot;Cyprus&quot;       
+##  [5] &quot;Denmark&quot;       &quot;Estonia&quot;       &quot;Finland&quot;       &quot;Germany&quot;      
+##  [9] &quot;Greece&quot;        &quot;Hungary&quot;       &quot;Iceland&quot;       &quot;Ireland&quot;      
+## [13] &quot;Latvia&quot;        &quot;Liechtenstein&quot; &quot;Lithuania&quot;     &quot;Norway&quot;       
+## [17] &quot;Poland&quot;        &quot;Portugal&quot;      &quot;Romania&quot;       &quot;Slovenia&quot;     
+## [21] &quot;Spain&quot;         &quot;Switzerland&quot;</code></pre>
+<div id="graphical-representation" class="section level2">
+<h2>Graphical representation</h2>
+<pre class="r"><code>data_eu %&gt;% 
+  ggplot(aes(x = iur_per_1000, y = med_per_1000, size = pop, color = Country)) +
+  geom_smooth(size = 1, color = &quot;grey&quot;, fullrange = T, method = &quot;lm&quot;, se = T, alpha = 0.1) +
+  geom_abline(intercept = 0, slope = 1, linetype = 2, color = &quot;grey&quot;) +
+  geom_point() +
+  geom_text_repel(aes(label = country_code), size = 4) +
+  scale_x_continuous(expand = c(0,0), limits = c(0, 6.4)) +
+  scale_y_continuous(expand = c(0,0), limits = c(0, 6.4)) +
+  labs(title = &quot;Doctors and lawyers per inhabitants (EU)&quot;,
+       # subtitle = &quot;Ärzte mit Praxistätigkeit (2017), Anwälte gem. kantonaler Anwaltslisten (2019)&quot;,
+       x = &quot;Lawyers per 1 000 inhabitants&quot;, y = &quot;Physicians pro 1 000 inhabitants&quot;
+       # caption = &quot;Daten: BfS, kant. Anwaltslisten, Grafik: econovo.ch&quot;
+       ) +
+  theme_bw() +
+  theme(legend.position = &quot;none&quot;)</code></pre>
+<p><img src="/post/lawyers-physicians_files/figure-html/scatterplot_eu-1.png" width="672" /></p>
+<pre class="r"><code>set.seed(1)
+
+data_eu %&gt;% 
+  gather(Feld, Wert, -Country, -country_code, -pop) %&gt;%
+  filter(Feld %in% c(&quot;iur_per_1000&quot;, &quot;med_per_1000&quot;)) %&gt;% 
+  mutate(country_code_label = if_else(Feld == &quot;iur_per_1000&quot; &amp; Wert&gt;1.9,
+                                      country_code, &quot;&quot;),
+         Feld = if_else(Feld == &quot;iur_per_1000&quot;, &quot;Lawyers&quot;, &quot;Physicians&quot;)) %&gt;%
+  ggplot(aes(y = Wert, x = Feld)) +
+  geom_path(aes(color = Country, group = Country), alpha = 0.5) +
+  geom_violin(alpha = 0.8) +
+  geom_beeswarm(aes(color = Country), cex = 3, size = 3) +
+  geom_text_repel(aes(label = country_code_label, color = Country), x = 0.75, direction = &quot;y&quot;, 
+                  size = 4, segment.color = NA) +
+  labs(title = &quot;Distribution lawyer and physicians&quot;,
+       # subtitle = &quot;Ärzte mit Praxistätigkeit (2017), Anwälte gem. kantonaler Anwaltslisten (2019)&quot;,
+       x = &quot;&quot;, y = &quot;Count per European country&quot;
+       # caption = &quot;Daten: BfS, kant. Anwaltslisten, Grafik: econovo.ch&quot;
+       ) +
+  theme_bw() +
+  theme(legend.position = &quot;none&quot;)</code></pre>
+<p><img src="/post/lawyers-physicians_files/figure-html/camelplot_eu-1.png" width="672" /></p>
+</div>
+<div id="linear-model" class="section level2">
+<h2>Linear model</h2>
+<pre class="r"><code>lmodel1 &lt;- lm(formula = iur_per_1000 ~ med_per_1000 + pop, data = data_eu) 
+lmodel2 &lt;- lm(formula = iur_per_1000 ~ med_per_1000 + gdp_per_capita + pop, data = data_eu) 
+
+tab_model(lmodel1, lmodel2,
+          dv.labels = c(&quot;model 1&quot;, &quot;model 2&quot;),
+          show.ci = F, show.se = T)</code></pre>
+<table style="border-collapse:collapse; border:none;">
+<tr>
+<th style="border-top: double; text-align:center; font-style:normal; font-weight:bold; padding:0.2cm;  text-align:left; ">
+ 
+</th>
+<th colspan="3" style="border-top: double; text-align:center; font-style:normal; font-weight:bold; padding:0.2cm; ">
+model 1
+</th>
+<th colspan="3" style="border-top: double; text-align:center; font-style:normal; font-weight:bold; padding:0.2cm; ">
+model 2
+</th>
+</tr>
+<tr>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  text-align:left; ">
+Predictors
+</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  ">
+Estimates
+</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  ">
+std. Error
+</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  ">
+p
+</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  ">
+Estimates
+</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  ">
+std. Error
+</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  col7">
+p
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+(Intercept)
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.34
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.73
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.653
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.68
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.91
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">
+0.466
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+med_per_1000
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.82
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.37
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+<strong>0.038</strong>
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.52
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.30
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">
+0.101
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+pop
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.00
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.00
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.858
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.00
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.00
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">
+0.436
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+gdp_per_capita
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.00
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.01
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">
+0.878
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm; border-top:1px solid;">
+Observations
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left; border-top:1px solid;" colspan="3">
+22
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left; border-top:1px solid;" colspan="3">
+21
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
+R<sup>2</sup> / R<sup>2</sup> adjusted
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
+0.208 / 0.125
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
+0.187 / 0.044
+</td>
+</tr>
+</table>
+<p>From what we see, the number of medical doctor is a worse indicator for the number of lawyers on a EU country level. The model results in a low R-square of around 0.2.</p>
+<p>The following task would be to find better predictors and come up with a better model.</p>
+</div>
+</div>
+<div id="conclusion" class="section level1">
+<h1>Conclusion</h1>
+<p>We have analyzed the number of lawyers per capita and tried to explain the differences between Swiss countries and between European nations. The explanatory variable of physicians per capita shows significance for Switzerland but not when looking at all of Europe.</p>
+<p>One reason for the poor performance might be the data source. In our analysis we only look at private physicians (the ones operating from their own doctor’s office), a decision which may result in a bias in countries with stronger public hospital healthcare. Also we had to remove several countries such as United Kingdom altogether due to a lack of available data.</p>
+<p>Further investigation would be required to come up with a model with higher explanatory value.</p>
+</div>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>Note that the for both doctors and for lawyers it is possible to be registered in several cantons. Some might be working in offices in two or even in more cantons and hence have multiple registrations.<a href="#fnref1" class="footnote-back">↩</a></p></li>
+</ol>
+</div>
+
+</div>
+
+  
+<footer class='entry-footer'>
+  <div class='container sep-before'><div class='tags'><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <path d="M20.59,13.41l-7.17,7.17a2,2,0,0,1-2.83,0L2,12V2H12l8.59,8.59A2,2,0,0,1,20.59,13.41Z"/>
+  <line x1="7" y1="7" x2="7" y2="7"/>
+  
+</svg>
+<span class='screen-reader-text'>Tags: </span><a class='tag' href='/tags/r/'>R</a>, <a class='tag' href='/tags/linear-model/'>linear model</a>, <a class='tag' href='/tags/spatial/'>spatial</a>, <a class='tag' href='/tags/lawyers/'>lawyers</a>, <a class='tag' href='/tags/statistics/'>statistics</a>, <a class='tag' href='/tags/ggplot/'>ggplot</a></div>
+
+  </div>
+</footer>
+
+
+</article>
+
+<nav class='entry-nav'>
+  <div class='container'><div class='prev-entry sep-before'>
+      <a href='/post/drivingtimes/'>
+        <span aria-hidden='true'><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <line x1="20" y1="12" x2="4" y2="12"/>
+  <polyline points="10 18 4 12 10 6"/>
+  
+</svg>
+ Previous</span>
+        <span class='screen-reader-text'>Previous post: </span>How far to the closest hospital?</a>
+    </div><div class='next-entry sep-before'>
+      <a href='/post/md-doc/'>
+        <span class='screen-reader-text'>Next post: </span>pure md<span aria-hidden='true'>Next <svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <line x1="4" y1="12" x2="20" y2="12"/>
+  <polyline points="14 6 20 12 14 18"/>
+  
+</svg>
+</span>
+      </a>
+    </div></div>
+</nav>
+
+
+
+
+      </main>
+
+      <footer id='footer' class='footer'>
+        <div class='container sep-before'><section class='widget widget-social_menu sep-after'><nav aria-label='Social Menu'>
+    <ul><li>
+        <a href='mailto:mg@econovo.ch' target='_blank' rel='noopener'>
+          <span class='screen-reader-text'>Contact via Email</span><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+  <polyline points="22,6 12,13 2,6"/>
+  
+</svg>
+</a>
+      </li><li>
+        <a href='https://github.com/mgei' target='_blank' rel='noopener'>
+          <span class='screen-reader-text'>Open Github account in new tab</span><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+  
+</svg>
+</a>
+      </li><li>
+        <a href='https://twitter.com//' target='_blank' rel='noopener'>
+          <span class='screen-reader-text'>Open Twitter account in new tab</span><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/>
+  
+</svg>
+</a>
+      </li><li>
+        <a href='https://linkedin.com/in/martin-geissmann-59034a10b' target='_blank' rel='noopener'>
+          <span class='screen-reader-text'>Open Linkedin account in new tab</span><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+  <rect x="2" y="9" width="4" height="12"/>
+  <circle cx="4" cy="4" r="2"/>
+  
+</svg>
+</a>
+      </li><li>
+        <a href='https://www.youtube.com/channel/UCUYqJUnI_P0XYk6_FRyvb2w' target='_blank' rel='noopener'>
+          <span class='screen-reader-text'>Open Youtube account in new tab</span><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z" />
+  <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02" />
+  
+</svg>
+</a>
+      </li></ul>
+  </nav>
+</section><div class='copyright'>
+  <p> &copy; 2019 mgei.github.io </p>
+</div>
+
+        </div>
+      </footer>
+
+    </div>
+  </div><script>window.__assets_js_src="/assets/js/"</script>
+
+<script src='/assets/js/main.9e5c4cf4.js'></script><script src='/js/custom.js'></script>
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+</body>
+
+</html>
+

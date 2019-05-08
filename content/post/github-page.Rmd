@@ -1,0 +1,169 @@
+---
+slug: "github-page"
+date: "2019-05-09"
+draft: false
+title: "How I made this Github page"
+tags: ["github-page", "hugo", "blogdown", "R"]
+authors: [mgei]
+---
+
+## R / Blogdown / Hugo
+
+The website you are looking at is made with R and [blogdown](https://github.com/rstudio/blogdown). Blogdown allows to use the static website generator [Hugo](https://gohugo.io/) with R Markdown documents (\*.Rmd) instead of only pure markdown (\*.md). So one can easily integrate R code which is rendered like a HTML R Markdown document.
+
+The theme used here is [Minimo](https://github.com/MunifTanjim/minimo).
+
+## Github pages
+
+This website hosted on Github. It's open source, the code is available [here](https://github.com/mgei/gh-page).
+
+When building the site in R with `blogdown::build_site()`, the web files go into the *public* folder. Personal Github pages seem not to allow to redirect the web directory to another folder, even though suggested so [here](https://help.github.com/en/articles/configuring-a-publishing-source-for-github-pages). Therefore, I have a second repository ([mgei/mgei.github.io](https://github.com/mgei/mgei.github.io)) that is to publish the site.
+
+## Creation
+
+The Minimo theme is fairly simple. To note is that there is a main menu on top (which here is deactivated[^de]) and a sidebar menu.
+
+Sites, posts etc. go into the *content* directory. Note that for showing up in the relevant menu the YAML is to indicate so, e.g.
+
+```
+---
+title: About
+menu:
+  main:
+  sidebar:
+    identifier: about
+weight: 4
+type: page
+---
+```
+
+I keep posts in the post directory. Here it's TOML ([TOML vs YAML](https://gist.github.com/oconnor663/9aeb4ed56394cb013a20)) because that's how the samle post was, so I kept it, e.g. for this post:
+
+```
+---
+slug: "github-page"
+date: "2019-05-09"
+draft: false
+title: "How I made this Github page"
+tags: ["github", "page", "hugo", "blogdown", "R"]
+authors: [mgei]
+---
+```
+
+For a new post simply copy an existing one and go from there.
+
+The authors are defined in *data/authors/*.
+
+Widgets such as search came with the theme. The config is in *data/config/widgets.toml*.
+
+The relevant theme folder can be replaced with newer versions ([update guide](https://minimo.netlify.com/docs/updating/)).
+
+The only thing edited in *theme* is *themes/minimo/layouts/partials/widgets/about.html* added `style='border-radius: 50%;'` to the img tag.
+
+Custom CSS could be added in *static/css/custom.css*.
+
+### Minimo syntax highlighting for R
+
+The solution is given [here](https://github.com/MunifTanjim/minimo/issues/100#issuecomment-368229189) by the theme creator.
+
+Add this to *footer.html* (*themees/minimo/layouts/partials/*):
+
+```html
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+```
+
+More general information on syntax highlighting (that did not lead to the desired outcome for me):
+
+* https://github.com/yihui/hugo-xmin/pull/5
+* https://bookdown.org/yihui/blogdown/templates.html
+
+### Open links in new tab (target blank)
+
+In *config.toml* there's the option to force links to open in a new tab by setting `hrefTargetBlank = true`. This works fine for \*.md files, however it does not work for \*.Rmd.
+
+The solution which I found [here](https://yihui.name/en/2018/09/target-blank/) is to add the following to *static/js/custom.js*. This makes *external* links open in a new tab.
+
+```js
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+```
+
+On a more general note, in R Markdown to have a link open in a new tab one would do like this:
+
+```md
+[Google](https://www.google.com){target="_blank"}
+```
+
+## Build and depoly
+
+For local preview we can do the following
+
+```{R, eval = F}
+library(blogdown)
+
+serve_site()
+
+# preview is on, you can also open it in the browser on localhost:4321
+
+stop_server()
+```
+
+While editing and saving, having the site opened with `serve_site()` allows for immediate preview if you use R Studio.
+
+To build the final version, note that you correctly specified `baseURL` in *config.toml*, run `build_site()`. This renders the site to *public*. Ideally it should be emptied first (`rm -rf public/*`).
+
+As explained at the top, Github pages do not seem to allow for deploying personal sites in other than the top directory and other than the master git branch. Therefore, we have a separate repository for content. There might be more elegant ways to do this (githooks, branches) but it works.
+
+*depoly.sh*
+
+```
+R -e "blogdown::build_site()"
+
+echo Please enter commit message
+
+read commitmessage
+
+git add .
+git commit -m "$commitmessage"
+git push
+
+cd public
+
+git add .
+git commit -m "$commitmessage"
+git push
+
+cd ..
+```
+
+## How to install Hugo on Ubuntu
+
+To install the latest version of Hugo on Ubuntu, first go check what the current release is: https://github.com/gohugoio/hugo/releases
+
+At the time of writing the latest version is 0.55.5. Here's what will get it installed:
+
+```
+export VER="0.55.5" 
+wget https://github.com/gohugoio/hugo/releases/download/v0.55.5/hugo_${VER}_Linux-64bit.deb
+sudo dpkg -i hugo_${VER}_Linux-64bit.deb
+which hugo
+```
+
+## Documentation
+
+* Blogdown reference: https://bookdown.org/yihui/blogdown/
+* Hugo themes: https://themes.gohugo.io/ (always choose on which has recent updates on Github)
+* My personal notes on creating a Hugo website: https://gist.github.com/mgei/c6f31cecf45c7b4d58567dffbe95ed31
+* Minimo theme sample and documentation: https://minimo.netlify.com/
+* An other guy's blog using Minimo: https://dmerej.info/blog/ code on Github: https://github.com/dmerejkowsky/blog
+
+[^de]: *config.toml* `hideMainMenu = true`

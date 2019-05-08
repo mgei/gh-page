@@ -1,0 +1,136 @@
+---
+slug: "github-page"
+date: "2019-05-09"
+draft: false
+title: "How I made this Github page"
+tags: ["github-page", "hugo", "blogdown", "R"]
+authors: [mgei]
+---
+
+
+
+<div id="r-blogdown-hugo" class="section level2">
+<h2>R / Blogdown / Hugo</h2>
+<p>The website you are looking at is made with R and <a href="https://github.com/rstudio/blogdown">blogdown</a>. Blogdown allows to use the static website generator <a href="https://gohugo.io/">Hugo</a> with R Markdown documents (*.Rmd) instead of only pure markdown (*.md). So one can easily integrate R code which is rendered like a HTML R Markdown document.</p>
+<p>The theme used here is <a href="https://github.com/MunifTanjim/minimo">Minimo</a>.</p>
+</div>
+<div id="github-pages" class="section level2">
+<h2>Github pages</h2>
+<p>This website hosted on Github. It’s open source, the code is available <a href="https://github.com/mgei/gh-page">here</a>.</p>
+<p>When building the site in R with <code>blogdown::build_site()</code>, the web files go into the <em>public</em> folder. Personal Github pages seem not to allow to redirect the web directory to another folder, even though suggested so <a href="https://help.github.com/en/articles/configuring-a-publishing-source-for-github-pages">here</a>. Therefore, I have a second repository (<a href="https://github.com/mgei/mgei.github.io">mgei/mgei.github.io</a>) that is to publish the site.</p>
+</div>
+<div id="creation" class="section level2">
+<h2>Creation</h2>
+<p>The Minimo theme is fairly simple. To note is that there is a main menu on top (which here is deactivated<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>) and a sidebar menu.</p>
+<p>Sites, posts etc. go into the <em>content</em> directory. Note that for showing up in the relevant menu the YAML is to indicate so, e.g.</p>
+<pre><code>---
+title: About
+menu:
+  main:
+  sidebar:
+    identifier: about
+weight: 4
+type: page
+---</code></pre>
+<p>I keep posts in the post directory. Here it’s TOML (<a href="https://gist.github.com/oconnor663/9aeb4ed56394cb013a20">TOML vs YAML</a>) because that’s how the samle post was, so I kept it, e.g. for this post:</p>
+<pre><code>---
+slug: &quot;github-page&quot;
+date: &quot;2019-05-09&quot;
+draft: false
+title: &quot;How I made this Github page&quot;
+tags: [&quot;github&quot;, &quot;page&quot;, &quot;hugo&quot;, &quot;blogdown&quot;, &quot;R&quot;]
+authors: [mgei]
+---</code></pre>
+<p>For a new post simply copy an existing one and go from there.</p>
+<p>The authors are defined in <em>data/authors/</em>.</p>
+<p>Widgets such as search came with the theme. The config is in <em>data/config/widgets.toml</em>.</p>
+<p>The relevant theme folder can be replaced with newer versions (<a href="https://minimo.netlify.com/docs/updating/">update guide</a>).</p>
+<p>The only thing edited in <em>theme</em> is <em>themes/minimo/layouts/partials/widgets/about.html</em> added <code>style='border-radius: 50%;'</code> to the img tag.</p>
+<p>Custom CSS could be added in <em>static/css/custom.css</em>.</p>
+<div id="minimo-syntax-highlighting-for-r" class="section level3">
+<h3>Minimo syntax highlighting for R</h3>
+<p>The solution is given <a href="https://github.com/MunifTanjim/minimo/issues/100#issuecomment-368229189">here</a> by the theme creator.</p>
+<p>Add this to <em>footer.html</em> (<em>themees/minimo/layouts/partials/</em>):</p>
+<pre class="html"><code>&lt;link rel=&quot;stylesheet&quot; href=&quot;//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css&quot;&gt;
+&lt;script src=&quot;//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js&quot;&gt;&lt;/script&gt;
+&lt;script&gt;hljs.initHighlightingOnLoad();&lt;/script&gt;</code></pre>
+<p>More general information on syntax highlighting (that did not lead to the desired outcome for me):</p>
+<ul>
+<li><a href="https://github.com/yihui/hugo-xmin/pull/5" class="uri">https://github.com/yihui/hugo-xmin/pull/5</a></li>
+<li><a href="https://bookdown.org/yihui/blogdown/templates.html" class="uri">https://bookdown.org/yihui/blogdown/templates.html</a></li>
+</ul>
+</div>
+<div id="open-links-in-new-tab-target-blank" class="section level3">
+<h3>Open links in new tab (target blank)</h3>
+<p>In <em>config.toml</em> there’s the option to force links to open in a new tab by setting <code>hrefTargetBlank = true</code>. This works fine for *.md files, however it does not work for *.Rmd.</p>
+<p>The solution which I found <a href="https://yihui.name/en/2018/09/target-blank/">here</a> is to add the following to <em>static/js/custom.js</em>. This makes <em>external</em> links open in a new tab.</p>
+<pre class="js"><code>(function() {
+  var links = document.getElementsByTagName(&#39;a&#39;);
+  for (var i = 0; i &lt; links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute(&#39;href&#39;))) {
+      links[i].target = &#39;_blank&#39;;
+    }
+  }
+})();</code></pre>
+<p>On a more general note, in R Markdown to have a link open in a new tab one would do like this:</p>
+<pre class="md"><code>[Google](https://www.google.com){target=&quot;_blank&quot;}</code></pre>
+</div>
+</div>
+<div id="build-and-depoly" class="section level2">
+<h2>Build and depoly</h2>
+<p>For local preview we can do the following</p>
+<pre class="r"><code>library(blogdown)
+
+serve_site()
+
+# preview is on, you can also open it in the browser on localhost:4321
+
+stop_server()</code></pre>
+<p>While editing and saving, having the site opened with <code>serve_site()</code> allows for immediate preview if you use R Studio.</p>
+<p>To build the final version, note that you correctly specified <code>baseURL</code> in <em>config.toml</em>, run <code>build_site()</code>. This renders the site to <em>public</em>. Ideally it should be emptied first (<code>rm -rf public/*</code>).</p>
+<p>As explained at the top, Github pages do not seem to allow for deploying personal sites in other than the top directory and other than the master git branch. Therefore, we have a separate repository for content. There might be more elegant ways to do this (githooks, branches) but it works.</p>
+<p><em>depoly.sh</em></p>
+<pre><code>R -e &quot;blogdown::build_site()&quot;
+
+echo Please enter commit message
+
+read commitmessage
+
+git add .
+git commit -m &quot;$commitmessage&quot;
+git push
+
+cd public
+
+git add .
+git commit -m &quot;$commitmessage&quot;
+git push
+
+cd ..</code></pre>
+</div>
+<div id="how-to-install-hugo-on-ubuntu" class="section level2">
+<h2>How to install Hugo on Ubuntu</h2>
+<p>To install the latest version of Hugo on Ubuntu, first go check what the current release is: <a href="https://github.com/gohugoio/hugo/releases" class="uri">https://github.com/gohugoio/hugo/releases</a></p>
+<p>At the time of writing the latest version is 0.55.5. Here’s what will get it installed:</p>
+<pre><code>export VER=&quot;0.55.5&quot; 
+wget https://github.com/gohugoio/hugo/releases/download/v0.55.5/hugo_${VER}_Linux-64bit.deb
+sudo dpkg -i hugo_${VER}_Linux-64bit.deb
+which hugo</code></pre>
+</div>
+<div id="documentation" class="section level2">
+<h2>Documentation</h2>
+<ul>
+<li>Blogdown reference: <a href="https://bookdown.org/yihui/blogdown/" class="uri">https://bookdown.org/yihui/blogdown/</a></li>
+<li>Hugo themes: <a href="https://themes.gohugo.io/" class="uri">https://themes.gohugo.io/</a> (always choose on which has recent updates on Github)</li>
+<li>My personal notes on creating a Hugo website: <a href="https://gist.github.com/mgei/c6f31cecf45c7b4d58567dffbe95ed31" class="uri">https://gist.github.com/mgei/c6f31cecf45c7b4d58567dffbe95ed31</a></li>
+<li>Minimo theme sample and documentation: <a href="https://minimo.netlify.com/" class="uri">https://minimo.netlify.com/</a></li>
+<li>An other guy’s blog using Minimo: <a href="https://dmerej.info/blog/" class="uri">https://dmerej.info/blog/</a> code on Github: <a href="https://github.com/dmerejkowsky/blog" class="uri">https://github.com/dmerejkowsky/blog</a></li>
+</ul>
+</div>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p><em>config.toml</em> <code>hideMainMenu = true</code><a href="#fnref1" class="footnote-back">↩</a></p></li>
+</ol>
+</div>

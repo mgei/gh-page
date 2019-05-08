@@ -1,0 +1,610 @@
+---
+slug: "lawyer-physicians"
+date: "2019-04-22"
+title: "Analyzing the Swiss cantons with more lawyers than medical doctors"
+tags: ["R", "linear model", "spatial", "lawyers", "statistics", "ggplot"]
+authors: [mgei]
+---
+
+> Originally published on RPubs: http://rpubs.com/mgei/lawyers
+
+# Intro 
+
+In 2017 Switzerland had 18'858 free physician working in individual doctor's offices (*Aerzte mit Praxistätigkeit* as opposed to doctors employed by hospitals). Also Switzerland currently has 12'967 registered lawyers.[^overlap] Relative to the number of inhabitants of nearly 8.5 million (2017), that's on average 2.2 physicians and 1.5 lawyers per 1'000 inhabitants. 
+
+As we will see, in four cantons lawyers outnumber physicians.
+
+```{r preview, echo=F, message=F, warning=F}
+
+library(tidyverse)
+
+readRDS("postdata/lawyer/preview_map.RDS")
+
+```
+
+In the following we try to come up with a linear model explaining the density of lawyers per cantons.
+
+A non-technical version of this analysis can be found here: https://www.econovo.ch/de/2019/04/14/anwaelte-aerzte/ (German)
+
+[^overlap]: Note that the for both doctors and for lawyers it is possible to be registered in several cantons. Some might be working in offices in two or even in more cantons and hence have multiple registrations.
+
+# Data
+
+Load the relevant packages.
+
+```{r packages, message=F, warning=F}
+library(tidyverse)
+library(readxl)  # reading spreadsheets
+library(ggrepel) # non-overlapping labels in ggplot2
+library(scales)  # numbers and percents
+library(broom)   # to tidy up model output
+library(raster)  # geospatial
+library(ggmap)   # creating map 
+library(rgdal)   # gdal
+library(ggbeeswarm) # beeswarm ggplot
+```
+
+Load the lawyers data. We collected the data [individually](https://www.sav-fsa.ch/de/anwaltsrecht/anwaltsregister.html). 
+
+Each canton provides access a list of registered lawyers. Unfortunately, there is no central aggregation or statistics. We therefore had to collect the data individually by consulting each canton's list individually. Most provide the list as a HTML so it is not too difficult to copy-paste it to the spreadsheet program of your choice and count the rows. Some cantons only provide the list as PDF, which makes it a bit harder, especially if it spreads on several pages and marking is not possible. The worse was Zurich with a >300 pages PDF. It finally worked with [Tabula](https://github.com/tabulapdf/tabula).
+
+```{r lawyers}
+
+lawyers <- read_excel("postdata/lawyer/anwaltsliste.xlsx")
+
+```
+
+Load the doctors [data](https://www.bfs.admin.ch/bfs/de/home/statistiken/kataloge-datenbanken/tabellen.assetdetail.6087330.html):
+
+```{r doctors, message=F, warning=F}
+
+doctors45 <- read_excel("postdata/lawyer/je-d-14.04.05.03.xlsx", sheet = "1945-1989", 
+                       skip = 3, n_max = 42) %>% 
+  rename(Region = 1) %>% 
+  filter(!is.na(Region)) %>% 
+  mutate(Region = str_remove_all(Region, "\\d|\\)") %>% 
+           str_replace("I. Rh.", "Innerrhoden") %>%
+           str_replace("A. Rh.", "Ausserrhoden") %>%
+           str_trim())
+
+
+doctors90 <- read_excel("postdata/lawyer/je-d-14.04.05.03.xlsx", sheet = "1990-2017",
+                       skip = 3, n_max = 32) %>% 
+  rename(Region = 1, `2008` = `20084`) %>% 
+  filter(!is.na(Region)) %>% 
+  mutate(Region = str_remove_all(Region, "\\d|\\)") %>% 
+           str_replace("I. Rh.", "Innerrhoden") %>%
+           str_replace("A. Rh.", "Ausserrhoden") %>%
+           str_trim())
+
+```
+
+Read in the cantons, see [Wikipedia](https://en.wikipedia.org/wiki/Cantons_of_Switzerland#List).
+
+```{r cantons, message=F, warning=F}
+
+cantons <- tibble(
+  KT = c("ZH","BE","LU","UR","SZ","OW","NW","GL","ZG","FR","SO","BS","BL","SH","AR",
+         "AI","SG","GR","AG","TG","TI","VD","VS","NE","GE","JU"),
+  Kanton = c("Zürich","Bern","Luzern","Uri","Schwyz","Obwalden","Nidwalden","Glarus",
+             "Zug","Freiburg","Solothurn","Basel-Stadt","Basel-Landschaft","Schaffhausen",
+             "Appenzell Ausserrhoden","Appenzell Innerrhoden","St. Gallen","Graubünden",
+             "Aargau","Thurgau","Tessin","Waadt","Wallis","Neuenburg","Genf","Jura"))
+
+cantons %>% 
+  left_join(doctors45, by = c("Kanton" = "Region")) %>% 
+  left_join(doctors90, by = c("Kanton" = "Region")) %>% 
+  gather(key = Jahr, value = Anzahl, -KT, -Kanton) %>% 
+  mutate(Jahr = as.integer(Jahr),
+         Anzahl = as.integer(Anzahl)) -> doctors
+
+cantons %>% 
+  left_join(lawyers, by = c("KT" = "Kanton")) -> lawyers
+
+
+```
+
+Data for Swiss inhabitants per cantons, data also from the [Swiss Statistical Office](https://www.bfs.admin.ch/bfs/de/home/statistiken/kataloge-datenbanken/tabellen.assetdetail.4662815.html).
+
+```{r inhabitants, warning=F, message=F}
+
+inhab <- read_excel("postdata/lawyer/je-d-21.03.02.xlsx",
+                    skip = 3, col_types = c(rep("text", 2),
+                                            rep("numeric", 27)))
+
+inhab %>% 
+  rename(Kennzahl = 1) %>% 
+  dplyr::select(-Schweiz) %>% 
+  filter(Kennzahl == "Einwohner in 1000") %>% 
+  gather(Kanton, Einwohner1000, -Jahre, -Kennzahl) %>% 
+  rename(Jahr = Jahre) %>% 
+  mutate(Einwohner = Einwohner1000*1000) %>% 
+  dplyr::select(-Kennzahl, -Einwohner1000) -> inhab
+
+```
+
+GDP data per canton [data](https://www.bfs.admin.ch/bfs/de/home/statistiken/kataloge-datenbanken/tabellen.assetdetail.6369918.html):
+
+```{r gdp, message=F, warning=F}
+
+gdp <- read_excel("postdata/lawyer/je-d-04.02.06.01.xlsx",
+                  skip = 2, n_max = 28) %>% 
+  mutate(Kanton = str_replace(Kanton, "I. Rh.", "Innerrhoden") %>%
+           str_replace("A. Rh.", "Ausserrhoden")) %>%
+  # we only need the latest which is 2016
+  dplyr::select(Kanton, BIP = `2016p`)
+
+cantons %>% 
+  left_join(gdp, by = "Kanton") -> gdp
+
+```
+
+Flow of patients for stationary care, [data](https://www.bfs.admin.ch/bfs/de/home/statistiken/kataloge-datenbanken/tabellen.assetdetail.6406920.html).
+
+```{r flow, message=F, warning=F}
+
+patientflow <- read_excel("postdata/lawyer/je-d-14.04.01.02.03.xlsx",
+                          sheet = "2017", skip = 6, n_max = 42, na = ".") %>% 
+  rename(Region = 1) %>% 
+  filter(!is.na(Region)) %>% 
+  mutate(Region = str_remove_all(Region, "\\d|\\)") %>% 
+           str_replace("I. Rh.", "Innerrhoden") %>%
+           str_replace("A. Rh.", "Ausserrhoden") %>%
+           str_trim())
+
+cantons %>% 
+  left_join(patientflow, by = c("Kanton" = "Region")) %>% 
+  dplyr::select(-Total, -Kanton, -Ausland, -Unbekannt) %>%
+  column_to_rownames("KT") -> origin_treatment_matrix
+
+# (rows: Behandlungskanton, cols: Herkunftskanton)
+origin_treatment_matrix %>% 
+  colSums(na.rm = T) -> treatment
+
+origin_treatment_matrix %>% 
+  rowSums(na.rm = T) -> origin
+
+flow <- tibble(KT = names(treatment), treatment, origin) %>% 
+  mutate(net_flow_abs = origin-treatment,
+         net_flow_rel = net_flow_abs/(origin))
+
+```
+
+# Analysis for Switzerland 
+
+Let's have a fist glance. We look for stylized facts.
+
+Before we build any explanatory model, we should get a feel of the data. What pattern do we see? How can the pattern be explained with general knowledge about the industry, about demography, about politics etc. As the main goal later is not to come up with a model to predict out-of-sample observations, but to explain a maximum of the variance, we are to be careful on which variables to include. Only those explanatory variables should be looked at, which we previously think could have an influence.
+
+If we include random data, say the number of birds spotted per canton, or the average height of trees, we could find one that is a perfect predictor (high significance), however from a logical viewpoint, we should not include that variable. The correlation is likely to be random.
+
+## Doctors and lawyers
+
+```{r scatterplot}
+
+doctors %>% 
+  filter(Jahr == 2017) %>% 
+  left_join(lawyers, 
+            by = c("KT", "Kanton"), suffix = c(".med", ".iur")) %>% 
+  dplyr::select(KT, starts_with("Anzahl")) %>% 
+  mutate(relativ = Anzahl.med/Anzahl.iur,
+         label = paste0(number(Anzahl.med, big.mark = "'"), " Ärzte / ", 
+                        number(Anzahl.iur, big.mark = "'"), " Anwälte")) -> rel
+
+rel %>% 
+  left_join(inhab %>% filter(Jahr == 2017) %>% dplyr::select(-Jahr),
+            by = c("KT" = "Kanton")) %>% 
+  mutate(med_per_1000 = Anzahl.med/Einwohner*1000,
+         iur_per_1000 = Anzahl.iur/Einwohner*1000) %>% 
+  dplyr::select(KT, Einwohner, contains("per_1000")) -> per_capita
+
+per_capita %>% 
+  ggplot(aes(x = iur_per_1000, y = med_per_1000, size = Einwohner, color = KT)) +
+  geom_smooth(size = 1, color = "grey", fullrange = T, method = "lm", se = T, alpha = 0.1) +
+  geom_abline(intercept = 0, slope = 1, linetype = 2, color = "grey") +
+  geom_point() +
+  geom_text_repel(aes(label = KT), size = 4) +
+  scale_x_continuous(expand = c(0,0), limits = c(0, 5)) +
+  scale_y_continuous(expand = c(0,0), limits = c(0, 5)) +
+  labs(title = "Ärzte und Anwälte pro Wohnbevölkerung",
+       subtitle = "Ärzte mit Praxistätigkeit (2017), Anwälte gem. kantonaler Anwaltslisten (2019)",
+       x = "Anwälte pro 1'000 Einwohner", y = "Ärzte pro 1'000 Einwohner",
+       caption = "Daten: BfS, kant. Anwaltslisten, Grafik: econovo.ch") +
+  theme_bw() +
+  theme(legend.position = "none")
+
+```
+
+Interestingly the numbers not only vary absolutely but also proportionally to one another. The economically strong cantons Geneva, Basel-City und Zurich have an over proportional number of physicians and of lawyers. The correlation (Pearson) is at `r cor(per_capita$med_per_1000, per_capita$iur_per_1000) %>% number(accuracy = 0.001) `.
+
+```{r barchart}
+
+doctors %>% 
+  filter(Jahr == 2017) %>% 
+  left_join(lawyers, 
+            by = c("KT", "Kanton"), suffix = c(".med", ".iur")) %>% 
+  dplyr::select(KT, starts_with("Anzahl")) %>% 
+  mutate(relativ = Anzahl.med/Anzahl.iur,
+         label = paste0(number(Anzahl.med, big.mark = "'"), " Ärzte / ", 
+                        number(Anzahl.iur, big.mark = "'"), " Anwälte")) -> rel
+
+rel %>% 
+  ggplot(aes(x = reorder(KT, relativ), y = relativ-1)) +
+  geom_col(aes(fill = KT), alpha = 0.9) +
+  geom_text(aes(label = label, 
+                y = if_else((relativ-1) > 0.8, 0.5, pmax((relativ-1) + 0.4, 0.4))),
+            size = 3) +
+  geom_hline(yintercept = 0, color = "grey") +
+  coord_flip() +
+  labs(title = "Ärzte-Anwälte Verhältnis",
+       subtitle = "Ärzte mit Praxistätigkeit (2017), Anwälte gem. kantonaler Anwaltslisten (2019)",
+       x = "", y = "Anzahl Ärzte / Anzahl Anwälte - 1",
+       caption = "Daten: BfS, kant. Anwaltslisten, Grafik: econovo.ch") +
+  theme_bw() +
+  theme(legend.position = "none")
+
+```
+
+In five cantons more lawyers than physicians are counted: Geneva as an outlier at almost 5 lawyers per 1 000 inhabitants, Zug, Neuchatel, Ticino und Uri. The latter is at the edge due to the small size.
+
+Relatively more doctors than lawyers are located in the Basel-Landschaft, Thurgau, Schaffhausen or Aargau. These tend to be outlying areas with negative net commuting.
+
+## Map representation
+
+```{r karte1, echo=F, message=F, warning=F}
+
+lonmin <- 5.956303
+lonmax <- 10.491944
+latmin <- 45.818031
+latmax <- 47.808264
+
+per_capita %>% 
+  left_join(gdp, by = "KT") %>% 
+  mutate(bip_per_1 = BIP/Einwohner) -> per_capita_gdp
+
+cantons_m     <- readRDS("postdata/lawyer/cantons.RDS")
+
+cantons_fortified <- fortify(cantons_m, region="HASC_1") %>% 
+  mutate(KT = str_sub(id, -2))
+
+# join with data we have
+cantons_fortified %>% 
+  left_join(per_capita_gdp, by = "KT") -> cantons_fortified_fields
+
+ggplot() +
+  geom_polygon(data = cantons_fortified_fields, 
+               aes(x = long, y = lat, 
+                   group = reorder(interaction(id, piece), desc(KT)), fill = med_per_1000),
+               color = "black", alpha = 1, size = 0.1) +
+  geom_text_repel(data = cantons_fortified_fields %>% 
+                    group_by(KT) %>% 
+                    summarise(long = mean(long), lat = mean(lat)),
+            aes(label = KT, x = long, y = lat), size = 3) +
+  labs(title = "Ärzte mit Praxistätigkeit 2017 pro 1'000 Einwohner",
+       caption = "Daten: BfS, Grafik: econovo.ch", 
+       fill = "Ärzte pro \n1\'000 Einw.") +
+  scale_fill_continuous(low = "white", high = "red") +
+  coord_map() +
+  theme_void()
+
+
+```
+
+
+```{r karte2, echo=F, warning=F, message=F}
+
+ggplot() +
+  geom_polygon(data = cantons_fortified_fields, 
+               aes(x = long, y = lat, 
+                   group = reorder(interaction(id, piece), desc(KT)), fill = iur_per_1000),
+               color = "black", alpha = 1, size = 0.1) +
+  geom_text_repel(data = cantons_fortified_fields %>% 
+                    group_by(KT) %>% 
+                    summarise(long = mean(long), lat = mean(lat)),
+            aes(label = KT, x = long, y = lat), size = 3) +
+  labs(title = "Anwälte 2019 pro 1'000 Einwohner",
+       caption = "Daten: kant. Anwaltsregister, Grafik: econovo.ch",
+       fill = "Anwälte pro \n1\'000 Einw.") +
+  scale_fill_continuous(low = "white", high = "blue") +
+  coord_map() +
+  theme_void()
+
+```
+
+```{r ratiomap, echo=F, warning=F, message=F}
+
+ggplot() +
+  geom_polygon(data = cantons_fortified_fields %>% mutate(ratio = iur_per_1000/med_per_1000), 
+               aes(x = long, y = lat, 
+                   group = reorder(interaction(id, piece), desc(KT)), fill = ratio),
+               color = "black", alpha = 1, size = 0.1) +
+  geom_text_repel(data = cantons_fortified_fields %>% 
+                    group_by(KT) %>% 
+                    summarise(long = mean(long), lat = mean(lat)),
+            aes(label = KT, x = long, y = lat), size = 3) +
+  scale_fill_gradientn(colours = c("red","white","blue"), 
+                       values = rescale(c(0.25, 1, 1.24)),
+                       guide = "colorbar", limits=c(0.25, 1.25)) +
+  coord_map() +
+  labs(title = "Relative Anzahl Anwälte zu Ärzten (mit Praxistätigkeit)",
+       caption = "Daten: BfS, kant. Anwaltslisten, Grafik: econovo.ch",
+       fill = "Anwälte / \nÄrzte") +
+  theme_void()
+
+```
+
+## A linear model
+
+We ask ourselves how to explain the number of lawyers. Due to the positive correlation with medical doctors that we have seen previously, this is the first explanatory variable we take into account. Furthermore, we suggest the following variables:
+
+* the absolute population sizes
+* GDP
+* net flow of patients relative to the population in stationary (hospital) care
+
+```{r flow2}
+
+per_capita %>% 
+  left_join(gdp, by = "KT") %>% 
+  mutate(bip_per_1 = BIP/Einwohner) -> per_capita_gdp
+
+per_capita_gdp %>% 
+  left_join(flow, by = "KT") -> per_capita_gdp_flow
+
+per_capita_gdp_flow %>% 
+  ggplot(aes(x = reorder(KT, net_flow_abs), 
+             y = net_flow_abs, fill = KT)) + 
+  geom_col(alpha = 0.9) + 
+  geom_label(aes(label = percent(net_flow_rel)), size = 2.5) +
+  coord_flip() + 
+  scale_y_continuous(labels = scales::number) +
+  labs(title = "Netto Fluss der hospitalisierten Patienten",
+       subtitle = "nach Behandlungskanton 2017, Prozentangabe relativ zur Wohnbevölkerung",
+       x = "", y = "Netto Fluss ausserkantonaler Patienten",
+       caption = "Daten: BfS, Grafik: econovo.ch") +
+  theme_bw() +
+  theme(legend.position = "none")
+
+```
+
+The stats show that in Basel-City, in Berne or in Zurich, the net flow of patients is positive. Besides the own population a significant part of the hospital patients are coming from other cantons. We assume that this mostly due to the attractiveness of the university hospitals.
+
+Let's start with some linear models with the relative number of lawyers as dependent variable (*iur_per_1000*):
+
+```{r modelle, warning=F, message=F}
+
+lmodel1 <- lm(formula = iur_per_1000 ~ med_per_1000 + Einwohner, data = per_capita_gdp) 
+lmodel2 <- lm(formula = iur_per_1000 ~ med_per_1000 + bip_per_1 + Einwohner, data = per_capita_gdp) 
+lmodel3 <- lm(formula = iur_per_1000 ~ med_per_1000 + bip_per_1 + Einwohner + net_flow_rel, 
+              data = per_capita_gdp_flow) 
+
+library(sjPlot)
+library(sjmisc)
+library(sjlabelled)
+
+tab_model(lmodel1, lmodel2, lmodel3,
+          dv.labels = c("model 1", "model 2", "model 3"),
+          show.ci = F, show.se = T)
+
+```
+
+We find that there is no significant dependency on the additional variables. We can think that the reason for a higher number of lawyers is more related to regional specifications, such as international trade and organisations (e.g. Geneva), company and holding residence (Zug), or regional agglomerations (Zürich, Basel).
+
+## Conclusion for Switzerland
+
+While there are differences in both the density of lawyer and the density of medical doctors, the distribution of lawyers is more extreme. For the number of physicians per inhabitants, we find the outliers Geneva and Basel-city. Both cantons are also leading in the relative number of lawyers.
+
+```{r camelplot, warning=F, message=F}
+
+set.seed(6)
+
+per_capita %>% 
+  gather(Feld, Wert, -KT, -Einwohner)  %>% 
+  mutate(KT_label = if_else(Feld == "iur_per_1000" & Wert>2, 
+                            KT, ""),
+         Feld = if_else(Feld == "iur_per_1000", "Anwälte", "Ärzte")) %>% 
+  ggplot(aes(y = Wert, x = Feld)) +
+  geom_path(aes(color = KT, group = KT), alpha = 0.5) +
+  geom_violin(alpha = 0.8) +
+  geom_beeswarm(aes(color = KT), cex = 3, size = 3) +
+  geom_text_repel(aes(label = KT_label, color = KT), x = 0.75, direction = "y", 
+                  size = 4, segment.color = NA) +
+  labs(title = "Verteilung der Anwalts- und Ärztedichte",
+       subtitle = "Ärzte mit Praxistätigkeit (2017), Anwälte gem. kantonaler Anwaltslisten (2019)",
+       x = "", y = "Anzahl pro Kanton",
+       caption = "Daten: BfS, kant. Anwaltslisten, Grafik: econovo.ch") +
+  theme_bw() +
+  theme(legend.position = "none")
+
+
+```
+
+The reason for the proportional and absolute count of lawyers in Ticino and in Neuchatel could not be explained with the parameters looked at here.
+
+# European data
+
+Let's look at data from other countries in Europe. Do we find the same pattern as within Switzerland, that the number of doctors is related to one for lawyers?
+
+We find data from the following sources:
+
+* Number of lawyers in European Countries from [CCBE](https://www.ccbe.eu/actions/statistics/)
+* Eurostat: [Healthcare personnel statistics - physicians](https://ec.europa.eu/eurostat/statistics-explained/index.php/Healthcare_personnel_statistics_-_physicians)
+* Eurostat [GDP per capita](https://ec.europa.eu/eurostat/web/national-accounts/data/main-tables)
+* Eurostat [population](https://ec.europa.eu/eurostat/web/population-demography-migration-projections/data/main-tables)
+
+Read in the number of lawyers first:
+
+```{r lawyers_eu}
+
+lawyers_eu <- read_excel("postdata/lawyer/EU_number_of_lawyers.xlsx")
+
+```
+
+Read in number of medical doctors less hospital doctors.
+
+```{r doctors_eu, message=F, warning=F}
+
+doctors_eu <- read_excel("postdata/lawyer/Physicians_Health2018-update.xlsx", sheet = "Table 1",
+                         range = "C9:D46", na = ":")
+
+doctors_eu %>%
+  rename(Country = 1) %>% 
+  mutate(Country = str_remove_all(Country, "\\s*\\([^\\)]+\\)") %>% str_trim(),
+         Total = round(Total) %>% as.integer()) -> doctors_eu
+
+
+doctors_hosp_eu <- read_excel("postdata/lawyer/Physicians_Health2018-update.xlsx", sheet = "Table 2",
+                         range = "C9:F46", na = ":") %>% 
+  mutate(`2016` = if_else(is.na(`2016`), `2011`, `2016`))
+
+doctors_hosp_eu %>% 
+  rename(Country = 1) %>% 
+  mutate(Country = str_remove_all(Country, "\\s*\\([^\\)]+\\)") %>% str_trim()) %>% 
+  dplyr::select(Country, Total_hosp = `2016`) %>% 
+  mutate(Total_hosp = round(Total_hosp) %>% as.integer()) -> doctors_hosp_eu
+
+left_join(doctors_eu, doctors_hosp_eu, by = "Country") %>% 
+  mutate(doctors = Total - Total_hosp) -> doctors_eu
+
+```
+
+Read in GDP and population stats:
+
+```{r pop_gdp_eu, message=F, warning=F}
+
+population_eu <- read_tsv("postdata/lawyer/tps00001.tsv", na = ":")
+
+population_eu %>% 
+  dplyr::select(country_code = 1, pop = `2016`) %>% 
+  separate(country_code, into = c("rm", "country_code"), sep = ",") %>% 
+  dplyr::select(-rm) %>% 
+  mutate(pop = as.integer(pop)) -> population_eu
+
+dgp_per_capita_eu <- read_tsv("postdata/lawyer/tec00114.tsv") 
+
+dgp_per_capita_eu %>% 
+  rename(country_code = 1) %>% 
+  mutate(country_code = str_sub(country_code, -2)) %>% 
+  dplyr::select(country_code, gdp_per_capita = `2016`) -> dgp_per_capita_eu
+
+```
+
+Eurostat country [codes](https://ec.europa.eu/eurostat/statistics-explained/index.php/Glossary:Country_codes) and join all the data together.
+
+```{r country_codes}
+
+codes <- tibble(Country = doctors_eu$Country,
+                country_code = c("BE", "BG", "CZ", "DK", "DE", "EE", "IE",
+                                 "EL", "ES", "FR", "HR", "IT", "CY", "LV",
+                                 "LT", "LU", "HU", "MT", "NL", "AT", "PL",
+                                 "PT", "RO", "SI", "SK", "FI", "SE", "UK",
+                                 "IS", "LI", "NO", "CH",
+                                 "ME", "MK", "AL", "RS", "TR"))
+
+lawyers_eu %>% 
+  left_join(doctors_eu, by = "Country") %>% 
+  mutate(Country = case_when(Country == "Czech Republic"  ~ "Czechia",
+                             Country == "Slovak Republic" ~ "Slovakia",
+                             T                            ~ Country)) %>% 
+  full_join(codes, by = "Country") %>% arrange(Country) %>% 
+  filter(!is.na(country_code)) %>% 
+  left_join(population_eu, by = "country_code") %>% 
+  left_join(dgp_per_capita_eu, by = "country_code") %>% 
+  dplyr::select(Country, country_code, 
+                number_of_lawyers, number_of_doctors = doctors,
+                pop, gdp_per_capita) %>% 
+  mutate(iur_per_1000 = number_of_lawyers/pop*1000,
+         med_per_1000 = number_of_doctors/pop*1000) -> data_eu
+
+```
+
+Remove incomplete data:
+
+```{r removeinclomplete}
+
+# incomplete ones
+data_eu %>% 
+  filter(is.na(med_per_1000) | is.na(iur_per_1000)) %>% 
+  `$` ("Country")
+
+# complete ones
+data_eu %>% 
+  filter(!is.na(med_per_1000), !is.na(iur_per_1000)) -> data_eu
+
+data_eu %>% 
+  `$` ("Country")
+
+```
+
+## Graphical representation
+
+```{r scatterplot_eu}
+
+data_eu %>% 
+  ggplot(aes(x = iur_per_1000, y = med_per_1000, size = pop, color = Country)) +
+  geom_smooth(size = 1, color = "grey", fullrange = T, method = "lm", se = T, alpha = 0.1) +
+  geom_abline(intercept = 0, slope = 1, linetype = 2, color = "grey") +
+  geom_point() +
+  geom_text_repel(aes(label = country_code), size = 4) +
+  scale_x_continuous(expand = c(0,0), limits = c(0, 6.4)) +
+  scale_y_continuous(expand = c(0,0), limits = c(0, 6.4)) +
+  labs(title = "Doctors and lawyers per inhabitants (EU)",
+       # subtitle = "Ärzte mit Praxistätigkeit (2017), Anwälte gem. kantonaler Anwaltslisten (2019)",
+       x = "Lawyers per 1 000 inhabitants", y = "Physicians pro 1 000 inhabitants"
+       # caption = "Daten: BfS, kant. Anwaltslisten, Grafik: econovo.ch"
+       ) +
+  theme_bw() +
+  theme(legend.position = "none")
+
+```
+
+```{r camelplot_eu, warning=F, message=F}
+
+set.seed(1)
+
+data_eu %>% 
+  gather(Feld, Wert, -Country, -country_code, -pop) %>%
+  filter(Feld %in% c("iur_per_1000", "med_per_1000")) %>% 
+  mutate(country_code_label = if_else(Feld == "iur_per_1000" & Wert>1.9,
+                                      country_code, ""),
+         Feld = if_else(Feld == "iur_per_1000", "Lawyers", "Physicians")) %>%
+  ggplot(aes(y = Wert, x = Feld)) +
+  geom_path(aes(color = Country, group = Country), alpha = 0.5) +
+  geom_violin(alpha = 0.8) +
+  geom_beeswarm(aes(color = Country), cex = 3, size = 3) +
+  geom_text_repel(aes(label = country_code_label, color = Country), x = 0.75, direction = "y", 
+                  size = 4, segment.color = NA) +
+  labs(title = "Distribution lawyer and physicians",
+       # subtitle = "Ärzte mit Praxistätigkeit (2017), Anwälte gem. kantonaler Anwaltslisten (2019)",
+       x = "", y = "Count per European country"
+       # caption = "Daten: BfS, kant. Anwaltslisten, Grafik: econovo.ch"
+       ) +
+  theme_bw() +
+  theme(legend.position = "none")
+
+
+```
+
+## Linear model
+
+```{r modelle_eu, warning=F, message=F}
+
+lmodel1 <- lm(formula = iur_per_1000 ~ med_per_1000 + pop, data = data_eu) 
+lmodel2 <- lm(formula = iur_per_1000 ~ med_per_1000 + gdp_per_capita + pop, data = data_eu) 
+
+tab_model(lmodel1, lmodel2,
+          dv.labels = c("model 1", "model 2"),
+          show.ci = F, show.se = T)
+
+```
+
+From what we see, the number of medical doctor is a worse indicator for the number of lawyers on a EU country level. The model results in a low R-square of around 0.2.
+
+The following task would be to find better predictors and come up with a better model.
+
+# Conclusion
+
+We have analyzed the number of lawyers per capita and tried to explain the differences between Swiss countries and between European nations. The explanatory variable of physicians per capita shows significance for Switzerland but not when looking at all of Europe.
+
+One reason for the poor performance might be the data source. In our analysis we only look at private physicians (the ones operating from their own doctor's office), a decision which may result in a bias in countries with stronger public hospital healthcare. Also we had to remove several countries such as United Kingdom altogether due to a lack of available data.
+
+Further investigation would be required to come up with a model with higher explanatory value.

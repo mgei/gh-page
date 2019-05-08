@@ -1,0 +1,13 @@
+id = "mgei"
+
+[email]
+username = "martin.geissmann"
+host = "gmail.com"
+
+[name]
+display = "Martin Geissmann"
+
+[social]
+email = ""
+facebook  = ""
+twitter = ""

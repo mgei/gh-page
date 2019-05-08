@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>R on mgei.github.io</title>
+    <link>/tags/r/</link>
+    <description>Recent content in R on mgei.github.io</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Thu, 09 May 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/r/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>How I made this Github page</title>
+      <link>/post/github-page/</link>
+      <pubDate>Thu, 09 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/post/github-page/</guid>
+      <description>R / Blogdown / Hugo The website you are looking at is made with R and blogdown. Blogdown allows to use the static website generator Hugo with R Markdown documents (*.Rmd) instead of only pure markdown (*.md). So one can easily integrate R code which is rendered like a HTML R Markdown document.
+The theme used here is Minimo.
+ Github pages This website hosted on Github. It’s open source, the code is available here.</description>
+    </item>
+    
+    <item>
+      <title>Analyzing the Swiss cantons with more lawyers than medical doctors</title>
+      <link>/post/lawyer-physicians/</link>
+      <pubDate>Mon, 22 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/post/lawyer-physicians/</guid>
+      <description>Originally published on RPubs: http://rpubs.com/mgei/lawyers
+ Intro In 2017 Switzerland had 18’858 free physician working in individual doctor’s offices (Aerzte mit Praxistätigkeit as opposed to doctors employed by hospitals). Also Switzerland currently has 12’967 registered lawyers.1 Relative to the number of inhabitants of nearly 8.5 million (2017), that’s on average 2.2 physicians and 1.5 lawyers per 1’000 inhabitants.
+As we will see, in four cantons lawyers outnumber physicians.</description>
+    </item>
+    
+    <item>
+      <title>How far to the closest hospital?</title>
+      <link>/post/drivingtimes/</link>
+      <pubDate>Wed, 27 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/post/drivingtimes/</guid>
+      <description>Originally published on RPubs: http://rpubs.com/mgei/drivingtimes
+ Intro Imagine you just fell out of a plane over Switzerland and landed at a random location. As you are wounded your number one concern it to get to a hospital asap. Not any hospital but one that has an emergency room and is equipped at least with a CT to check for fractures.</description>
+    </item>
+    
+  </channel>
+</rss>
