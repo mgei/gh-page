@@ -1,0 +1,23 @@
+      </main>
+
+      <footer id='footer' class='footer'>
+        <div class='container sep-before'>
+          {{- $footerWidgets := .Site.Params.widgets.footer -}}
+          {{- partial "extras/widget_area" ( dict "Widgets" $footerWidgets "Scope" . ) -}}
+          {{ partial "footer/copyright" . }}
+        </div>
+      </footer>
+
+    </div>
+  </div>
+
+  {{- partial "footer/scripts" . -}}
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+</body>
+
+</html>

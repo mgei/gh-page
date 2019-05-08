@@ -1,7 +1,6 @@
 ---
 slug: "github-page"
-date: "2019-05-09"
-draft: false
+date: "2019-05-08"
 title: "How I made this Github page"
 tags: ["github-page", "hugo", "blogdown", "R"]
 authors: [mgei]
@@ -102,6 +101,10 @@ On a more general note, in R Markdown to have a link open in a new tab one would
 ```md
 [Google](https://www.google.com){target="_blank"}
 ```
+
+### Other interesting observations
+
+* If the date of a post is in the future, it will not be included when building the site with `site_build()`. It was however included when previewing locally with `serve_site()`.
 
 ## Build and depoly
 

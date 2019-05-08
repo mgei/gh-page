@@ -1,44 +1,9 @@
-<<<<<<< HEAD
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Page on mgei.github.io</title>
-    <link>/page/</link>
-    <description>Recent content in Page on mgei.github.io</description>
-    <generator>Hugo -- gohugo.io</generator>
-    
-	<atom:link href="/page/index.xml" rel="self" type="application/rss+xml" />
-    
-    
-    <item>
-      <title>Search</title>
-      <link>/search/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>/search/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>About</title>
-      <link>/about/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>/about/</guid>
-      <description>This site The goal is to consolidate the content that I have published on my Youtube channel, RPubs, Github, my company&amp;rsquo;s website, as well as non-confidential material from on my own work. The main purpose is to have an archive ready as a personal reference, i.e. myself looking things up. Maybe it also helps others.
-Me My name is Martin Geissmann. I studied economics in Basel and Zurich before my professional track led me to healthcare management.</description>
-    </item>
-    
-  </channel>
-</rss>
-||||||| merged common ancestors
-=======
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>Pages on mgei&#39;s Github Page</title>
     <link>https://mgei.github.io/page/</link>
-    <description>Recent content in Pages on mgei&#39;s Github Page</description>
+    <description>Recent content in Page on mgei.github.io</description>
     <generator>Hugo -- gohugo.io</generator>
     <lastBuildDate>Thu, 28 Sep 2017 08:00:00 +0600</lastBuildDate>
     
@@ -57,16 +22,6 @@ Heading 3 Yet another, but centered! Excepteur sint occaecat cupidatat non proid
     </item>
     
     <item>
-      <title>About</title>
-      <link>https://mgei.github.io/about/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://mgei.github.io/about/</guid>
-      <description>About this site The goal is to accumulate the content that I currently have spread out on my Youtube channel, RPubs, Github, my company website, and on my own system (and is non-confidential). The website is to serve as a reference for myself primary. Maybe it also helps others.
-About me Hello, my name is Martin Geissmann. I studied economics in Basel and Zurich before starting to work in healthcare management.</description>
-    </item>
-    
-    <item>
       <title>Search</title>
       <link>https://mgei.github.io/search/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
@@ -75,6 +30,15 @@ About me Hello, my name is Martin Geissmann. I studied economics in Basel and Zu
       <description></description>
     </item>
     
+    <item>
+      <title>About</title>
+      <link>https://mgei.github.io/about/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgei.github.io/about/</guid>
+      <description>This site The goal is to consolidate the content that I have published on my Youtube channel, RPubs, Github, my company&amp;rsquo;s website, as well as non-confidential material from on my own work. The main purpose is to have an archive ready as a personal reference, i.e. myself looking things up. Maybe it also helps others.
+Me My name is Martin Geissmann. I studied economics in Basel and Zurich before my professional track led me to healthcare management.</description>
+    </item>
+    
   </channel>
 </rss>
->>>>>>> 4c60c5299ef896d84aa63d7c1e9e3287d16c2e42

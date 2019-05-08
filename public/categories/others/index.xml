@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>others on mgei&#39;s Github Page</title>
+    <title>others on mgei.github.io</title>
     <link>https://mgei.github.io/categories/others/</link>
-    <description>Recent content in others on mgei&#39;s Github Page</description>
+    <description>Recent content in others on mgei.github.io</description>
     <generator>Hugo -- gohugo.io</generator>
     <lastBuildDate>Mon, 25 Sep 2017 08:00:00 +0600</lastBuildDate>
     
@@ -17,7 +17,7 @@
       
       <guid>https://mgei.github.io/docs/config-file/</guid>
       <description>This is the Minimo&amp;rsquo;s configuration file ( config.toml ) file of this site:
-baseURL = &amp;#34;https://mgei.github.io&amp;#34; title = &amp;#34;mgei&amp;#39;s Github Page&amp;#34; # for smart copyright line, leave this blank and check [params.copyright] copyright = &amp;#34;&amp;#34; ignoreFiles = [ &amp;#34;\\.foo$&amp;#34;, &amp;#34;\\.boo$&amp;#34; ] theme = &amp;#34;minimo&amp;#34; disqusShortname = &amp;#34;&amp;#34; googleAnalytics = &amp;#34;&amp;#34; Paginate = 5 preserveTaxonomyNames = true enableRobotsTXT = true # generate robots.txt # Syntax Highlighting ( https://gohugo.io/content-management/syntax-highlighting/ ) pygmentsCodefences = true enableEmoji = false # Missing translations will default to this content language defaultContentLanguage = &amp;#34;en&amp;#34; [params.</description>
+baseURL = &amp;#34;https://mgei.github.io&amp;#34; title = &amp;#34;mgei.github.io&amp;#34; # for smart copyright line, leave this blank and check [params.copyright] copyright = &amp;#34;&amp;#34; ignoreFiles = [&amp;#34;\\.foo$&amp;#34;, &amp;#34;\\.boo$&amp;#34;] theme = &amp;#34;minimo&amp;#34; disqusShortname = &amp;#34;&amp;#34; googleAnalytics = &amp;#34;&amp;#34; Paginate = 5 preserveTaxonomyNames = true enableRobotsTXT = true # generate robots.txt # Syntax Highlighting ( https://gohugo.io/content-management/syntax-highlighting/ ) pygmentsCodefences = true enableEmoji = false # Missing translations will default to this content language defaultContentLanguage = &amp;#34;en&amp;#34; [params.</description>
     </item>
     
   </channel>

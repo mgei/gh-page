@@ -2,20 +2,20 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Switzerland on mgei.github.io</title>
-    <link>/tags/switzerland/</link>
+    <link>https://mgei.github.io/tags/switzerland/</link>
     <description>Recent content in Switzerland on mgei.github.io</description>
     <generator>Hugo -- gohugo.io</generator>
     <lastBuildDate>Wed, 27 Mar 2019 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="/tags/switzerland/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://mgei.github.io/tags/switzerland/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>How far to the closest hospital?</title>
-      <link>/post/drivingtimes/</link>
+      <link>https://mgei.github.io/post/drivingtimes/</link>
       <pubDate>Wed, 27 Mar 2019 00:00:00 +0000</pubDate>
       
-      <guid>/post/drivingtimes/</guid>
+      <guid>https://mgei.github.io/post/drivingtimes/</guid>
       <description>Originally published on RPubs: http://rpubs.com/mgei/drivingtimes
  Intro Imagine you just fell out of a plane over Switzerland and landed at a random location. As you are wounded your number one concern it to get to a hospital asap. Not any hospital but one that has an emergency room and is equipped at least with a CT to check for fractures.</description>
     </item>

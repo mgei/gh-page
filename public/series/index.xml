@@ -1,25 +1,9 @@
-<<<<<<< HEAD
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Series on mgei.github.io</title>
-    <link>/series/</link>
-    <description>Recent content in Series on mgei.github.io</description>
-    <generator>Hugo -- gohugo.io</generator>
-    
-	<atom:link href="/series/index.xml" rel="self" type="application/rss+xml" />
-    
-    
-  </channel>
-</rss>
-||||||| merged common ancestors
-=======
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>Series on mgei&#39;s Github Page</title>
     <link>https://mgei.github.io/series/</link>
-    <description>Recent content in Series on mgei&#39;s Github Page</description>
+    <description>Recent content in Series on mgei.github.io</description>
     <generator>Hugo -- gohugo.io</generator>
     
 	<atom:link href="https://mgei.github.io/series/index.xml" rel="self" type="application/rss+xml" />
@@ -27,4 +11,3 @@
     
   </channel>
 </rss>
->>>>>>> 4c60c5299ef896d84aa63d7c1e9e3287d16c2e42
