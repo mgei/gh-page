@@ -24,7 +24,7 @@ enableEmoji = false
 defaultContentLanguage = "en"
 
 [params.info]
-description = "Martin Geissmann's personal site"
+description = "personal archive"
 title404 = "Nothing's here!"
 
 [params.assets]
@@ -35,7 +35,7 @@ gopher = "" # used in 404 template ( Generator: https://gopherize.me )
 
 [params.copyright]
 prefix = ""
-holder = ""
+holder = "Martin Geissmann"
 startYear = "2019"
 suffix = ""
 
