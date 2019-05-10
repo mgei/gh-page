@@ -2,7 +2,7 @@
 slug: "econovo-al-neuroradiology"
 date: "2018-11-20"
 title: "(de) Die ärztliche Leistung in der Neuroradiologie"
-tags: ["Econovo", "business intelligence", "radiology", "healthcare"]
+tags: ["Econovo", "business intelligence", "radiology", "healthcare", "Tarmed"]
 authors: [mgei]
 ---
   

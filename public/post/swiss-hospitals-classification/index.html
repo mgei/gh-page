@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang='en'><head>
+  <meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'>
+<meta name='description' content='Originally published on Github: https://github.com/mgei/swiss-hospitals-classification
+ R Shiny app for cluster analysis A simple R Shiny app to classify Swiss hospitals according to their DRG positions using clustering and wordclouds.
+The app is also live for trying here: http://swiss-hospitals-classification.econovo.io/
+ Data We use data from the Swiss Federal Office of Public Health (BAG), i.e. data from the DRG Fallzahlensuche. We have the following script to scrape data from http://www.'>
+<meta name='theme-color' content='#ffb266'>
+
+<meta property='og:title' content='Swiss Hospitals Classification • Martin Geissmann'>
+<meta property='og:description' content='Originally published on Github: https://github.com/mgei/swiss-hospitals-classification
+ R Shiny app for cluster analysis A simple R Shiny app to classify Swiss hospitals according to their DRG positions using clustering and wordclouds.
+The app is also live for trying here: http://swiss-hospitals-classification.econovo.io/
+ Data We use data from the Swiss Federal Office of Public Health (BAG), i.e. data from the DRG Fallzahlensuche. We have the following script to scrape data from http://www.'>
+<meta property='og:url' content='https://mgei.github.io/post/swiss-hospitals-classification/'>
+<meta property='og:site_name' content='mgei.github.io'>
+<meta property='og:type' content='article'><meta property='og:image' content='https://www.gravatar.com/avatar/a525a84fae399669fa8861e2661df00b?s=256'><meta property='article:section' content='post'><meta property='article:tag' content='cluster analysis'><meta property='article:tag' content='R'><meta property='article:tag' content='shiny'><meta property='article:tag' content='hospitals'><meta property='article:tag' content='healthcare'><meta property='article:tag' content='Switzerland'><meta property='article:published_time' content='2019-03-20T00:00:00Z'/><meta property='article:modified_time' content='2019-03-20T00:00:00Z'/><meta name='twitter:card' content='summary'>
+
+<meta name="generator" content="Hugo 0.55.5" />
+
+  <title>Swiss Hospitals Classification • Martin Geissmann</title>
+  <link rel='canonical' href='https://mgei.github.io/post/swiss-hospitals-classification/'>
+  
+  
+  <link rel='icon' href='/favicon.ico'>
+<link rel='stylesheet' href='/assets/css/main.fb20af92.css'><link rel='stylesheet' href='/css/custom.css'><style>
+:root{--color-accent:#ffb266;}
+</style>
+
+  
+
+</head>
+<body class='page type-post has-sidebar'>
+
+  <div class='site'><div id='sidebar' class='sidebar'>
+  <a class='screen-reader-text' href='#main-menu'>Skip to Main Menu</a>
+
+  <div class='container'><section class='widget widget-about sep-after'>
+  <header>
+    
+    <div class='logo'>
+      <a href='/'>
+        <img src='/images/logo.png'>
+      </a>
+    </div>
+    
+    <h2 class='title site-title '>
+      <a href='/'>
+      mgei.github.io
+      </a>
+    </h2>
+    <div class='desc'>
+    Martin Geissmann&#39;s personal site
+    </div>
+  </header>
+
+</section>
+<section class='widget widget-sidebar_menu sep-after'><nav id='sidebar-menu' class='menu sidebar-menu' aria-label='Sidebar Menu'>
+    <div class='container'>
+      <ul><li class='item'>
+  <a href='/'>Home</a></li><li class='item'>
+  <a href='/post/'>Archive</a></li><li class='item'>
+  <a href='/tags/'>Tags</a></li><li class='item'>
+  <a href='/search/'>Search</a></li><li class='item'>
+  <a href='/about/'>About</a></li></ul>
+    </div>
+  </nav>
+
+</section></div>
+
+  <div class='sidebar-overlay'></div>
+</div><div class='main'><a class='screen-reader-text' href='#content'>Skip to Content</a>
+
+<button id='sidebar-toggler' class='sidebar-toggler' aria-controls='sidebar'>
+  <span class='screen-reader-text'>Toggle Sidebar</span>
+  <span class='open'><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <line x1="3" y1="12" x2="21" y2="12" />
+  <line x1="3" y1="6" x2="21" y2="6" />
+  <line x1="3" y1="18" x2="21" y2="18" />
+  
+</svg>
+</span>
+  <span class='close'><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <line x1="18" y1="6" x2="6" y2="18" />
+  <line x1="6" y1="6" x2="18" y2="18" />
+  
+</svg>
+</span>
+</button><div class='header-widgets'>
+        <div class='container'>
+    
+    <style>.widget-breadcrumbs li:after{content:'\2f '}</style>
+  <section class='widget widget-breadcrumbs sep-after'>
+    <nav id='breadcrumbs'>
+      <ol><li><a href='/'>Home</a></li><li><span>Swiss Hospitals Classification</span></li></ol>
+    </nav>
+  </section></div>
+      </div>
+
+      <header id='header' class='header site-header'>
+        <div class='container sep-after'>
+          <div class='header-info'><p class='site-title title'>mgei.github.io</p><p class='desc site-desc'>Martin Geissmann&#39;s personal site</p>
+          </div>
+        </div>
+      </header>
+
+      <main id='content'>
+
+
+<article lang='en' class='entry'>
+  <header class='header entry-header'>
+  <div class='container sep-after'>
+    <div class='header-info'>
+      <h1 class='title'>Swiss Hospitals Classification</h1>
+      
+
+    </div>
+    <div class='entry-meta'>
+  <span class='posted-on'><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+  <line x1="16" y1="2" x2="16" y2="6"/>
+  <line x1="8" y1="2" x2="8" y2="6"/>
+  <line x1="3" y1="10" x2="21" y2="10"/>
+  
+</svg>
+<span class='screen-reader-text'>Posted on </span>
+  <time class='entry-date' datetime='2019-03-20T00:00:00Z'>20 Mar 2019</time>
+</span>
+
+  <span class='byline'><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <path d="M21,21V20c0-2.76-4-5-9-5s-9,2.24-9,5v1"/>
+  <path d="M16,6.37A4,4,0,1,1,12.63,3,4,4,0,0,1,16,6.37Z"/>
+  
+</svg>
+<span class='screen-reader-text'> by </span><a href='/authors/mgei'>Martin Geissmann</a></span>
+  
+
+</div>
+
+
+  </div>
+</header>
+
+  
+  
+
+  <div class='container entry-content'>
+  
+
+
+<blockquote>
+<p>Originally published on Github: <a href="https://github.com/mgei/swiss-hospitals-classification" class="uri">https://github.com/mgei/swiss-hospitals-classification</a></p>
+</blockquote>
+<div id="r-shiny-app-for-cluster-analysis" class="section level1">
+<h1>R Shiny app for cluster analysis</h1>
+<p>A simple R Shiny app to classify Swiss hospitals according to their DRG positions using clustering and wordclouds.</p>
+<p>The app is also live for trying here: <a href="http://swiss-hospitals-classification.econovo.io/" class="uri">http://swiss-hospitals-classification.econovo.io/</a></p>
+<div class="figure">
+<img src="/images/post/swiss-hospitals-classification.png" />
+
+</div>
+<div id="data" class="section level2">
+<h2>Data</h2>
+<p>We use data from the Swiss Federal Office of Public Health (BAG), i.e. data from the <a href="http://www.drg-fallzahlsuche.admin.ch/de/systems/8?codes=&amp;hospitals=&amp;activeTab=&amp;hospitalSearch="><em>DRG Fallzahlensuche</em></a>. We have the following script to scrape data from <a href="http://www.drg-fallzahlsuche.admin.ch" class="uri">http://www.drg-fallzahlsuche.admin.ch</a></p>
+<pre class="r"><code>library(tidyverse)
+library(xml2)
+library(rvest)
+
+scrape_fallzahlen &lt;- function(link = &quot;http://www.drg-fallzahlsuche.admin.ch/de/systems/6/codes/&quot;, 
+                              from = 1, to = 3661, 
+                              getstring = &quot;?level=Adrg&quot;, 
+                              save_every_n = 100, 
+                              childsafety = T) {
+  
+  if (childsafety) { stop(&quot;Turn off childsafety after you had a look at the code.&quot;)}
+  
+  fallzahlen &lt;- tibble()
+  
+  for (i in 1:to) {
+    url &lt;- str_c(link, i, getstring)
+    
+    data &lt;- read_html(url)
+    
+    info &lt;- data %&gt;% html_nodes(&quot;h2&quot;) %&gt;% html_text() %&gt;% last() %&gt;% str_split(&quot;\n&quot;, simplify = T)
+    DRG &lt;- info[2]
+    Jahr &lt;- info[3]
+    Bez &lt;- info[4]
+    
+    table &lt;- data %&gt;% html_table(header = T) %&gt;% 
+      data.frame() %&gt;% 
+      as_tibble() %&gt;% 
+      mutate(DRG = DRG, Jahr = Jahr, Bez = Bez, i = i) %&gt;% 
+      mutate(Fallzahlen = as.character(Fallzahlen))
+    
+    fallzahlen &lt;- fallzahlen %&gt;% bind_rows(table) 
+    
+    if (!i %% save_every_n | i == to) {
+      # save it every n loops and at the end obviously
+      fallzahlen %&gt;% write_rds(str_c(&quot;../data/data&quot;, i, &quot;.RDS&quot;))
+    }
+    print(str_c(&quot;Saved at &quot;, i, sep = &quot;&quot;))
+  }
+  
+  # clean the data
+  fallzahlen_clean &lt;- fallzahlen %&gt;% 
+    mutate(Fallzahlen = str_replace(Fallzahlen, &quot;&lt; 5&quot;, &quot;1&quot;) %&gt;% 
+             str_remove_all(&quot;\&#39;&quot;)) %&gt;% 
+    mutate(Fallzahlen = as.integer(Fallzahlen))
+  
+  fallzahlen_clean %&gt;% write_rds(&quot;../data/fallzahlen_clean.RDS&quot;)
+}</code></pre>
+<p>Also we use the <a href="https://www.bag.admin.ch/bag/de/home/zahlen-und-statistiken/zahlen-fakten-zu-spitaelern/kennzahlen-der-schweizer-spitaeler.html">Key figures for Swiss hospitals</a>, <code>wget http://www.bag-anw.admin.ch/2016_taglab/2016_spitalstatistik/data/download/kzp16_daten.xlsx</code>. There’s data for 2017 now also.</p>
+<p>Data preparation:</p>
+<pre class="r"><code># read the data
+fallzahlen &lt;- read_rds(&quot;../data/fallzahlen_clean.RDS&quot;) %&gt;%
+  mutate_if(is.character, funs(gsub(&quot;\u00AD&quot;, &quot;-&quot;, ., perl = F))) %&gt;% 
+  filter(Spitäler != &quot;Alle Fälle&quot;)
+
+spitalstatistik  &lt;- read_excel(&quot;../data/kzp16_daten.xlsx&quot;, sheet = &quot;KZ2016_KZP16&quot;) %&gt;% 
+  filter(!is.na(KT)) %&gt;% 
+  # soft-hyphon is trouble
+  mutate_if(is.character, funs(gsub(&quot;\u00AD&quot;, &quot;-&quot;, ., perl = F)))
+
+# what we need from spitalstatistik
+# spistat_read %&gt;% select(Inst, Akt, EtMedL, EtSonst, EtSubv) %&gt;% distinct() -&gt; spistat
+
+spitalstatistik &lt;- spitalstatistik %&gt;%
+  select(Inst, starts_with(&quot;Et&quot;), Akt) %&gt;%
+  distinct() %&gt;%
+  rowwise() %&gt;%
+  mutate(Ertrag = sum(EtMedL, EtSonst, EtSubv)) %&gt;%
+  ungroup() %&gt;%
+  select(Inst, Akt, Ertrag)
+
+fallzahlen %&gt;%
+  left_join(spitalstatistik, by = c(&quot;Spitäler&quot; = &quot;Inst&quot;)) %&gt;% 
+  select(-i, -Jahr) -&gt; appdata
+
+# reduce size: remove all with less than 1 case
+appdata %&gt;% filter(Fallzahlen &gt; 1) -&gt; appdata
+
+appdata %&gt;% write_rds(&quot;../data/appdata.RDS&quot;)</code></pre>
+<p>Once the data is ready, the Shiny application can run.</p>
+</div>
+<div id="cluster-analysis" class="section level2">
+<h2>Cluster analysis</h2>
+<p>Next some code trying to make a cluster.</p>
+<pre class="r"><code>library(readxl)
+library(cluster)
+library(ggrepel)
+library(ggiraph)
+
+# read the data
+fallzahlen &lt;- read_rds(&quot;../data/fallzahlen_clean.RDS&quot;) 
+
+spitalstatistik  &lt;- read_excel(&quot;../data/kzp16_daten.xlsx&quot;, sheet = &quot;KZ2016_KZP16&quot;) %&gt;% 
+  filter(!is.na(KT)) %&gt;% 
+  # soft-hyphon is trouble
+  mutate_if(is.character, funs(gsub(&quot;\u00AD&quot;, &quot;-&quot;, ., perl = F)))
+
+# shrink to the columns that we want to filter on later
+hospitals &lt;- spitalstatistik %&gt;% 
+  select(institution = Inst, starts_with(&quot;Et&quot;), Akt) %&gt;% 
+  distinct() %&gt;% 
+  rowwise() %&gt;% 
+  mutate(revenue = sum(EtMedL, EtSonst, EtSubv)) %&gt;% 
+  select(institution, revenue, Akt) %&gt;% 
+  ungroup()
+
+# only Akutspitäler
+fallzahlen_akut &lt;- fallzahlen %&gt;% 
+  left_join(hospitals, by = c(&quot;Spitäler&quot; = &quot;institution&quot;)) %&gt;% 
+  filter(revenue &gt; 250*1000000,
+         str_detect(Akt, &quot;A&quot;)) %&gt;% 
+  group_by(DRG) %&gt;% 
+  filter(sum(Fallzahlen) &gt; 0) %&gt;% 
+  ungroup()
+
+# simplify
+fallzahlen_akut_simply &lt;- fallzahlen_akut %&gt;% 
+  select(Spitäler, Bez, Fallzahlen) %&gt;% 
+  group_by(Spitäler, Bez) %&gt;% 
+  summarise(Fallzahlen = sum(Fallzahlen)) %&gt;% 
+  ungroup() 
+
+# Anzahl Spitäler
+fallzahlen_akut_simply %&gt;% select(Spitäler) %&gt;% distinct() %&gt;% nrow()
+# Anzahl DRGs
+fallzahlen_akut_simply %&gt;% select(Bez) %&gt;% distinct() %&gt;% nrow()
+
+# prepare data for cluster // PROPORTIONAL
+clusterdata &lt;- fallzahlen_akut_simply %&gt;%
+  group_by(Spitäler) %&gt;%
+  mutate(Fallzahlen_prop = Fallzahlen/sum(Fallzahlen)) %&gt;% 
+  ungroup() %&gt;%
+  select(Spitäler, Bez, Fallzahlen_prop) %&gt;%
+  distinct() %&gt;%
+  spread(Bez, Fallzahlen_prop) %&gt;%
+  replace(., is.na(.), as.double(0))
+
+
+# We need the rownames for the matrix conversion, ignore the warning
+rownames(clusterdata) &lt;- clusterdata %&gt;% select(Spitäler) %&gt;% pull()
+
+clusterdata_m &lt;- clusterdata %&gt;% select(-Spitäler) %&gt;% as.matrix()
+
+## assume number k of clusters
+k &lt;- 3
+
+## compute distance matrix
+distMtrx &lt;- clusterdata_m %&gt;% dist(diag=F) 
+
+# ## build dendogram to visualize hierarchichal clustering
+# hClusts &lt;- distMtrx %&gt;% hclust()
+# hClusts %&gt;% ggdendrogram(rotate = TRUE, theme_dendro = FALSE) +
+#   theme(axis.title.x=element_blank(), axis.title.y=element_blank())
+# 
+## perform k-medoids clustering with pam
+k_med_clust &lt;- distMtrx %&gt;% pam(k = k)
+
+clustering &lt;- k_med_clust$clustering %&gt;% 
+  as.factor() %&gt;% 
+  as.data.frame() %&gt;% 
+  rownames_to_column(&quot;Spitäler&quot;) %&gt;% 
+  as_tibble() %&gt;% 
+  rename(cluster = 2)
+
+## perform multidimensional scaling to visualize distances in 2 dimensions 
+mltDmScl &lt;- distMtrx %&gt;%
+  cmdscale() %&gt;%
+  as.data.frame() %&gt;%
+  rownames_to_column(&quot;Spitäler&quot;) %&gt;% 
+  as_tibble() %&gt;% 
+  left_join(clustering, by = &quot;Spitäler&quot;)
+
+## plot clustering results and dissimilarities of RegionGruppe
+mltDmScl %&gt;% 
+  left_join(hospitals, by = c(&quot;Spitäler&quot; = &quot;institution&quot;)) %&gt;% 
+  ggplot(aes(V1, V2, color = cluster, size = revenue)) + 
+  geom_point_interactive(alpha = 0.6, aes(tooltip = Spitäler %&gt;% str_remove_all(&quot;\&#39;&quot;))) +
+  # coord_fixed(ratio = 1, xlim = c(-3,1.5)) + 
+  labs(x = &quot;Component 1&quot;, y = &quot;Component 2&quot;, color=&quot;Cluster&quot;,
+       title = &quot;k-medoids Cluster&quot;, subtitle = &quot;Datenjahr 2016, k = 4&quot;,
+       caption = &quot;Quelle: BAG Fallzahlen &amp; Spitalstatistik&quot;) +
+  #geom_text_repel(aes(label = Spitäler), size = 3) +
+  #geom_text_repel(aes(label = if_else(Ertrag &gt; 500000000, Spitäler, &quot;&quot;)), size = 3) +
+  scale_size(guide=&quot;none&quot;) +
+  theme_bw() -&gt; myplot
+
+ggiraph(code = print(myplot))</code></pre>
+</div>
+</div>
+<div id="shiny-code" class="section level1">
+<h1>Shiny code</h1>
+<pre class="r"><code># shiny app
+
+library(shiny)
+library(tidyverse)
+library(cluster)
+# library(ggrepel)
+library(ggiraph)
+library(tm)
+library(wordcloud)
+library(RColorBrewer)
+library(tidytext)
+
+appdata &lt;- readRDS(&quot;data/appdata.RDS&quot;)
+
+# appdata &lt;- read_feather(&quot;appdata.feather&quot;)
+
+rot &lt;- 0.1 # proportion of words rotated 90 degrees [set to default]
+nwords &lt;- 80 # max number of words to be plotted
+cex.scale &lt;- c(2,0.5) # relative scale of word sizes, i.e. size of biggest and smallest word [set to default]
+
+mycolors &lt;- brewer.pal(4, &quot;Set1&quot;)
+
+# 1. UI ----
+ui &lt;- fluidPage(
+  
+  titlePanel(&quot;Clusteranalyse Schweizer Spitäler&quot;),
+  
+  # 1.1. User input and Cluser ----
+  fluidRow(
+    column(3, 
+           checkboxGroupInput(&quot;Akt&quot;, &quot;Spitaltyp&quot;, 
+                              choiceNames = c(&quot;Akut&quot;, &quot;Psych&quot;, &quot;Reha&quot;, &quot;Birth&quot;),
+                              choiceValues = c(&quot;A&quot;, &quot;P&quot;, &quot;R&quot;, &quot;B&quot;),
+                              selected = c(&quot;A&quot;)),
+           sliderInput(&quot;k&quot;, &quot;Clusteranzahl k&quot;, min = 1, max = 4, value = 3),
+           # numericInput(&quot;Ertrag_min&quot;, &quot;Ertrag mind. (Mio.)&quot;, 200, min = 0, max = 1000, step = 5),
+           sliderInput(&quot;Ertrag_min&quot;, &quot;Ertrag mind. (Mio.)&quot;, min = 0, max = 1000, value = 200, step = 5)
+    ),
+    column(9, ggiraphOutput(&quot;myplot&quot;))
+  ),
+  
+  # 1.2. Wordclouds ----
+  fluidRow(
+    
+    column(3, plotOutput(&quot;wcplot1&quot;)),
+    
+    column(3, plotOutput(&quot;wcplot2&quot;)),
+    
+    column(3, plotOutput(&quot;wcplot3&quot;)),
+    
+    column(3, plotOutput(&quot;wcplot4&quot;))
+  )
+  
+)
+
+# 2. Server ----
+server &lt;- function(input, output, session) {
+  
+  
+  # Filter the data as selected by user 
+  fallzahlen_akut &lt;- reactive({
+    
+    appdata %&gt;% 
+      filter(str_detect(Akt, paste(input$Akt, collapse = &quot;|&quot;)),
+             Ertrag &gt; input$Ertrag_min*1000000)
+  })
+  
+  # prepare the cluster data
+  clusterdata &lt;- reactive({
+    
+    fallzahlen_akut() %&gt;% 
+      select(Spitäler, Bez, Fallzahlen) %&gt;% 
+      group_by(Spitäler, Bez) %&gt;% 
+      summarise(Fallzahlen = sum(Fallzahlen)) %&gt;% 
+      group_by(Spitäler) %&gt;%
+      mutate(Fallzahlen_prop = Fallzahlen/sum(Fallzahlen)) %&gt;% 
+      ungroup() %&gt;%
+      select(Spitäler, Bez, Fallzahlen_prop) %&gt;%
+      distinct() %&gt;%
+      spread(Bez, Fallzahlen_prop) %&gt;%
+      replace(., is.na(.), as.double(0))
+    
+  })
+  
+  distancematrix &lt;- reactive({
+    
+    clusterdata() %&gt;% 
+      select(-Spitäler) %&gt;% 
+      dist(diag = T)
+    
+  })
+  
+  clustering &lt;- reactive({
+    
+    pam(distancematrix(), k = input$k)$clustering %&gt;% 
+      as.factor() %&gt;% 
+      as.data.frame() %&gt;% 
+      as_tibble() %&gt;%
+      rename(cluster = 1) %&gt;% 
+      bind_cols(clusterdata() %&gt;% select(Spitäler)) %&gt;% 
+      select(Spitäler, cluster)
+    
+  })
+  
+  multidimscaled &lt;- reactive({
+    
+    distancematrix() %&gt;%
+      cmdscale() %&gt;%
+      as.data.frame() %&gt;%
+      as_tibble() %&gt;% 
+      bind_cols(clusterdata() %&gt;% select(Spitäler)) %&gt;% 
+      select(Spitäler, V1, V2) %&gt;% 
+      left_join(clustering(), by = &quot;Spitäler&quot;) %&gt;% 
+      left_join(fallzahlen_akut() %&gt;% 
+                  select(Spitäler, Ertrag) %&gt;%
+                  distinct(),
+                by = &quot;Spitäler&quot;)
+    
+  })
+  
+  wordcluster &lt;- reactive({
+    
+    fallzahlen_akut() %&gt;% 
+      select(Spitäler, Fallzahlen, Bez) %&gt;% 
+      # filter(Fallzahlen &gt; 300) %&gt;% 
+      left_join(clustering(), by = &quot;Spitäler&quot;) %&gt;% 
+      group_by(cluster, Bez) %&gt;% 
+      summarise(Faelle = sum(Fallzahlen)) %&gt;% 
+      ungroup() %&gt;% 
+      unnest_tokens(Wort, Bez, to_lower = F) %&gt;% 
+      group_by(cluster, Wort) %&gt;% 
+      summarise(Faelle = sum(Faelle)) %&gt;% 
+      ungroup() %&gt;% 
+      filter(!Wort %in% stopwords(&quot;german&quot;),
+             !str_detect(Wort, &quot;[0-9]&quot;),
+             str_length(Wort) &gt; 2) %&gt;% 
+      #mutate(Wort = wordStem(Wort, &quot;german&quot;)) %&gt;% 
+      group_by(cluster, Wort) %&gt;% 
+      summarise(Faelle = sum(Faelle)) %&gt;% 
+      ungroup()
+    
+  })
+  
+  output$myplot &lt;- renderggiraph({
+    
+    multidimscaled() %&gt;% 
+      ggplot(aes(V1, V2, color = cluster, size = Ertrag)) + 
+      geom_point_interactive(alpha = 0.6, aes(tooltip = Spitäler %&gt;% str_remove_all(&quot;\&#39;&quot;))) +
+      # coord_fixed(ratio = 1, xlim = c(-3,1.5)) + 
+      labs(x = &quot;Component 1&quot;, y = &quot;Component 2&quot;, color=&quot;Cluster&quot;,
+           title = &quot;k-medoids Cluster&quot;, subtitle = &quot;Datenjahr 2016, k = 4&quot;,
+           caption = &quot;Quelle: BAG Fallzahlen &amp; Spitalstatistik&quot;) +
+      #geom_text_repel(aes(label = Spitäler), size = 3) +
+      #geom_text_repel(aes(label = if_else(Ertrag &gt; 500000000, Spitäler, &quot;&quot;)), size = 3) +
+      scale_size(guide=&quot;none&quot;) +
+      scale_color_manual(values = mycolors[1:input$k]) + 
+      theme_bw() -&gt; gg
+    
+    ggiraph(code = print(gg), width = 1)
+    
+  })
+  
+  output$wcplot1 &lt;- renderPlot({
+    
+    c &lt;- 1
+    par(mar=c(1,1,1,1))
+    words &lt;- wordcluster() %&gt;% filter(cluster == c) %&gt;% select(Wort) %&gt;% pull()
+    freq &lt;- wordcluster() %&gt;% filter(cluster == c) %&gt;% select(Faelle) %&gt;% pull()
+    
+    cols.alternating &lt;- rep(c(&quot;#555751&quot;, mycolors[c]), nwords)
+    
+    wordcloud(words = words, 
+              freq = freq,
+              max.words = nwords,
+              colors = cols.alternating,
+              rot.per = rot,
+              scale = cex.scale,
+              random.order = F)
+    
+  })
+  
+  output$wcplot2 &lt;- renderPlot({
+    
+    c &lt;- 2
+    par(mar=c(1,1,1,1))
+    req(input$k &gt;= c)
+    
+    words &lt;- wordcluster() %&gt;% filter(cluster == c) %&gt;% select(Wort) %&gt;% pull()
+    freq &lt;- wordcluster() %&gt;% filter(cluster == c) %&gt;% select(Faelle) %&gt;% pull()
+    
+    cols.alternating &lt;- rep(c(&quot;#555751&quot;, mycolors[c]), nwords)
+    
+    wordcloud(words = words, 
+              freq = freq,
+              max.words = nwords,
+              colors = cols.alternating,
+              rot.per = rot,
+              scale = cex.scale,
+              random.order = F)
+    
+  })
+  
+  output$wcplot3 &lt;- renderPlot({
+    
+    c &lt;- 3
+    par(mar=c(1,1,1,1))
+    req(input$k &gt;= c)
+    
+    words &lt;- wordcluster() %&gt;% filter(cluster == c) %&gt;% select(Wort) %&gt;% pull()
+    freq &lt;- wordcluster() %&gt;% filter(cluster == c) %&gt;% select(Faelle) %&gt;% pull()
+    
+    cols.alternating &lt;- rep(c(&quot;#555751&quot;, mycolors[c]), nwords)
+    
+    wordcloud(words = words, 
+              freq = freq,
+              max.words = nwords,
+              colors = cols.alternating,
+              rot.per = rot,
+              scale = cex.scale,
+              random.order = F)
+    
+  })
+  
+  output$wcplot4 &lt;- renderPlot({
+    
+    c &lt;- 4
+    par(mar=c(1,1,1,1))
+    req(input$k &gt;= c)
+    
+    words &lt;- wordcluster() %&gt;% filter(cluster == c) %&gt;% select(Wort) %&gt;% pull()
+    freq &lt;- wordcluster() %&gt;% filter(cluster == c) %&gt;% select(Faelle) %&gt;% pull()
+    
+    cols.alternating &lt;- rep(c(&quot;#555751&quot;, mycolors[c]), nwords)
+    
+    wordcloud(words = words, 
+              freq = freq,
+              max.words = nwords,
+              colors = cols.alternating,
+              rot.per = rot,
+              # scale = cex.scale,
+              random.order = F)
+    
+  })
+  
+}
+
+shinyApp(ui, server)</code></pre>
+<p>Code also on <a href="https://github.com/mgei/swiss-hospitals-classification">Github</a>.</p>
+</div>
+
+</div>
+
+  
+<footer class='entry-footer'>
+  <div class='container sep-before'><div class='tags'><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <path d="M20.59,13.41l-7.17,7.17a2,2,0,0,1-2.83,0L2,12V2H12l8.59,8.59A2,2,0,0,1,20.59,13.41Z"/>
+  <line x1="7" y1="7" x2="7" y2="7"/>
+  
+</svg>
+<span class='screen-reader-text'>Tags: </span><a class='tag' href='/tags/cluster-analysis/'>cluster analysis</a>, <a class='tag' href='/tags/r/'>R</a>, <a class='tag' href='/tags/shiny/'>shiny</a>, <a class='tag' href='/tags/hospitals/'>hospitals</a>, <a class='tag' href='/tags/healthcare/'>healthcare</a>, <a class='tag' href='/tags/switzerland/'>Switzerland</a></div>
+
+  </div>
+</footer>
+
+
+</article>
+
+<nav class='entry-nav'>
+  <div class='container'><div class='prev-entry sep-before'>
+      <a href='/post/econovo-fallzahlen-cluster/'>
+        <span aria-hidden='true'><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <line x1="20" y1="12" x2="4" y2="12"/>
+  <polyline points="10 18 4 12 10 6"/>
+  
+</svg>
+ Previous</span>
+        <span class='screen-reader-text'>Previous post: </span>(de) Über die Fallzahlen in Schweizer Spitälern</a>
+    </div><div class='next-entry sep-before'>
+      <a href='/post/tel-search-api/'>
+        <span class='screen-reader-text'>Next post: </span>R function for accessing the tel.search.ch API<span aria-hidden='true'>Next <svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <line x1="4" y1="12" x2="20" y2="12"/>
+  <polyline points="14 6 20 12 14 18"/>
+  
+</svg>
+</span>
+      </a>
+    </div></div>
+</nav>
+
+
+
+
+      </main>
+
+      <footer id='footer' class='footer'>
+        <div class='container sep-before'><section class='widget widget-social_menu sep-after'><nav aria-label='Social Menu'>
+    <ul><li>
+        <a href='mailto:mg@econovo.ch' target='_blank' rel='noopener'>
+          <span class='screen-reader-text'>Contact via Email</span><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+  <polyline points="22,6 12,13 2,6"/>
+  
+</svg>
+</a>
+      </li><li>
+        <a href='https://github.com/mgei' target='_blank' rel='noopener'>
+          <span class='screen-reader-text'>Open Github account in new tab</span><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+  
+</svg>
+</a>
+      </li><li>
+        <a href='https://twitter.com//' target='_blank' rel='noopener'>
+          <span class='screen-reader-text'>Open Twitter account in new tab</span><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/>
+  
+</svg>
+</a>
+      </li><li>
+        <a href='https://linkedin.com/in/martin-geissmann-59034a10b' target='_blank' rel='noopener'>
+          <span class='screen-reader-text'>Open Linkedin account in new tab</span><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+  <rect x="2" y="9" width="4" height="12"/>
+  <circle cx="4" cy="4" r="2"/>
+  
+</svg>
+</a>
+      </li><li>
+        <a href='https://www.youtube.com/channel/UCUYqJUnI_P0XYk6_FRyvb2w' target='_blank' rel='noopener'>
+          <span class='screen-reader-text'>Open Youtube account in new tab</span><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z" />
+  <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02" />
+  
+</svg>
+</a>
+      </li></ul>
+  </nav>
+</section><div class='copyright'>
+  <p> &copy; 2019 mgei.github.io </p>
+</div>
+
+        </div>
+      </footer>
+
+    </div>
+  </div><script>window.__assets_js_src="/assets/js/"</script>
+
+<script src='/assets/js/main.9e5c4cf4.js'></script><script src='/js/custom.js'></script>
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+</body>
+
+</html>
+

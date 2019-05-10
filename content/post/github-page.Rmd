@@ -2,7 +2,7 @@
 slug: "github-page"
 date: "2019-05-08"
 title: "How I made this Github page"
-tags: ["github-page", "hugo", "blogdown", "R"]
+tags: ["github-page", "hugo", "blogdown", "R", "website"]
 authors: [mgei]
 ---
 
@@ -11,6 +11,8 @@ authors: [mgei]
 The website you are looking at is made with R and [blogdown](https://github.com/rstudio/blogdown). Blogdown allows to use the static website generator [Hugo](https://gohugo.io/) with R Markdown documents (\*.Rmd) instead of only pure markdown (\*.md). So one can easily integrate R code which is rendered like a HTML R Markdown document.
 
 The theme used here is [Minimo](https://github.com/MunifTanjim/minimo).
+
+![*Screenshot of the Minimo theme with default colors*](/images/post/minimo-screenshot.png)
 
 ## Github pages
 
@@ -65,7 +67,7 @@ Custom CSS could be added in *static/css/custom.css*.
 
 The solution is given [here](https://github.com/MunifTanjim/minimo/issues/100#issuecomment-368229189) by the theme creator.
 
-Add this to *footer.html* (*themees/minimo/layouts/partials/*):
+Add this to *footer.html* (*themes/minimo/layouts/partials/*):
 
 ```html
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
@@ -100,6 +102,70 @@ On a more general note, in R Markdown to have a link open in a new tab one would
 
 ```md
 [Google](https://www.google.com){target="_blank"}
+```
+
+### Logo
+
+The logo in the example site from the Minimo theme is 512x512 pixels. The favicon is 16x16 and there's also a larger one with 32x32. The logo used here is generated with this code:
+
+```{r logogen, message=F, warning=F}
+library(tidyverse)
+
+set.seed(10)
+data <- tibble(letters1 = c("m","g", "e", "i", "."),
+               letters2 = c("mgei",".", "github", ".", "io"),
+               y = c(2.5, 1, 1.3, 3, 4),
+               x = 1:5)
+n <- 50
+jitt <- tibble(y = c(rnorm(n, mean = 2.5, sd = 0.5),
+                     rnorm(n, mean = 1, sd = 0.2),
+                     rnorm(n, mean = 1.3, sd = 0.2),
+                     rnorm(n, mean = 3, sd = 1.5),
+                     rnorm(n, mean = 4, sd = 0.5)),
+               x = c(rep(1, n),
+                     rep(2, n),
+                     rep(3, n),
+                     rep(4, n),
+                     rep(5, n)),
+               col = sample(c("r","b"), 5*n, replace = T))
+
+data %>% 
+  ggplot(aes(x = x, y = y)) +
+  geom_col(aes(fill = letters1), alpha = 0.6) +
+  # geom_text(aes(label = letters1), size = 8, alpha = 0.8, y = 4.5) +
+  # geom_smooth(method = "lm", se = FALSE, fullrange = T) +
+  geom_jitter(data = jitt, aes(color = col), alpha = 0.2, size = 2.3) +
+  scale_x_continuous(labels = c("mgei", ".", "github", ".", "io"), breaks = 1:5) +
+  scale_y_continuous(expand = c(-0.1, 0)) +
+  scale_color_manual(values = c("red", "black")) +
+  scale_fill_brewer(palette = 6, type = "qual") +
+  labs(x = "", y = "") +
+  theme_classic() +
+  theme(legend.position = "none",
+        axis.text.x = element_text(size = 35),
+        axis.text.y = element_blank()) -> g
+
+g
+
+```
+
+To save the ggplot:
+
+```{r saveplot, eval=F}
+png("../../static/images/logo.png", width = 512, height = 512, units = "px")
+g
+dev.off()
+
+png("favicon.png", width = 32, height = 32, units = "px")
+g + theme(text = element_blank(),
+          line = element_blank())
+dev.off()
+```
+
+The latter does not work very well. Instead use ImageMagick in Ubuntu to resize:
+
+```
+convert -resize 32x32 logo.png favicon.png
 ```
 
 ### Other interesting observations

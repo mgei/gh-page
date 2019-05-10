@@ -5,10 +5,42 @@
     <link>https://mgei.github.io/tags/healthcare/</link>
     <description>Recent content in healthcare on mgei.github.io</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Mon, 14 Jan 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 14 Apr 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://mgei.github.io/tags/healthcare/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>(de) In welchen Kantonen es mehr Anwälte als Ärzte gibt</title>
+      <link>https://mgei.github.io/post/econovo-lawyers/</link>
+      <pubDate>Sun, 14 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgei.github.io/post/econovo-lawyers/</guid>
+      <description>  Published here: https://www.econovo.ch/de/2019/04/14/anwaelte-aerzte/
+ </description>
+    </item>
+    
+    <item>
+      <title>Swiss Hospitals Classification</title>
+      <link>https://mgei.github.io/post/swiss-hospitals-classification/</link>
+      <pubDate>Wed, 20 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgei.github.io/post/swiss-hospitals-classification/</guid>
+      <description>Originally published on Github: https://github.com/mgei/swiss-hospitals-classification
+ R Shiny app for cluster analysis A simple R Shiny app to classify Swiss hospitals according to their DRG positions using clustering and wordclouds.
+The app is also live for trying here: http://swiss-hospitals-classification.econovo.io/
+ Data We use data from the Swiss Federal Office of Public Health (BAG), i.e. data from the DRG Fallzahlensuche. We have the following script to scrape data from http://www.</description>
+    </item>
+    
+    <item>
+      <title>(de) Über die Fallzahlen in Schweizer Spitälern</title>
+      <link>https://mgei.github.io/post/econovo-fallzahlen-cluster/</link>
+      <pubDate>Mon, 18 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgei.github.io/post/econovo-fallzahlen-cluster/</guid>
+      <description>  Published here: https://www.econovo.ch/en/2019/03/18/fallzahlen-cluster/
+ </description>
+    </item>
     
     <item>
       <title>(de) Tarifentwicklung und Abrechnung in der Radiologie</title>
@@ -47,6 +79,16 @@
       
       <guid>https://mgei.github.io/post/econovo-bi-radiology/</guid>
       <description>  Published here: https://www.econovo.ch/en/2018/10/27/bi-leistungsanalyse-rad/
+ </description>
+    </item>
+    
+    <item>
+      <title>(de) Kapitel 39 im TARMED 2018</title>
+      <link>https://mgei.github.io/post/econovo-kapitel-39-tarmed/</link>
+      <pubDate>Wed, 19 Sep 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgei.github.io/post/econovo-kapitel-39-tarmed/</guid>
+      <description>  Published here: https://www.econovo.ch/en/2018/09/19/tarmed-kapitel-39/
  </description>
     </item>
     

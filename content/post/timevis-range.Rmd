@@ -2,7 +2,7 @@
 slug: "timevis-range"
 date: "2019-02-21"
 title: "Create open/closing hours data for timevis"
-tags: ["R"]
+tags: ["R", "timevis"]
 authors: [mgei]
 ---
 

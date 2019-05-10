@@ -18,7 +18,8 @@
       <guid>https://mgei.github.io/post/github-page/</guid>
       <description>R / Blogdown / Hugo The website you are looking at is made with R and blogdown. Blogdown allows to use the static website generator Hugo with R Markdown documents (*.Rmd) instead of only pure markdown (*.md). So one can easily integrate R code which is rendered like a HTML R Markdown document.
 The theme used here is Minimo.
- Github pages This website hosted on Github. It’s open source, the code is available here.</description>
+Screenshot of the Minimo theme with default colors
+  Github pages This website hosted on Github.</description>
     </item>
     
     <item>
@@ -75,6 +76,18 @@ As we will see, in four cantons lawyers outnumber physicians.</description>
  tel.search.ch API This function allows to fetch enteries from the Swiss telephone directory tel.search.ch. It returns a tibble (dplyr).
 Here’s the official API documentation. The R function allows for all of the fields. Additionally, when adj_formats is set to TRUE (default), then the column formats are set appropriately (character, date/time, integer).
 library(tidyverse) library(lubridate) library(httr) library(xml2) library(purrr) telsearch &amp;lt;- function(was, wo, q, privat = 1, firma = 1, pos, maxnum = 200, key, lang, count_only = 0, adj_formats = T) { if (missing(was)) { stop(&amp;quot;was keyword is mandatory&amp;quot;) } if (missing(key) &amp;amp; maxnum &amp;gt; 10) { warning(&amp;quot;without a key the maxnum is 10&amp;quot;) maxnum &amp;lt;- 10 } url &amp;lt;- paste0(&amp;quot;https://tel.</description>
+    </item>
+    
+    <item>
+      <title>Swiss Hospitals Classification</title>
+      <link>https://mgei.github.io/post/swiss-hospitals-classification/</link>
+      <pubDate>Wed, 20 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgei.github.io/post/swiss-hospitals-classification/</guid>
+      <description>Originally published on Github: https://github.com/mgei/swiss-hospitals-classification
+ R Shiny app for cluster analysis A simple R Shiny app to classify Swiss hospitals according to their DRG positions using clustering and wordclouds.
+The app is also live for trying here: http://swiss-hospitals-classification.econovo.io/
+ Data We use data from the Swiss Federal Office of Public Health (BAG), i.e. data from the DRG Fallzahlensuche. We have the following script to scrape data from http://www.</description>
     </item>
     
     <item>

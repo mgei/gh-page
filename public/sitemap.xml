@@ -75,6 +75,12 @@
   </url>
   
   <url>
+    <loc>https://mgei.github.io/tags/website/</loc>
+    <lastmod>2019-05-08T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://mgei.github.io/post/european-banks/</loc>
     <lastmod>2019-05-06T00:00:00+00:00</lastmod>
   </url>
@@ -144,6 +150,12 @@
   </url>
   
   <url>
+    <loc>https://mgei.github.io/tags/maps/</loc>
+    <lastmod>2019-04-22T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://mgei.github.io/tags/spatial/</loc>
     <lastmod>2019-04-22T00:00:00+00:00</lastmod>
     <priority>0</priority>
@@ -168,6 +180,12 @@
   
   <url>
     <loc>https://mgei.github.io/tags/switzerland/</loc>
+    <lastmod>2019-04-14T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://mgei.github.io/tags/healthcare/</loc>
     <lastmod>2019-04-14T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
@@ -219,14 +237,31 @@
   </url>
   
   <url>
-    <loc>https://mgei.github.io/post/econovo-fallzahlen-cluster/</loc>
-    <lastmod>2019-03-18T00:00:00+00:00</lastmod>
+    <loc>https://mgei.github.io/tags/web-scraping/</loc>
+    <lastmod>2019-03-21T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://mgei.github.io/post/swiss-hospitals-classification/</loc>
+    <lastmod>2019-03-20T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://mgei.github.io/tags/cluster-analysis/</loc>
-    <lastmod>2019-03-18T00:00:00+00:00</lastmod>
+    <lastmod>2019-03-20T00:00:00+00:00</lastmod>
     <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://mgei.github.io/tags/shiny/</loc>
+    <lastmod>2019-03-20T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://mgei.github.io/post/econovo-fallzahlen-cluster/</loc>
+    <lastmod>2019-03-18T00:00:00+00:00</lastmod>
   </url>
   
   <url>
@@ -235,8 +270,20 @@
   </url>
   
   <url>
+    <loc>https://mgei.github.io/tags/timevis/</loc>
+    <lastmod>2019-02-21T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://mgei.github.io/post/econovo-netzwerk-analyse/</loc>
     <lastmod>2019-02-01T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://mgei.github.io/tags/audit/</loc>
+    <lastmod>2019-02-01T00:00:00+00:00</lastmod>
+    <priority>0</priority>
   </url>
   
   <url>
@@ -279,13 +326,7 @@
   </url>
   
   <url>
-    <loc>https://mgei.github.io/tags/healthcare/</loc>
-    <lastmod>2019-01-14T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://mgei.github.io/tags/maps/</loc>
+    <loc>https://mgei.github.io/tags/tarmed/</loc>
     <lastmod>2019-01-14T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
@@ -369,12 +410,6 @@
   <url>
     <loc>https://mgei.github.io/post/econovo-kapitel-39-tarmed/</loc>
     <lastmod>2018-09-19T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://mgei.github.io/tags/tarmed/</loc>
-    <lastmod>2018-09-19T00:00:00+00:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>

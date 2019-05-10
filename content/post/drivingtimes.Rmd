@@ -2,7 +2,7 @@
 slug: "drivingtimes"
 date: "2019-03-27"
 title: "How far to the closest hospital?"
-tags: ["OSRM", "leaflet", "ggmap", "R", "hospitals", "Switzerland", "spatial", "Youtube"]
+tags: ["OSRM", "leaflet", "ggmap", "R", "hospitals", "Switzerland", "spatial", "Youtube", "maps"]
 authors: [mgei]
 ---
 

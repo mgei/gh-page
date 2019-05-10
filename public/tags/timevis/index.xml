@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>timevis on mgei.github.io</title>
+    <link>https://mgei.github.io/tags/timevis/</link>
+    <description>Recent content in timevis on mgei.github.io</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Thu, 21 Feb 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://mgei.github.io/tags/timevis/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Create open/closing hours data for timevis</title>
+      <link>https://mgei.github.io/post/timevis-range/</link>
+      <pubDate>Thu, 21 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgei.github.io/post/timevis-range/</guid>
+      <description>Originally published on a Github gist: https://gist.github.com/mgei/5708f7e605d5d23a45777a1d156b0ee8
+ Timevis Timevis is a package by Dean Attali to create fully interactive timeline visualizations in R. It is available on Github with a demo and how-to here: https://daattali.com/shiny/timevis-demo/
+ Range data library(tidyverse) library(lubridate) library(timevis) days &amp;lt;- tibble(date = seq(date(&amp;quot;2018-01-01&amp;quot;), by = &amp;quot;days&amp;quot;, length.out = 2)) %&amp;gt;% mutate(day = weekdays(date)) hours &amp;lt;- tibble(daytype = c(&amp;quot;weekday&amp;quot;, &amp;quot;weekday&amp;quot;, &amp;quot;weekday&amp;quot;, &amp;quot;weekday&amp;quot;, &amp;quot;weekday&amp;quot;, &amp;quot;weekend&amp;quot;), time_from = c(&amp;quot;00:00&amp;quot;, &amp;quot;08:00&amp;quot;, &amp;quot;12:00&amp;quot;, &amp;quot;13:00&amp;quot;, &amp;quot;17:00&amp;quot;, &amp;quot;00:00&amp;quot; ), time_to = c(&amp;quot;08:00&amp;quot;, &amp;quot;12:00&amp;quot;, &amp;quot;13:00&amp;quot;, &amp;quot;17:00&amp;quot;, &amp;quot;23:59&amp;quot;, &amp;quot;23:59&amp;quot; ), state = c(&amp;quot;closed&amp;quot;, &amp;quot;open&amp;quot;, &amp;quot;closed&amp;quot;, &amp;quot;open&amp;quot;, &amp;quot;closed&amp;quot;, &amp;quot;closed&amp;quot;)) week &amp;lt;- tibble(#day = c(&amp;quot;Monday&amp;quot;, &amp;quot;Tuesday&amp;quot;, &amp;quot;Wednesday&amp;quot;, &amp;quot;Thursday&amp;quot;, &amp;quot;Friday&amp;quot;, &amp;quot;Saturday&amp;quot;, &amp;quot;Sunday&amp;quot;), day = c(&amp;quot;Montag&amp;quot;, &amp;quot;Dienstag&amp;quot;, &amp;quot;Mittwoch&amp;quot;, &amp;quot;Donnerstag&amp;quot;, &amp;quot;Freitag&amp;quot;, &amp;quot;Samstag&amp;quot;, &amp;quot;Sonntag&amp;quot;), daytype = c(rep(&amp;quot;weekday&amp;quot;, 5), rep(&amp;quot;weekend&amp;quot;, 2))) days %&amp;gt;% left_join(left_join(week, hours, by = &amp;quot;daytype&amp;quot;), by = &amp;quot;day&amp;quot;) %&amp;gt;% mutate(start = ymd_hm(paste(date, time_from)), end = ymd_hm(paste(date, time_to))) %&amp;gt;% select(start, end, state) -&amp;gt; openclosed openclosed ## # A tibble: 10 x 3 ## start end state ## &amp;lt;dttm&amp;gt; &amp;lt;dttm&amp;gt; &amp;lt;chr&amp;gt; ## 1 2018-01-01 00:00:00 2018-01-01 08:00:00 closed ## 2 2018-01-01 08:00:00 2018-01-01 12:00:00 open ## 3 2018-01-01 12:00:00 2018-01-01 13:00:00 closed ## 4 2018-01-01 13:00:00 2018-01-01 17:00:00 open ## 5 2018-01-01 17:00:00 2018-01-01 23:59:00 closed ## 6 2018-01-02 00:00:00 2018-01-02 08:00:00 closed ## 7 2018-01-02 08:00:00 2018-01-02 12:00:00 open ## 8 2018-01-02 12:00:00 2018-01-02 13:00:00 closed ## 9 2018-01-02 13:00:00 2018-01-02 17:00:00 open ## 10 2018-01-02 17:00:00 2018-01-02 23:59:00 closed timevis(data = openclosed %&amp;gt;% mutate(content = state, style = if_else(state == &amp;quot;open&amp;quot;, &amp;quot;background: green&amp;quot;, &amp;quot;background: red&amp;quot;))) + -   {&#34;</description>
+    </item>
+    
+  </channel>
+</rss>

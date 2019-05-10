@@ -2,7 +2,7 @@
 slug: "econovo-kapitel-39-tarmed"
 date: "2018-09-19"
 title: "(de) Kapitel 39 im TARMED 2018"
-tags: ["Econovo", "Tarmed", "radiology", "medical care"]
+tags: ["Econovo", "Tarmed", "radiology", "medical care", "healthcare", "Switzerland"]
 authors: [mgei]
 ---
   

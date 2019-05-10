@@ -2,7 +2,7 @@
 slug: "econovo-bi-radiology"
 date: "2018-10-27"
 title: "(de) Business Intelligence und Leistungsanalyse bei Radiologieinstituten"
-tags: ["Econovo", "business intelligence", "radiology", "healthcare"]
+tags: ["Econovo", "business intelligence", "radiology", "healthcare", "audit"]
 authors: [mgei]
 ---
   

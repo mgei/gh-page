@@ -5,7 +5,7 @@
 <meta name='description' content='Originally published on a Github gist: https://gist.github.com/mgei/5708f7e605d5d23a45777a1d156b0ee8
  Timevis Timevis is a package by Dean Attali to create fully interactive timeline visualizations in R. It is available on Github with a demo and how-to here: https://daattali.com/shiny/timevis-demo/
  Range data library(tidyverse) library(lubridate) library(timevis) days &lt;- tibble(date = seq(date(&quot;2018-01-01&quot;), by = &quot;days&quot;, length.out = 2)) %&gt;% mutate(day = weekdays(date)) hours &lt;- tibble(daytype = c(&quot;weekday&quot;, &quot;weekday&quot;, &quot;weekday&quot;, &quot;weekday&quot;, &quot;weekday&quot;, &quot;weekend&quot;), time_from = c(&quot;00:00&quot;, &quot;08:00&quot;, &quot;12:00&quot;, &quot;13:00&quot;, &quot;17:00&quot;, &quot;00:00&quot; ), time_to = c(&quot;08:00&quot;, &quot;12:00&quot;, &quot;13:00&quot;, &quot;17:00&quot;, &quot;23:59&quot;, &quot;23:59&quot; ), state = c(&quot;closed&quot;, &quot;open&quot;, &quot;closed&quot;, &quot;open&quot;, &quot;closed&quot;, &quot;closed&quot;)) week &lt;- tibble(#day = c(&quot;Monday&quot;, &quot;Tuesday&quot;, &quot;Wednesday&quot;, &quot;Thursday&quot;, &quot;Friday&quot;, &quot;Saturday&quot;, &quot;Sunday&quot;), day = c(&quot;Montag&quot;, &quot;Dienstag&quot;, &quot;Mittwoch&quot;, &quot;Donnerstag&quot;, &quot;Freitag&quot;, &quot;Samstag&quot;, &quot;Sonntag&quot;), daytype = c(rep(&quot;weekday&quot;, 5), rep(&quot;weekend&quot;, 2))) days %&gt;% left_join(left_join(week, hours, by = &quot;daytype&quot;), by = &quot;day&quot;) %&gt;% mutate(start = ymd_hm(paste(date, time_from)), end = ymd_hm(paste(date, time_to))) %&gt;% select(start, end, state) -&gt; openclosed openclosed ## # A tibble: 10 x 3 ## start end state ## &lt;dttm&gt; &lt;dttm&gt; &lt;chr&gt; ## 1 2018-01-01 00:00:00 2018-01-01 08:00:00 closed ## 2 2018-01-01 08:00:00 2018-01-01 12:00:00 open ## 3 2018-01-01 12:00:00 2018-01-01 13:00:00 closed ## 4 2018-01-01 13:00:00 2018-01-01 17:00:00 open ## 5 2018-01-01 17:00:00 2018-01-01 23:59:00 closed ## 6 2018-01-02 00:00:00 2018-01-02 08:00:00 closed ## 7 2018-01-02 08:00:00 2018-01-02 12:00:00 open ## 8 2018-01-02 12:00:00 2018-01-02 13:00:00 closed ## 9 2018-01-02 13:00:00 2018-01-02 17:00:00 open ## 10 2018-01-02 17:00:00 2018-01-02 23:59:00 closed timevis(data = openclosed %&gt;% mutate(content = state, style = if_else(state == &quot;open&quot;, &quot;background: green&quot;, &quot;background: red&quot;))) &#43; -   {&#34;'>
-<meta name='theme-color' content='#369b6c'>
+<meta name='theme-color' content='#ffb266'>
 
 <meta property='og:title' content='Create open/closing hours data for timevis • Martin Geissmann'>
 <meta property='og:description' content='Originally published on a Github gist: https://gist.github.com/mgei/5708f7e605d5d23a45777a1d156b0ee8
@@ -13,7 +13,7 @@
  Range data library(tidyverse) library(lubridate) library(timevis) days &lt;- tibble(date = seq(date(&quot;2018-01-01&quot;), by = &quot;days&quot;, length.out = 2)) %&gt;% mutate(day = weekdays(date)) hours &lt;- tibble(daytype = c(&quot;weekday&quot;, &quot;weekday&quot;, &quot;weekday&quot;, &quot;weekday&quot;, &quot;weekday&quot;, &quot;weekend&quot;), time_from = c(&quot;00:00&quot;, &quot;08:00&quot;, &quot;12:00&quot;, &quot;13:00&quot;, &quot;17:00&quot;, &quot;00:00&quot; ), time_to = c(&quot;08:00&quot;, &quot;12:00&quot;, &quot;13:00&quot;, &quot;17:00&quot;, &quot;23:59&quot;, &quot;23:59&quot; ), state = c(&quot;closed&quot;, &quot;open&quot;, &quot;closed&quot;, &quot;open&quot;, &quot;closed&quot;, &quot;closed&quot;)) week &lt;- tibble(#day = c(&quot;Monday&quot;, &quot;Tuesday&quot;, &quot;Wednesday&quot;, &quot;Thursday&quot;, &quot;Friday&quot;, &quot;Saturday&quot;, &quot;Sunday&quot;), day = c(&quot;Montag&quot;, &quot;Dienstag&quot;, &quot;Mittwoch&quot;, &quot;Donnerstag&quot;, &quot;Freitag&quot;, &quot;Samstag&quot;, &quot;Sonntag&quot;), daytype = c(rep(&quot;weekday&quot;, 5), rep(&quot;weekend&quot;, 2))) days %&gt;% left_join(left_join(week, hours, by = &quot;daytype&quot;), by = &quot;day&quot;) %&gt;% mutate(start = ymd_hm(paste(date, time_from)), end = ymd_hm(paste(date, time_to))) %&gt;% select(start, end, state) -&gt; openclosed openclosed ## # A tibble: 10 x 3 ## start end state ## &lt;dttm&gt; &lt;dttm&gt; &lt;chr&gt; ## 1 2018-01-01 00:00:00 2018-01-01 08:00:00 closed ## 2 2018-01-01 08:00:00 2018-01-01 12:00:00 open ## 3 2018-01-01 12:00:00 2018-01-01 13:00:00 closed ## 4 2018-01-01 13:00:00 2018-01-01 17:00:00 open ## 5 2018-01-01 17:00:00 2018-01-01 23:59:00 closed ## 6 2018-01-02 00:00:00 2018-01-02 08:00:00 closed ## 7 2018-01-02 08:00:00 2018-01-02 12:00:00 open ## 8 2018-01-02 12:00:00 2018-01-02 13:00:00 closed ## 9 2018-01-02 13:00:00 2018-01-02 17:00:00 open ## 10 2018-01-02 17:00:00 2018-01-02 23:59:00 closed timevis(data = openclosed %&gt;% mutate(content = state, style = if_else(state == &quot;open&quot;, &quot;background: green&quot;, &quot;background: red&quot;))) &#43; -   {&#34;'>
 <meta property='og:url' content='https://mgei.github.io/post/timevis-range/'>
 <meta property='og:site_name' content='mgei.github.io'>
-<meta property='og:type' content='article'><meta property='og:image' content='https://www.gravatar.com/avatar/a525a84fae399669fa8861e2661df00b?s=256'><meta property='article:section' content='post'><meta property='article:tag' content='R'><meta property='article:published_time' content='2019-02-21T00:00:00Z'/><meta property='article:modified_time' content='2019-02-21T00:00:00Z'/><meta name='twitter:card' content='summary'>
+<meta property='og:type' content='article'><meta property='og:image' content='https://www.gravatar.com/avatar/a525a84fae399669fa8861e2661df00b?s=256'><meta property='article:section' content='post'><meta property='article:tag' content='R'><meta property='article:tag' content='timevis'><meta property='article:published_time' content='2019-02-21T00:00:00Z'/><meta property='article:modified_time' content='2019-02-21T00:00:00Z'/><meta name='twitter:card' content='summary'>
 
 <meta name="generator" content="Hugo 0.55.5" />
 
@@ -23,7 +23,7 @@
   
   <link rel='icon' href='/favicon.ico'>
 <link rel='stylesheet' href='/assets/css/main.fb20af92.css'><link rel='stylesheet' href='/css/custom.css'><style>
-:root{--color-accent:#369b6c;}
+:root{--color-accent:#ffb266;}
 </style>
 
   
@@ -225,7 +225,7 @@ openclosed</code></pre>
   <line x1="7" y1="7" x2="7" y2="7"/>
   
 </svg>
-<span class='screen-reader-text'>Tags: </span><a class='tag' href='/tags/r/'>R</a></div>
+<span class='screen-reader-text'>Tags: </span><a class='tag' href='/tags/r/'>R</a>, <a class='tag' href='/tags/timevis/'>timevis</a></div>
 
   </div>
 </footer>

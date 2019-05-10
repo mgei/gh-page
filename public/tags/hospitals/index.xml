@@ -21,6 +21,18 @@
     </item>
     
     <item>
+      <title>Swiss Hospitals Classification</title>
+      <link>https://mgei.github.io/post/swiss-hospitals-classification/</link>
+      <pubDate>Wed, 20 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgei.github.io/post/swiss-hospitals-classification/</guid>
+      <description>Originally published on Github: https://github.com/mgei/swiss-hospitals-classification
+ R Shiny app for cluster analysis A simple R Shiny app to classify Swiss hospitals according to their DRG positions using clustering and wordclouds.
+The app is also live for trying here: http://swiss-hospitals-classification.econovo.io/
+ Data We use data from the Swiss Federal Office of Public Health (BAG), i.e. data from the DRG Fallzahlensuche. We have the following script to scrape data from http://www.</description>
+    </item>
+    
+    <item>
       <title>(de) Über die Fallzahlen in Schweizer Spitälern</title>
       <link>https://mgei.github.io/post/econovo-fallzahlen-cluster/</link>
       <pubDate>Mon, 18 Mar 2019 00:00:00 +0000</pubDate>

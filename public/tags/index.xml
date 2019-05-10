@@ -47,6 +47,15 @@
     </item>
     
     <item>
+      <title>website</title>
+      <link>https://mgei.github.io/tags/website/</link>
+      <pubDate>Wed, 08 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgei.github.io/tags/website/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>finance</title>
       <link>https://mgei.github.io/tags/finance/</link>
       <pubDate>Mon, 06 May 2019 00:00:00 +0000</pubDate>
@@ -128,6 +137,15 @@
     </item>
     
     <item>
+      <title>maps</title>
+      <link>https://mgei.github.io/tags/maps/</link>
+      <pubDate>Mon, 22 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgei.github.io/tags/maps/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>spatial</title>
       <link>https://mgei.github.io/tags/spatial/</link>
       <pubDate>Mon, 22 Apr 2019 00:00:00 +0000</pubDate>
@@ -160,6 +178,15 @@
       <pubDate>Sun, 14 Apr 2019 00:00:00 +0000</pubDate>
       
       <guid>https://mgei.github.io/tags/switzerland/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>healthcare</title>
+      <link>https://mgei.github.io/tags/healthcare/</link>
+      <pubDate>Sun, 14 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgei.github.io/tags/healthcare/</guid>
       <description></description>
     </item>
     
@@ -218,11 +245,47 @@
     </item>
     
     <item>
+      <title>web scraping</title>
+      <link>https://mgei.github.io/tags/web-scraping/</link>
+      <pubDate>Thu, 21 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgei.github.io/tags/web-scraping/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>cluster analysis</title>
       <link>https://mgei.github.io/tags/cluster-analysis/</link>
-      <pubDate>Mon, 18 Mar 2019 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 20 Mar 2019 00:00:00 +0000</pubDate>
       
       <guid>https://mgei.github.io/tags/cluster-analysis/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>shiny</title>
+      <link>https://mgei.github.io/tags/shiny/</link>
+      <pubDate>Wed, 20 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgei.github.io/tags/shiny/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>timevis</title>
+      <link>https://mgei.github.io/tags/timevis/</link>
+      <pubDate>Thu, 21 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgei.github.io/tags/timevis/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>audit</title>
+      <link>https://mgei.github.io/tags/audit/</link>
+      <pubDate>Fri, 01 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgei.github.io/tags/audit/</guid>
       <description></description>
     </item>
     
@@ -263,20 +326,11 @@
     </item>
     
     <item>
-      <title>healthcare</title>
-      <link>https://mgei.github.io/tags/healthcare/</link>
+      <title>Tarmed</title>
+      <link>https://mgei.github.io/tags/tarmed/</link>
       <pubDate>Mon, 14 Jan 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://mgei.github.io/tags/healthcare/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>maps</title>
-      <link>https://mgei.github.io/tags/maps/</link>
-      <pubDate>Mon, 14 Jan 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://mgei.github.io/tags/maps/</guid>
+      <guid>https://mgei.github.io/tags/tarmed/</guid>
       <description></description>
     </item>
     
@@ -331,15 +385,6 @@
       <pubDate>Wed, 05 Dec 2018 00:00:00 +0000</pubDate>
       
       <guid>https://mgei.github.io/tags/deep-learning/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Tarmed</title>
-      <link>https://mgei.github.io/tags/tarmed/</link>
-      <pubDate>Wed, 19 Sep 2018 00:00:00 +0000</pubDate>
-      
-      <guid>https://mgei.github.io/tags/tarmed/</guid>
       <description></description>
     </item>
     

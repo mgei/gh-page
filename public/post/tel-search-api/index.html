@@ -6,7 +6,7 @@
  tel.search.ch API This function allows to fetch enteries from the Swiss telephone directory tel.search.ch. It returns a tibble (dplyr).
 Here’s the official API documentation. The R function allows for all of the fields. Additionally, when adj_formats is set to TRUE (default), then the column formats are set appropriately (character, date/time, integer).
 library(tidyverse) library(lubridate) library(httr) library(xml2) library(purrr) telsearch &lt;- function(was, wo, q, privat = 1, firma = 1, pos, maxnum = 200, key, lang, count_only = 0, adj_formats = T) { if (missing(was)) { stop(&quot;was keyword is mandatory&quot;) } if (missing(key) &amp; maxnum &gt; 10) { warning(&quot;without a key the maxnum is 10&quot;) maxnum &lt;- 10 } url &lt;- paste0(&quot;https://tel.'>
-<meta name='theme-color' content='#369b6c'>
+<meta name='theme-color' content='#ffb266'>
 
 <meta property='og:title' content='R function for accessing the tel.search.ch API • Martin Geissmann'>
 <meta property='og:description' content='Originally published on Github: https://github.com/mgei/telsearchR
@@ -15,7 +15,7 @@ Here’s the official API documentation. The R function allows for all of the fi
 library(tidyverse) library(lubridate) library(httr) library(xml2) library(purrr) telsearch &lt;- function(was, wo, q, privat = 1, firma = 1, pos, maxnum = 200, key, lang, count_only = 0, adj_formats = T) { if (missing(was)) { stop(&quot;was keyword is mandatory&quot;) } if (missing(key) &amp; maxnum &gt; 10) { warning(&quot;without a key the maxnum is 10&quot;) maxnum &lt;- 10 } url &lt;- paste0(&quot;https://tel.'>
 <meta property='og:url' content='https://mgei.github.io/post/tel-search-api/'>
 <meta property='og:site_name' content='mgei.github.io'>
-<meta property='og:type' content='article'><meta property='og:image' content='https://www.gravatar.com/avatar/a525a84fae399669fa8861e2661df00b?s=256'><meta property='article:section' content='post'><meta property='article:tag' content='R'><meta property='article:tag' content='API'><meta property='article:tag' content='dplyr'><meta property='article:published_time' content='2019-03-21T00:00:00Z'/><meta property='article:modified_time' content='2019-03-21T00:00:00Z'/><meta name='twitter:card' content='summary'>
+<meta property='og:type' content='article'><meta property='og:image' content='https://www.gravatar.com/avatar/a525a84fae399669fa8861e2661df00b?s=256'><meta property='article:section' content='post'><meta property='article:tag' content='R'><meta property='article:tag' content='API'><meta property='article:tag' content='dplyr'><meta property='article:tag' content='web scraping'><meta property='article:published_time' content='2019-03-21T00:00:00Z'/><meta property='article:modified_time' content='2019-03-21T00:00:00Z'/><meta name='twitter:card' content='summary'>
 
 <meta name="generator" content="Hugo 0.55.5" />
 
@@ -25,7 +25,7 @@ library(tidyverse) library(lubridate) library(httr) library(xml2) library(purrr)
   
   <link rel='icon' href='/favicon.ico'>
 <link rel='stylesheet' href='/assets/css/main.fb20af92.css'><link rel='stylesheet' href='/css/custom.css'><style>
-:root{--color-accent:#369b6c;}
+:root{--color-accent:#ffb266;}
 </style>
 
   
@@ -239,15 +239,15 @@ library(purrr)</code></pre>
 <pre><code>## # A tibble: 9 x 8
 ##   id    updated             published           title content nopromo
 ##   &lt;chr&gt; &lt;dttm&gt;              &lt;dttm&gt;              &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;  
-## 1 urn:… 2019-05-08 02:00:00 2019-05-08 02:00:00 Biol… &quot;Biola… *      
-## 2 urn:… 2019-05-08 02:00:00 2019-05-08 02:00:00 Oepf… &quot;Oepfe… &lt;NA&gt;   
-## 3 urn:… 2019-05-08 02:00:00 2019-05-08 02:00:00 Biol… &quot;Biola… &lt;NA&gt;   
-## 4 urn:… 2019-05-08 02:00:00 2019-05-08 02:00:00 Biol… &quot;Biola… &lt;NA&gt;   
-## 5 urn:… 2019-05-08 02:00:00 2019-05-08 02:00:00 Geno… &quot;Genos… *      
-## 6 urn:… 2019-05-08 02:00:00 2019-05-08 02:00:00 Benn… &quot;Benny… *      
-## 7 urn:… 2019-05-08 02:00:00 2019-05-08 02:00:00 Teuf… &quot;Teufe… *      
-## 8 urn:… 2019-05-08 02:00:00 2019-05-08 02:00:00 Stif… &quot;Stift… &lt;NA&gt;   
-## 9 urn:… 2019-05-08 02:00:00 2019-05-08 02:00:00 Zum … &quot;Zum B… *      
+## 1 urn:… 2019-05-10 02:00:00 2019-05-10 02:00:00 Biol… &quot;Biola… *      
+## 2 urn:… 2019-05-10 02:00:00 2019-05-10 02:00:00 Oepf… &quot;Oepfe… &lt;NA&gt;   
+## 3 urn:… 2019-05-10 02:00:00 2019-05-10 02:00:00 Biol… &quot;Biola… &lt;NA&gt;   
+## 4 urn:… 2019-05-10 02:00:00 2019-05-10 02:00:00 Biol… &quot;Biola… &lt;NA&gt;   
+## 5 urn:… 2019-05-10 02:00:00 2019-05-10 02:00:00 Geno… &quot;Genos… *      
+## 6 urn:… 2019-05-10 02:00:00 2019-05-10 02:00:00 Benn… &quot;Benny… *      
+## 7 urn:… 2019-05-10 02:00:00 2019-05-10 02:00:00 Teuf… &quot;Teufe… *      
+## 8 urn:… 2019-05-10 02:00:00 2019-05-10 02:00:00 Stif… &quot;Stift… &lt;NA&gt;   
+## 9 urn:… 2019-05-10 02:00:00 2019-05-10 02:00:00 Zum … &quot;Zum B… *      
 ## # … with 2 more variables: author &lt;chr&gt;, link &lt;chr&gt;</code></pre>
 </div>
 <div id="api-key" class="section level1">
@@ -267,7 +267,7 @@ library(purrr)</code></pre>
   <line x1="7" y1="7" x2="7" y2="7"/>
   
 </svg>
-<span class='screen-reader-text'>Tags: </span><a class='tag' href='/tags/r/'>R</a>, <a class='tag' href='/tags/api/'>API</a>, <a class='tag' href='/tags/dplyr/'>dplyr</a></div>
+<span class='screen-reader-text'>Tags: </span><a class='tag' href='/tags/r/'>R</a>, <a class='tag' href='/tags/api/'>API</a>, <a class='tag' href='/tags/dplyr/'>dplyr</a>, <a class='tag' href='/tags/web-scraping/'>web scraping</a></div>
 
   </div>
 </footer>
@@ -277,7 +277,7 @@ library(purrr)</code></pre>
 
 <nav class='entry-nav'>
   <div class='container'><div class='prev-entry sep-before'>
-      <a href='/post/econovo-fallzahlen-cluster/'>
+      <a href='/post/swiss-hospitals-classification/'>
         <span aria-hidden='true'><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
   
   <line x1="20" y1="12" x2="4" y2="12"/>
@@ -285,7 +285,7 @@ library(purrr)</code></pre>
   
 </svg>
  Previous</span>
-        <span class='screen-reader-text'>Previous post: </span>(de) Über die Fallzahlen in Schweizer Spitälern</a>
+        <span class='screen-reader-text'>Previous post: </span>Swiss Hospitals Classification</a>
     </div><div class='next-entry sep-before'>
       <a href='/post/drivingtimes/'>
         <span class='screen-reader-text'>Next post: </span>How far to the closest hospital?<span aria-hidden='true'>Next <svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>

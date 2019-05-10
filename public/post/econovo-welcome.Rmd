@@ -2,7 +2,7 @@
 slug: "econovo-welcome"
 date: "2018-11-21"
 title: "My company Econovo - new website"
-tags: ["Econovo"]
+tags: ["Econovo", "website"]
 authors: [mgei]
 ---
   

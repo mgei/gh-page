@@ -5,7 +5,7 @@
 <meta name='description' content='Originally published on RPubs: http://rpubs.com/mgei/pca-usecase
  library(tidyverse) library(tidyquant) library(quantmod) library(lubridate) library(broom) # for tidying up linear models library(factoextra) Data FTSE 350 Industrial Engineering index. The index components are Bodycote, Hill&amp;Smith, IMI, Rotork, Spirax-Sarco Engineering, and Weir Group (components).
 index &lt;- read_csv(&quot;postdata/pca-usecase/FTSE 350 Industrial Engineering Historical Data.csv&quot;) index %&lt;&gt;% rename(date = Date) %&gt;% mutate(date = mdy(date), adjusted = Price) %&gt;% select(-Vol., -`Change %`) # gets data from Yahoo Finance bodycote &lt;- tq_get(&quot;BOY.'>
-<meta name='theme-color' content='#369b6c'>
+<meta name='theme-color' content='#ffb266'>
 
 <meta property='og:title' content='PCA use case • Martin Geissmann'>
 <meta property='og:description' content='Originally published on RPubs: http://rpubs.com/mgei/pca-usecase
@@ -23,7 +23,7 @@ index &lt;- read_csv(&quot;postdata/pca-usecase/FTSE 350 Industrial Engineering 
   
   <link rel='icon' href='/favicon.ico'>
 <link rel='stylesheet' href='/assets/css/main.fb20af92.css'><link rel='stylesheet' href='/css/custom.css'><style>
-:root{--color-accent:#369b6c;}
+:root{--color-accent:#ffb266;}
 </style>
 
   

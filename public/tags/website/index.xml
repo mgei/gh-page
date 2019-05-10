@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>website on mgei.github.io</title>
+    <link>https://mgei.github.io/tags/website/</link>
+    <description>Recent content in website on mgei.github.io</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Wed, 08 May 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://mgei.github.io/tags/website/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>How I made this Github page</title>
+      <link>https://mgei.github.io/post/github-page/</link>
+      <pubDate>Wed, 08 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgei.github.io/post/github-page/</guid>
+      <description>R / Blogdown / Hugo The website you are looking at is made with R and blogdown. Blogdown allows to use the static website generator Hugo with R Markdown documents (*.Rmd) instead of only pure markdown (*.md). So one can easily integrate R code which is rendered like a HTML R Markdown document.
+The theme used here is Minimo.
+Screenshot of the Minimo theme with default colors
+  Github pages This website hosted on Github.</description>
+    </item>
+    
+    <item>
+      <title>My company Econovo - new website</title>
+      <link>https://mgei.github.io/post/econovo-welcome/</link>
+      <pubDate>Wed, 21 Nov 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgei.github.io/post/econovo-welcome/</guid>
+      <description>  Published here: https://www.econovo.ch/en/2018/11/21/welcome-from-econovo/
+ </description>
+    </item>
+    
+    <item>
+      <title>Hello World</title>
+      <link>https://mgei.github.io/post/hello-world/</link>
+      <pubDate>Sun, 01 Jan 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgei.github.io/post/hello-world/</guid>
+      <description>Hello Page</description>
+    </item>
+    
+  </channel>
+</rss>

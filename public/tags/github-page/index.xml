@@ -18,7 +18,8 @@
       <guid>https://mgei.github.io/post/github-page/</guid>
       <description>R / Blogdown / Hugo The website you are looking at is made with R and blogdown. Blogdown allows to use the static website generator Hugo with R Markdown documents (*.Rmd) instead of only pure markdown (*.md). So one can easily integrate R code which is rendered like a HTML R Markdown document.
 The theme used here is Minimo.
- Github pages This website hosted on Github. It’s open source, the code is available here.</description>
+Screenshot of the Minimo theme with default colors
+  Github pages This website hosted on Github.</description>
     </item>
     
   </channel>

@@ -1,0 +1,476 @@
+---
+slug: "swiss-hospitals-classification"
+date: "2019-03-20"
+title: "Swiss Hospitals Classification"
+tags: ["cluster analysis", "R", "shiny", "hospitals", "healthcare", "Switzerland"]
+authors: [mgei]
+---
+
+> Originally published on Github: https://github.com/mgei/swiss-hospitals-classification
+
+# R Shiny app for cluster analysis
+
+A simple R Shiny app to classify Swiss hospitals according to their DRG positions using clustering and wordclouds.
+
+The app is also live for trying here: http://swiss-hospitals-classification.econovo.io/
+
+![](/images/post/swiss-hospitals-classification.png)
+
+## Data
+
+We use data from the Swiss Federal Office of Public Health (BAG), i.e. data from the [*DRG Fallzahlensuche*](http://www.drg-fallzahlsuche.admin.ch/de/systems/8?codes=&hospitals=&activeTab=&hospitalSearch=). We have the following script to scrape data from http://www.drg-fallzahlsuche.admin.ch
+
+```{r scrape, eval=F}
+
+library(tidyverse)
+library(xml2)
+library(rvest)
+
+scrape_fallzahlen <- function(link = "http://www.drg-fallzahlsuche.admin.ch/de/systems/6/codes/", 
+                              from = 1, to = 3661, 
+                              getstring = "?level=Adrg", 
+                              save_every_n = 100, 
+                              childsafety = T) {
+  
+  if (childsafety) { stop("Turn off childsafety after you had a look at the code.")}
+  
+  fallzahlen <- tibble()
+  
+  for (i in 1:to) {
+    url <- str_c(link, i, getstring)
+    
+    data <- read_html(url)
+    
+    info <- data %>% html_nodes("h2") %>% html_text() %>% last() %>% str_split("\n", simplify = T)
+    DRG <- info[2]
+    Jahr <- info[3]
+    Bez <- info[4]
+    
+    table <- data %>% html_table(header = T) %>% 
+      data.frame() %>% 
+      as_tibble() %>% 
+      mutate(DRG = DRG, Jahr = Jahr, Bez = Bez, i = i) %>% 
+      mutate(Fallzahlen = as.character(Fallzahlen))
+    
+    fallzahlen <- fallzahlen %>% bind_rows(table) 
+    
+    if (!i %% save_every_n | i == to) {
+      # save it every n loops and at the end obviously
+      fallzahlen %>% write_rds(str_c("../data/data", i, ".RDS"))
+    }
+    print(str_c("Saved at ", i, sep = ""))
+  }
+  
+  # clean the data
+  fallzahlen_clean <- fallzahlen %>% 
+    mutate(Fallzahlen = str_replace(Fallzahlen, "< 5", "1") %>% 
+             str_remove_all("\'")) %>% 
+    mutate(Fallzahlen = as.integer(Fallzahlen))
+  
+  fallzahlen_clean %>% write_rds("../data/fallzahlen_clean.RDS")
+}
+```
+
+Also we use the [Key figures for Swiss hospitals](https://www.bag.admin.ch/bag/de/home/zahlen-und-statistiken/zahlen-fakten-zu-spitaelern/kennzahlen-der-schweizer-spitaeler.html), `wget http://www.bag-anw.admin.ch/2016_taglab/2016_spitalstatistik/data/download/kzp16_daten.xlsx`. There's data for 2017 now also.
+
+Data preparation:
+
+```{r dataprep, eval = F}
+# read the data
+fallzahlen <- read_rds("../data/fallzahlen_clean.RDS") %>%
+  mutate_if(is.character, funs(gsub("\u00AD", "-", ., perl = F))) %>% 
+  filter(Spitäler != "Alle Fälle")
+
+spitalstatistik  <- read_excel("../data/kzp16_daten.xlsx", sheet = "KZ2016_KZP16") %>% 
+  filter(!is.na(KT)) %>% 
+  # soft-hyphon is trouble
+  mutate_if(is.character, funs(gsub("\u00AD", "-", ., perl = F)))
+
+# what we need from spitalstatistik
+# spistat_read %>% select(Inst, Akt, EtMedL, EtSonst, EtSubv) %>% distinct() -> spistat
+
+spitalstatistik <- spitalstatistik %>%
+  select(Inst, starts_with("Et"), Akt) %>%
+  distinct() %>%
+  rowwise() %>%
+  mutate(Ertrag = sum(EtMedL, EtSonst, EtSubv)) %>%
+  ungroup() %>%
+  select(Inst, Akt, Ertrag)
+
+fallzahlen %>%
+  left_join(spitalstatistik, by = c("Spitäler" = "Inst")) %>% 
+  select(-i, -Jahr) -> appdata
+
+# reduce size: remove all with less than 1 case
+appdata %>% filter(Fallzahlen > 1) -> appdata
+
+appdata %>% write_rds("../data/appdata.RDS")
+
+```
+
+Once the data is ready, the Shiny application can run.
+
+## Cluster analysis
+
+Next some code trying to make a cluster.
+
+```{r cluster, eval = F}
+library(readxl)
+library(cluster)
+library(ggrepel)
+library(ggiraph)
+
+# read the data
+fallzahlen <- read_rds("../data/fallzahlen_clean.RDS") 
+
+spitalstatistik  <- read_excel("../data/kzp16_daten.xlsx", sheet = "KZ2016_KZP16") %>% 
+  filter(!is.na(KT)) %>% 
+  # soft-hyphon is trouble
+  mutate_if(is.character, funs(gsub("\u00AD", "-", ., perl = F)))
+
+# shrink to the columns that we want to filter on later
+hospitals <- spitalstatistik %>% 
+  select(institution = Inst, starts_with("Et"), Akt) %>% 
+  distinct() %>% 
+  rowwise() %>% 
+  mutate(revenue = sum(EtMedL, EtSonst, EtSubv)) %>% 
+  select(institution, revenue, Akt) %>% 
+  ungroup()
+
+# only Akutspitäler
+fallzahlen_akut <- fallzahlen %>% 
+  left_join(hospitals, by = c("Spitäler" = "institution")) %>% 
+  filter(revenue > 250*1000000,
+         str_detect(Akt, "A")) %>% 
+  group_by(DRG) %>% 
+  filter(sum(Fallzahlen) > 0) %>% 
+  ungroup()
+
+# simplify
+fallzahlen_akut_simply <- fallzahlen_akut %>% 
+  select(Spitäler, Bez, Fallzahlen) %>% 
+  group_by(Spitäler, Bez) %>% 
+  summarise(Fallzahlen = sum(Fallzahlen)) %>% 
+  ungroup() 
+
+# Anzahl Spitäler
+fallzahlen_akut_simply %>% select(Spitäler) %>% distinct() %>% nrow()
+# Anzahl DRGs
+fallzahlen_akut_simply %>% select(Bez) %>% distinct() %>% nrow()
+
+# prepare data for cluster // PROPORTIONAL
+clusterdata <- fallzahlen_akut_simply %>%
+  group_by(Spitäler) %>%
+  mutate(Fallzahlen_prop = Fallzahlen/sum(Fallzahlen)) %>% 
+  ungroup() %>%
+  select(Spitäler, Bez, Fallzahlen_prop) %>%
+  distinct() %>%
+  spread(Bez, Fallzahlen_prop) %>%
+  replace(., is.na(.), as.double(0))
+
+
+# We need the rownames for the matrix conversion, ignore the warning
+rownames(clusterdata) <- clusterdata %>% select(Spitäler) %>% pull()
+
+clusterdata_m <- clusterdata %>% select(-Spitäler) %>% as.matrix()
+
+## assume number k of clusters
+k <- 3
+
+## compute distance matrix
+distMtrx <- clusterdata_m %>% dist(diag=F) 
+
+# ## build dendogram to visualize hierarchichal clustering
+# hClusts <- distMtrx %>% hclust()
+# hClusts %>% ggdendrogram(rotate = TRUE, theme_dendro = FALSE) +
+#   theme(axis.title.x=element_blank(), axis.title.y=element_blank())
+# 
+## perform k-medoids clustering with pam
+k_med_clust <- distMtrx %>% pam(k = k)
+
+clustering <- k_med_clust$clustering %>% 
+  as.factor() %>% 
+  as.data.frame() %>% 
+  rownames_to_column("Spitäler") %>% 
+  as_tibble() %>% 
+  rename(cluster = 2)
+
+## perform multidimensional scaling to visualize distances in 2 dimensions 
+mltDmScl <- distMtrx %>%
+  cmdscale() %>%
+  as.data.frame() %>%
+  rownames_to_column("Spitäler") %>% 
+  as_tibble() %>% 
+  left_join(clustering, by = "Spitäler")
+
+## plot clustering results and dissimilarities of RegionGruppe
+mltDmScl %>% 
+  left_join(hospitals, by = c("Spitäler" = "institution")) %>% 
+  ggplot(aes(V1, V2, color = cluster, size = revenue)) + 
+  geom_point_interactive(alpha = 0.6, aes(tooltip = Spitäler %>% str_remove_all("\'"))) +
+  # coord_fixed(ratio = 1, xlim = c(-3,1.5)) + 
+  labs(x = "Component 1", y = "Component 2", color="Cluster",
+       title = "k-medoids Cluster", subtitle = "Datenjahr 2016, k = 4",
+       caption = "Quelle: BAG Fallzahlen & Spitalstatistik") +
+  #geom_text_repel(aes(label = Spitäler), size = 3) +
+  #geom_text_repel(aes(label = if_else(Ertrag > 500000000, Spitäler, "")), size = 3) +
+  scale_size(guide="none") +
+  theme_bw() -> myplot
+
+ggiraph(code = print(myplot))
+```
+
+# Shiny code
+
+```{r shiny, eval = F}
+# shiny app
+
+library(shiny)
+library(tidyverse)
+library(cluster)
+# library(ggrepel)
+library(ggiraph)
+library(tm)
+library(wordcloud)
+library(RColorBrewer)
+library(tidytext)
+
+appdata <- readRDS("data/appdata.RDS")
+
+# appdata <- read_feather("appdata.feather")
+
+rot <- 0.1 # proportion of words rotated 90 degrees [set to default]
+nwords <- 80 # max number of words to be plotted
+cex.scale <- c(2,0.5) # relative scale of word sizes, i.e. size of biggest and smallest word [set to default]
+
+mycolors <- brewer.pal(4, "Set1")
+
+# 1. UI ----
+ui <- fluidPage(
+  
+  titlePanel("Clusteranalyse Schweizer Spitäler"),
+  
+  # 1.1. User input and Cluser ----
+  fluidRow(
+    column(3, 
+           checkboxGroupInput("Akt", "Spitaltyp", 
+                              choiceNames = c("Akut", "Psych", "Reha", "Birth"),
+                              choiceValues = c("A", "P", "R", "B"),
+                              selected = c("A")),
+           sliderInput("k", "Clusteranzahl k", min = 1, max = 4, value = 3),
+           # numericInput("Ertrag_min", "Ertrag mind. (Mio.)", 200, min = 0, max = 1000, step = 5),
+           sliderInput("Ertrag_min", "Ertrag mind. (Mio.)", min = 0, max = 1000, value = 200, step = 5)
+    ),
+    column(9, ggiraphOutput("myplot"))
+  ),
+  
+  # 1.2. Wordclouds ----
+  fluidRow(
+    
+    column(3, plotOutput("wcplot1")),
+    
+    column(3, plotOutput("wcplot2")),
+    
+    column(3, plotOutput("wcplot3")),
+    
+    column(3, plotOutput("wcplot4"))
+  )
+  
+)
+
+# 2. Server ----
+server <- function(input, output, session) {
+  
+  
+  # Filter the data as selected by user 
+  fallzahlen_akut <- reactive({
+    
+    appdata %>% 
+      filter(str_detect(Akt, paste(input$Akt, collapse = "|")),
+             Ertrag > input$Ertrag_min*1000000)
+  })
+  
+  # prepare the cluster data
+  clusterdata <- reactive({
+    
+    fallzahlen_akut() %>% 
+      select(Spitäler, Bez, Fallzahlen) %>% 
+      group_by(Spitäler, Bez) %>% 
+      summarise(Fallzahlen = sum(Fallzahlen)) %>% 
+      group_by(Spitäler) %>%
+      mutate(Fallzahlen_prop = Fallzahlen/sum(Fallzahlen)) %>% 
+      ungroup() %>%
+      select(Spitäler, Bez, Fallzahlen_prop) %>%
+      distinct() %>%
+      spread(Bez, Fallzahlen_prop) %>%
+      replace(., is.na(.), as.double(0))
+    
+  })
+  
+  distancematrix <- reactive({
+    
+    clusterdata() %>% 
+      select(-Spitäler) %>% 
+      dist(diag = T)
+    
+  })
+  
+  clustering <- reactive({
+    
+    pam(distancematrix(), k = input$k)$clustering %>% 
+      as.factor() %>% 
+      as.data.frame() %>% 
+      as_tibble() %>%
+      rename(cluster = 1) %>% 
+      bind_cols(clusterdata() %>% select(Spitäler)) %>% 
+      select(Spitäler, cluster)
+    
+  })
+  
+  multidimscaled <- reactive({
+    
+    distancematrix() %>%
+      cmdscale() %>%
+      as.data.frame() %>%
+      as_tibble() %>% 
+      bind_cols(clusterdata() %>% select(Spitäler)) %>% 
+      select(Spitäler, V1, V2) %>% 
+      left_join(clustering(), by = "Spitäler") %>% 
+      left_join(fallzahlen_akut() %>% 
+                  select(Spitäler, Ertrag) %>%
+                  distinct(),
+                by = "Spitäler")
+    
+  })
+  
+  wordcluster <- reactive({
+    
+    fallzahlen_akut() %>% 
+      select(Spitäler, Fallzahlen, Bez) %>% 
+      # filter(Fallzahlen > 300) %>% 
+      left_join(clustering(), by = "Spitäler") %>% 
+      group_by(cluster, Bez) %>% 
+      summarise(Faelle = sum(Fallzahlen)) %>% 
+      ungroup() %>% 
+      unnest_tokens(Wort, Bez, to_lower = F) %>% 
+      group_by(cluster, Wort) %>% 
+      summarise(Faelle = sum(Faelle)) %>% 
+      ungroup() %>% 
+      filter(!Wort %in% stopwords("german"),
+             !str_detect(Wort, "[0-9]"),
+             str_length(Wort) > 2) %>% 
+      #mutate(Wort = wordStem(Wort, "german")) %>% 
+      group_by(cluster, Wort) %>% 
+      summarise(Faelle = sum(Faelle)) %>% 
+      ungroup()
+    
+  })
+  
+  output$myplot <- renderggiraph({
+    
+    multidimscaled() %>% 
+      ggplot(aes(V1, V2, color = cluster, size = Ertrag)) + 
+      geom_point_interactive(alpha = 0.6, aes(tooltip = Spitäler %>% str_remove_all("\'"))) +
+      # coord_fixed(ratio = 1, xlim = c(-3,1.5)) + 
+      labs(x = "Component 1", y = "Component 2", color="Cluster",
+           title = "k-medoids Cluster", subtitle = "Datenjahr 2016, k = 4",
+           caption = "Quelle: BAG Fallzahlen & Spitalstatistik") +
+      #geom_text_repel(aes(label = Spitäler), size = 3) +
+      #geom_text_repel(aes(label = if_else(Ertrag > 500000000, Spitäler, "")), size = 3) +
+      scale_size(guide="none") +
+      scale_color_manual(values = mycolors[1:input$k]) + 
+      theme_bw() -> gg
+    
+    ggiraph(code = print(gg), width = 1)
+    
+  })
+  
+  output$wcplot1 <- renderPlot({
+    
+    c <- 1
+    par(mar=c(1,1,1,1))
+    words <- wordcluster() %>% filter(cluster == c) %>% select(Wort) %>% pull()
+    freq <- wordcluster() %>% filter(cluster == c) %>% select(Faelle) %>% pull()
+    
+    cols.alternating <- rep(c("#555751", mycolors[c]), nwords)
+    
+    wordcloud(words = words, 
+              freq = freq,
+              max.words = nwords,
+              colors = cols.alternating,
+              rot.per = rot,
+              scale = cex.scale,
+              random.order = F)
+    
+  })
+  
+  output$wcplot2 <- renderPlot({
+    
+    c <- 2
+    par(mar=c(1,1,1,1))
+    req(input$k >= c)
+    
+    words <- wordcluster() %>% filter(cluster == c) %>% select(Wort) %>% pull()
+    freq <- wordcluster() %>% filter(cluster == c) %>% select(Faelle) %>% pull()
+    
+    cols.alternating <- rep(c("#555751", mycolors[c]), nwords)
+    
+    wordcloud(words = words, 
+              freq = freq,
+              max.words = nwords,
+              colors = cols.alternating,
+              rot.per = rot,
+              scale = cex.scale,
+              random.order = F)
+    
+  })
+  
+  output$wcplot3 <- renderPlot({
+    
+    c <- 3
+    par(mar=c(1,1,1,1))
+    req(input$k >= c)
+    
+    words <- wordcluster() %>% filter(cluster == c) %>% select(Wort) %>% pull()
+    freq <- wordcluster() %>% filter(cluster == c) %>% select(Faelle) %>% pull()
+    
+    cols.alternating <- rep(c("#555751", mycolors[c]), nwords)
+    
+    wordcloud(words = words, 
+              freq = freq,
+              max.words = nwords,
+              colors = cols.alternating,
+              rot.per = rot,
+              scale = cex.scale,
+              random.order = F)
+    
+  })
+  
+  output$wcplot4 <- renderPlot({
+    
+    c <- 4
+    par(mar=c(1,1,1,1))
+    req(input$k >= c)
+    
+    words <- wordcluster() %>% filter(cluster == c) %>% select(Wort) %>% pull()
+    freq <- wordcluster() %>% filter(cluster == c) %>% select(Faelle) %>% pull()
+    
+    cols.alternating <- rep(c("#555751", mycolors[c]), nwords)
+    
+    wordcloud(words = words, 
+              freq = freq,
+              max.words = nwords,
+              colors = cols.alternating,
+              rot.per = rot,
+              # scale = cex.scale,
+              random.order = F)
+    
+  })
+  
+}
+
+shinyApp(ui, server)
+
+```
+
+Code also on [Github](https://github.com/mgei/swiss-hospitals-classification).
