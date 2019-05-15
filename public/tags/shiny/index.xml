@@ -16,7 +16,7 @@
       <pubDate>Fri, 12 Apr 2019 00:00:00 +0000</pubDate>
       
       <guid>https://mgei.github.io/post/engagement-ring/</guid>
-      <description>Engagement ring This is an R Shiny application for finding out about your girlfriend’s engagement ring preferences. The idea behind is to vote for one ring out of of two (see Ranked Pairs.
+      <description>Engagement ring This is an R Shiny application for finding out about your girlfriend’s engagement ring preferences. The idea behind is to vote for one ring out of of two (see Ranked Pairs).
 Screenshot
  At the end of this post is the full code, which is also available on Github.
  How it works t each round two random images are shown. The user can click on one according to his preference.</description>

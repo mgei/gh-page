@@ -2,21 +2,19 @@
 <html lang='en'><head>
   <meta charset='utf-8'>
 <meta name='viewport' content='width=device-width, initial-scale=1'>
-<meta name='description' content='  Published here: https://www.econovo.ch/en/2019/03/18/fallzahlen-cluster/
- '>
+<meta name='description' content='Movidius and Intel Neural Compute Stick 2  The new, improved Intel® Neural Compute Stick 2 (Intel® NCS 2) features Intel’s latest high-performance vision processing unit: the Intel® Movidius™ Myriad™ X VPU. With more compute cores and a dedicated hardware accelerator for deep neural network inference, the Intel® NCS 2 delivers up to eight times the performance boost compared to the previous generation Intel® Movidius™ Neural Compute Stick (NCS). — Intel'>
 <meta name='theme-color' content='#ffb266'>
 
-<meta property='og:title' content='(de) Über die Fallzahlen in Schweizer Spitälern • Martin Geissmann'>
-<meta property='og:description' content='  Published here: https://www.econovo.ch/en/2019/03/18/fallzahlen-cluster/
- '>
-<meta property='og:url' content='https://mgei.github.io/post/econovo-fallzahlen-cluster/'>
+<meta property='og:title' content='Trying out Intel&#39;s Neural Compute Stick • Martin Geissmann'>
+<meta property='og:description' content='Movidius and Intel Neural Compute Stick 2  The new, improved Intel® Neural Compute Stick 2 (Intel® NCS 2) features Intel’s latest high-performance vision processing unit: the Intel® Movidius™ Myriad™ X VPU. With more compute cores and a dedicated hardware accelerator for deep neural network inference, the Intel® NCS 2 delivers up to eight times the performance boost compared to the previous generation Intel® Movidius™ Neural Compute Stick (NCS). — Intel'>
+<meta property='og:url' content='https://mgei.github.io/post/movidius-gist/'>
 <meta property='og:site_name' content='mgei.github.io'>
-<meta property='og:type' content='article'><meta property='og:image' content='https://www.gravatar.com/avatar/a525a84fae399669fa8861e2661df00b?s=256'><meta property='article:section' content='post'><meta property='article:tag' content='cluster analysis'><meta property='article:tag' content='hospitals'><meta property='article:tag' content='Switzerland'><meta property='article:tag' content='healthcare'><meta property='article:tag' content='Econovo'><meta property='article:published_time' content='2019-03-18T00:00:00Z'/><meta property='article:modified_time' content='2019-03-18T00:00:00Z'/><meta name='twitter:card' content='summary'>
+<meta property='og:type' content='article'><meta property='og:image' content='https://www.gravatar.com/avatar/a525a84fae399669fa8861e2661df00b?s=256'><meta property='article:section' content='post'><meta property='article:tag' content='other'><meta property='article:tag' content='deep learning'><meta property='article:tag' content='AI'><meta property='article:published_time' content='2019-03-10T00:00:00Z'/><meta property='article:modified_time' content='2019-03-10T00:00:00Z'/><meta name='twitter:card' content='summary'>
 
 <meta name="generator" content="Hugo 0.55.5" />
 
-  <title>(de) Über die Fallzahlen in Schweizer Spitälern • Martin Geissmann</title>
-  <link rel='canonical' href='https://mgei.github.io/post/econovo-fallzahlen-cluster/'>
+  <title>Trying out Intel&#39;s Neural Compute Stick • Martin Geissmann</title>
+  <link rel='canonical' href='https://mgei.github.io/post/movidius-gist/'>
   
   
   <link rel='icon' href='/favicon.ico'>
@@ -91,7 +89,7 @@
     <style>.widget-breadcrumbs li:after{content:'\2f '}</style>
   <section class='widget widget-breadcrumbs sep-after'>
     <nav id='breadcrumbs'>
-      <ol><li><a href='/'>Home</a></li><li><span>(de) Über die Fallzahlen in Schweizer Spitälern</span></li></ol>
+      <ol><li><a href='/'>Home</a></li><li><span>Trying out Intel&#39;s Neural Compute Stick</span></li></ol>
     </nav>
   </section></div>
       </div>
@@ -110,7 +108,7 @@
   <header class='header entry-header'>
   <div class='container sep-after'>
     <div class='header-info'>
-      <h1 class='title'>(de) Über die Fallzahlen in Schweizer Spitälern</h1>
+      <h1 class='title'>Trying out Intel&#39;s Neural Compute Stick</h1>
       
 
     </div>
@@ -124,7 +122,7 @@
   
 </svg>
 <span class='screen-reader-text'>Posted on </span>
-  <time class='entry-date' datetime='2019-03-18T00:00:00Z'>18 Mar 2019</time>
+  <time class='entry-date' datetime='2019-03-10T00:00:00Z'>10 Mar 2019</time>
 </span>
 
   <span class='byline'><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
@@ -149,9 +147,35 @@
   
 
 
+<div id="movidius-and-intel-neural-compute-stick-2" class="section level2">
+<h2>Movidius and Intel Neural Compute Stick 2</h2>
 <blockquote>
-<p>Published here: <a href="https://www.econovo.ch/en/2019/03/18/fallzahlen-cluster/" class="uri">https://www.econovo.ch/en/2019/03/18/fallzahlen-cluster/</a></p>
+<p>The new, improved Intel® Neural Compute Stick 2 (Intel® NCS 2) features Intel’s latest high-performance vision processing unit: the Intel® Movidius™ Myriad™ X VPU. With more compute cores and a dedicated hardware accelerator for deep neural network inference, the Intel® NCS 2 delivers up to eight times the performance boost compared to the previous generation Intel® Movidius™ Neural Compute Stick (NCS). — <a href="https://software.intel.com/en-us/neural-compute-stick">Intel</a></p>
 </blockquote>
+<p>The sticks allow for deploying AI on the edge, for example on an Raspberry. Version one of the stick is <a href="https://software.intel.com/en-us/movidius-ncs">discontinued</a>, and followed by the Neural Compute Stick 2. Currently it can be purchased for around 100 USD.</p>
+<p>Intel offers the <a href="https://software.intel.com/en-us/openvino-toolkit">OpenVino toolkit</a> to transfer models e.g. from Tensorflow (and some other deep learning frameworks) to run on the sticks.</p>
+<p>Some photos of me trying out:</p>
+<div class="figure">
+<img src="/images/post/photo2.jpg" alt="Movidius stick plugged into a Raspberry Pi 3 Model B+" />
+<p class="caption"><em>Movidius stick plugged into a Raspberry Pi 3 Model B+</em></p>
+</div>
+<div class="figure">
+<img src="/images/post/photo1.jpg" alt="Running the human pose estimation sample" />
+<p class="caption"><em>Running the human pose estimation sample</em></p>
+</div>
+</div>
+<div id="useful-resources" class="section level2">
+<h2>Useful resources</h2>
+<ul>
+<li>Linux installation guide: <a href="https://docs.openvinotoolkit.org/latest/_docs_install_guides_installing_openvino_linux.html" class="uri">https://docs.openvinotoolkit.org/latest/_docs_install_guides_installing_openvino_linux.html</a></li>
+<li>Official Youtube Channel with tutorials: <a href="https://www.youtube.com/channel/UCkN8KINLvP1rMkL4trkNgTg" class="uri">https://www.youtube.com/channel/UCkN8KINLvP1rMkL4trkNgTg</a></li>
+<li>Raspberry installation guide: <a href="https://docs.openvinotoolkit.org/latest/_docs_install_guides_installing_openvino_raspbian.html" class="uri">https://docs.openvinotoolkit.org/latest/_docs_install_guides_installing_openvino_raspbian.html</a></li>
+</ul>
+</div>
+<div id="my-own-notes-gist" class="section level2">
+<h2>My own notes (gist)</h2>
+<script src="https://gist.github.com/mgei/5d6aa985a1bf95b4fadfbd99ae0bb267.js"></script>
+</div>
 
 </div>
 
@@ -163,7 +187,7 @@
   <line x1="7" y1="7" x2="7" y2="7"/>
   
 </svg>
-<span class='screen-reader-text'>Tags: </span><a class='tag' href='/tags/cluster-analysis/'>cluster analysis</a>, <a class='tag' href='/tags/hospitals/'>hospitals</a>, <a class='tag' href='/tags/switzerland/'>Switzerland</a>, <a class='tag' href='/tags/healthcare/'>healthcare</a>, <a class='tag' href='/tags/econovo/'>Econovo</a></div>
+<span class='screen-reader-text'>Tags: </span><a class='tag' href='/tags/other/'>other</a>, <a class='tag' href='/tags/deep-learning/'>deep learning</a>, <a class='tag' href='/tags/ai/'>AI</a></div>
 
   </div>
 </footer>
@@ -173,7 +197,7 @@
 
 <nav class='entry-nav'>
   <div class='container'><div class='prev-entry sep-before'>
-      <a href='/post/movidius-gist/'>
+      <a href='/post/timevis-range/'>
         <span aria-hidden='true'><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
   
   <line x1="20" y1="12" x2="4" y2="12"/>
@@ -181,10 +205,10 @@
   
 </svg>
  Previous</span>
-        <span class='screen-reader-text'>Previous post: </span>Trying out Intel&#39;s Neural Compute Stick</a>
+        <span class='screen-reader-text'>Previous post: </span>Create open/closing hours data for timevis</a>
     </div><div class='next-entry sep-before'>
-      <a href='/post/swiss-hospitals-classification/'>
-        <span class='screen-reader-text'>Next post: </span>Swiss Hospitals Classification<span aria-hidden='true'>Next <svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+      <a href='/post/econovo-fallzahlen-cluster/'>
+        <span class='screen-reader-text'>Next post: </span>(de) Über die Fallzahlen in Schweizer Spitälern<span aria-hidden='true'>Next <svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
   
   <line x1="4" y1="12" x2="20" y2="12"/>
   <polyline points="14 6 20 12 14 18"/>

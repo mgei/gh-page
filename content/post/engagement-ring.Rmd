@@ -8,7 +8,7 @@ authors: [mgei]
 
 ## Engagement ring
 
-This is an R Shiny application for finding out about your girlfriend's engagement ring preferences. The idea behind is to vote for one ring out of of two (see [Ranked Pairs](https://en.wikipedia.org/wiki/Ranked_pairs). 
+This is an R Shiny application for finding out about your girlfriend's engagement ring preferences. The idea behind is to vote for one ring out of of two (see [Ranked Pairs](https://en.wikipedia.org/wiki/Ranked_pairs)). 
 
 ![*Screenshot*](/images/post/ring-screenshot.png)
 
