@@ -1,0 +1,270 @@
+---
+slug: "engagement-ring"
+date: "2019-04-12"
+title: "R Shiny app for preference expression"
+tags: ["shiny", "R", "app", "feather format"]
+authors: [mgei]
+---
+
+## Engagement ring
+
+This is an R Shiny application for finding out about your girlfriend's engagement ring preferences. The idea behind is to vote for one ring out of of two (see [Ranked Pairs](https://en.wikipedia.org/wiki/Ranked_pairs). 
+
+![*Screenshot*](/images/post/ring-screenshot.png)
+
+At the end of this post is the full code, which is also available on [Github](https://github.com/mgei/engagement-ring).
+
+## How it works
+
+t each round two random images are shown. The user can click on one according to his preference. With the *superlike* button, one can express special liking. If out of the two images both are not liked, one can select *none of those*.
+
+Initially, a data frame with the image paths is created and saved in [feather format](https://blog.rstudio.com/2016/03/29/feather/). It is alimented by the contents in the *rings* folder. If it already exists, then it is simply loaded. **Feather** is a fast storage format for R (and support in Python). It is particularely useful in web applications.
+
+There is the option to build in *easter egg* images in a *specials* folder. The probability of showing a special image set is defined as *easteregg_prob* in `randomid()`.
+
+The user inputs are written to a timestamped csv, see *sessionfile*.
+
+Shiny allows to create a *clickable* plot or image with `renderImage()` and `imageOutput()`. User clicking on an image or plot can be used as an input. For example:
+
+```{r one, eval=F}
+# ui
+imageOutput("image1", click = "first")
+
+# server
+observeEvent(input$first, { ... })
+```
+
+To **append to csv** we use `write.table()`.
+
+```{r two, eval=F}
+write.table(tblheader, file = sessionfile, sep = ",", col.names = F)
+```
+
+with tblheader being a one-row matrix to append, and sessionfile being the timestamped csv.
+
+The csv file can later be used for analysis of the preference.
+
+## Notes
+
+* The images were downloaded from a jewelry seller's website using [Simple mass downloader](https://chrome.google.com/webstore/detail/simple-mass-downloader/abdkkegmcbiomijcbdaodaflgehfffed) Chrome extension.
+* It supports several 100s of images.
+* App displays well on a Smartphone also.
+* Why would one use R Shiny for this? Yes, there are a lot of frameworks that would do the job, but why not Shiny? As I would also do the user's data analysis in R later, it's a tool that is easily available and fast for an app one needs nothing but a one-use prototype.
+
+## Code
+
+```{r app, eval=F}
+library(shiny)
+library(feather)
+library(dplyr)
+
+if (file.exists("rings.fth")) {
+  rings <- read_feather("rings.fth")
+} else {
+  
+  library(tidyverse)
+  
+  files <- list.files("rings")
+  rings <- tibble(files) %>% 
+    mutate(path = "./rings")
+  
+  files_specials <- list.files("specials")
+  specials <- tibble(files = files_specials) %>% 
+    mutate(path = "./specials")
+  
+  rings <- bind_rows(rings, specials)
+  
+  rings <- rings %>% 
+    mutate(name = str_sub(files, start = 1, end = -5)) %>% 
+    separate(name, into = c("name", "variant"), sep = "\\(") %>% 
+    mutate(name = str_trim(name),
+           variant = variant %>% str_remove("\\)") %>% as.integer(),
+           id = row_number())
+  rings %>% write_feather("rings.fth")
+}
+
+nrings <- nrow(rings)
+
+randomid <- function(n, easteregg_prob = 0.00) {
+  if (runif(1) < easteregg_prob) {
+    r <- c(n-1, n)
+  } else {
+    r <- sample(1:(n-2), 2)
+  }
+  return(r)
+}
+
+sessionfile <- paste0("session", as.integer(Sys.time()), ".csv")
+# sessionfile <- "session_responses.csv"
+
+tblheader <- matrix(c("round", "id", "name", "file", "choice", "tdiff"), nrow = 1) #%>% as_tibble(rownames = NA)
+
+write.table(tblheader, file = sessionfile, sep = ",", col.names = F)
+
+ui <- fluidPage(
+  
+  tags$head(
+    tags$style(HTML("
+      @import url('//fonts.googleapis.com/css?family=Dancing+Script');
+      
+      h1 {
+        font-family: 'Dancing Script', cursive;
+        font-weight: 500;
+        line-height: 5;
+        color: #000000;
+      }
+    "))
+  ),
+  
+  fluidRow(column(12, h1("If you had to choose one...")), align = "center"),
+  br(), 
+  fluidRow(
+    column(6, class = "col-xs-6  col-md-6 col-lg-6", 
+           imageOutput("image1", click = "first"), 
+           actionButton("superfirst", "superlike", icon = icon("grin-stars"),
+                        style="color: #fff; background-color: #5f9fff"),
+           align = "right"),
+    column(6, class = "col-xs-6 col-md-6 col-lg-6",
+           imageOutput("image2", click = "second"),
+           actionButton("supersecond", "superlike", icon = icon("grin-stars"),
+                        style="color: #fff; background-color: #5f9fff"),
+           align = "left")
+  ),
+
+  br(), br(),
+  fluidRow(
+    column(10, actionButton("none", "none of these please", icon = icon("child")), align = "right")
+  )
+)
+
+server <- function(input, output, session) {
+  
+  
+  # counter for knowing in which round we are, i.e. which images were displayed together
+  counter <- reactiveValues(count = 1)
+  rimage <- reactiveValues(r = sample(1:(nrings-2), 2))
+  choice <- reactiveValues(c = c(0, 0))
+  t0 <- reactiveValues(t = Sys.time())
+  
+  # normal likes
+  observeEvent(input$first, {
+    
+    choice$c <- c(1, -1)
+    
+    temptbl <- tibble(round = rep(counter$count, 2),
+                      id = rimage$r,
+                      image = rings[rimage$r, "name"] %>% unlist(),
+                      file = rings[rimage$r, "files"] %>% unlist(),
+                      choice = choice$c,
+                      tdiff = as.integer(difftime(Sys.time(), t0$t, units = "secs")))
+    # print(temptbl)
+    write.table(temptbl, sessionfile, sep = ",", col.names = F, append = T)
+    
+    counter$count <- counter$count + 1
+    # rimage$r <- sample(1:nrings, 2)
+    rimage$r <- randomid(nrings)
+    t0$t <- Sys.time()
+  })
+  
+  observeEvent(input$second, {
+    
+    choice$c <- c(-1, 1)
+    
+    temptbl <- tibble(round = rep(counter$count, 2),
+                      id = rimage$r,
+                      image = rings[rimage$r, "name"] %>% unlist(),
+                      file = rings[rimage$r, "files"] %>% unlist(),
+                      choice = choice$c,
+                      tdiff = as.integer(difftime(Sys.time(), t0$t, units = "secs")))
+    # print(temptbl)
+    write.table(temptbl, sessionfile, sep = ",", col.names = F, append = T)
+    
+    counter$count <- counter$count + 1
+    rimage$r <- randomid(nrings)
+    t0$t <- Sys.time()
+  })
+  
+  # super likes
+  observeEvent(input$superfirst, {
+    
+    choice$c <- c(2, 0)
+    
+    temptbl <- tibble(round = rep(counter$count, 2),
+                      id = rimage$r,
+                      image = rings[rimage$r, "name"] %>% unlist(),
+                      file = rings[rimage$r, "files"] %>% unlist(),
+                      choice = choice$c,
+                      tdiff = as.integer(difftime(Sys.time(), t0$t, units = "secs")))
+    # print(temptbl)
+    write.table(temptbl, sessionfile, sep = ",", col.names = F, append = T)
+    
+    counter$count <- counter$count + 1
+    rimage$r <- randomid(nrings)
+    t0$t <- Sys.time()
+  })
+  
+  observeEvent(input$supersecond, {
+    
+    choice$c <- c(0, 2)
+    
+    temptbl <- tibble(round = rep(counter$count, 2),
+                      id = rimage$r,
+                      image = rings[rimage$r, "name"] %>% unlist(),
+                      file = rings[rimage$r, "files"] %>% unlist(),
+                      choice = choice$c,
+                      tdiff = as.integer(difftime(Sys.time(), t0$t, units = "secs")))
+    # print(temptbl)
+    write.table(temptbl, sessionfile, sep = ",", col.names = F, append = T)
+    
+    counter$count <- counter$count + 1
+    rimage$r <- randomid(nrings)
+    t0$t <- Sys.time()
+  })
+  
+  observeEvent(input$none, {
+    
+    choice$c <- c(-2, -2)
+
+    temptbl <- tibble(round = rep(counter$count, 2),
+                      id = rimage$r,
+                      image = rings[rimage$r, "name"] %>% unlist(),
+                      file = rings[rimage$r, "files"] %>% unlist(),
+                      choice = choice$c,
+                      tdiff = as.integer(difftime(Sys.time(), t0$t, units = "secs")))
+    # print(temptbl)
+    write.table(temptbl, sessionfile, sep = ",", col.names = F, append = T)
+
+    counter$count <- counter$count + 1
+    rimage$r <- randomid(nrings)
+    t0$t <- Sys.time()
+  })
+
+  
+  output$image1 <- renderImage({
+    
+    # path1 <- normalizePath(file.path('./rings', rings[rimage$r[1], "files"]))
+    path1 <- normalizePath(file.path(rings[rimage$r[1], "path"], 
+                                     rings[rimage$r[1], "files"]))
+    # path1 <- rings[rimage$r[1], "path"]
+    
+    # Return a list containing the filename and alt text
+    list(src = path1,
+         alt = "alt")
+    
+  }, deleteFile = FALSE)
+  
+  
+  output$image2 <- renderImage({
+    
+    path2 <- normalizePath(file.path(rings[rimage$r[2], "path"], 
+                                     rings[rimage$r[2], "files"]))
+
+    list(src = path2,
+         alt = "alt")
+
+  }, deleteFile = FALSE)
+}
+
+
+shinyApp(ui, server)
+```

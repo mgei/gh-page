@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang='en'><head>
+  <meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'>
+<meta name='description' content='Engagement ring This is an R Shiny application for finding out about your girlfriend’s engagement ring preferences. The idea behind is to vote for one ring out of of two (see Ranked Pairs.
+Screenshot
+ At the end of this post is the full code, which is also available on Github.
+ How it works t each round two random images are shown. The user can click on one according to his preference.'>
+<meta name='theme-color' content='#ffb266'>
+
+<meta property='og:title' content='R Shiny app for preference expression • Martin Geissmann'>
+<meta property='og:description' content='Engagement ring This is an R Shiny application for finding out about your girlfriend’s engagement ring preferences. The idea behind is to vote for one ring out of of two (see Ranked Pairs.
+Screenshot
+ At the end of this post is the full code, which is also available on Github.
+ How it works t each round two random images are shown. The user can click on one according to his preference.'>
+<meta property='og:url' content='https://mgei.github.io/post/engagement-ring/'>
+<meta property='og:site_name' content='mgei.github.io'>
+<meta property='og:type' content='article'><meta property='og:image' content='https://www.gravatar.com/avatar/a525a84fae399669fa8861e2661df00b?s=256'><meta property='article:section' content='post'><meta property='article:tag' content='shiny'><meta property='article:tag' content='R'><meta property='article:tag' content='app'><meta property='article:tag' content='feather format'><meta property='article:published_time' content='2019-04-12T00:00:00Z'/><meta property='article:modified_time' content='2019-04-12T00:00:00Z'/><meta name='twitter:card' content='summary'>
+
+<meta name="generator" content="Hugo 0.55.5" />
+
+  <title>R Shiny app for preference expression • Martin Geissmann</title>
+  <link rel='canonical' href='https://mgei.github.io/post/engagement-ring/'>
+  
+  
+  <link rel='icon' href='/favicon.ico'>
+<link rel='stylesheet' href='/assets/css/main.fb20af92.css'><link rel='stylesheet' href='/css/custom.css'><style>
+:root{--color-accent:#ffb266;}
+</style>
+
+  
+
+</head>
+<body class='page type-post has-sidebar'>
+
+  <div class='site'><div id='sidebar' class='sidebar'>
+  <a class='screen-reader-text' href='#main-menu'>Skip to Main Menu</a>
+
+  <div class='container'><section class='widget widget-about sep-after'>
+  <header>
+    
+    <div class='logo'>
+      <a href='/'>
+        <img src='/images/logo.png'>
+      </a>
+    </div>
+    
+    <h2 class='title site-title '>
+      <a href='/'>
+      mgei.github.io
+      </a>
+    </h2>
+    <div class='desc'>
+    personal archive
+    </div>
+  </header>
+
+</section>
+<section class='widget widget-sidebar_menu sep-after'><nav id='sidebar-menu' class='menu sidebar-menu' aria-label='Sidebar Menu'>
+    <div class='container'>
+      <ul><li class='item'>
+  <a href='/'>Home</a></li><li class='item'>
+  <a href='/post/'>Archive</a></li><li class='item'>
+  <a href='/tags/'>Tags</a></li><li class='item'>
+  <a href='/search/'>Search</a></li><li class='item'>
+  <a href='/about/'>About</a></li></ul>
+    </div>
+  </nav>
+
+</section></div>
+
+  <div class='sidebar-overlay'></div>
+</div><div class='main'><a class='screen-reader-text' href='#content'>Skip to Content</a>
+
+<button id='sidebar-toggler' class='sidebar-toggler' aria-controls='sidebar'>
+  <span class='screen-reader-text'>Toggle Sidebar</span>
+  <span class='open'><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <line x1="3" y1="12" x2="21" y2="12" />
+  <line x1="3" y1="6" x2="21" y2="6" />
+  <line x1="3" y1="18" x2="21" y2="18" />
+  
+</svg>
+</span>
+  <span class='close'><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <line x1="18" y1="6" x2="6" y2="18" />
+  <line x1="6" y1="6" x2="18" y2="18" />
+  
+</svg>
+</span>
+</button><div class='header-widgets'>
+        <div class='container'>
+    
+    <style>.widget-breadcrumbs li:after{content:'\2f '}</style>
+  <section class='widget widget-breadcrumbs sep-after'>
+    <nav id='breadcrumbs'>
+      <ol><li><a href='/'>Home</a></li><li><span>R Shiny app for preference expression</span></li></ol>
+    </nav>
+  </section></div>
+      </div>
+
+      <header id='header' class='header site-header'>
+        <div class='container sep-after'>
+          <div class='header-info'><p class='site-title title'>mgei.github.io</p><p class='desc site-desc'>personal archive</p>
+          </div>
+        </div>
+      </header>
+
+      <main id='content'>
+
+
+<article lang='en' class='entry'>
+  <header class='header entry-header'>
+  <div class='container sep-after'>
+    <div class='header-info'>
+      <h1 class='title'>R Shiny app for preference expression</h1>
+      
+
+    </div>
+    <div class='entry-meta'>
+  <span class='posted-on'><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+  <line x1="16" y1="2" x2="16" y2="6"/>
+  <line x1="8" y1="2" x2="8" y2="6"/>
+  <line x1="3" y1="10" x2="21" y2="10"/>
+  
+</svg>
+<span class='screen-reader-text'>Posted on </span>
+  <time class='entry-date' datetime='2019-04-12T00:00:00Z'>12 Apr 2019</time>
+</span>
+
+  <span class='byline'><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <path d="M21,21V20c0-2.76-4-5-9-5s-9,2.24-9,5v1"/>
+  <path d="M16,6.37A4,4,0,1,1,12.63,3,4,4,0,0,1,16,6.37Z"/>
+  
+</svg>
+<span class='screen-reader-text'> by </span><a href='/authors/mgei'>Martin Geissmann</a></span>
+  
+
+</div>
+
+
+  </div>
+</header>
+
+  
+  
+
+  <div class='container entry-content'>
+  
+
+
+<div id="engagement-ring" class="section level2">
+<h2>Engagement ring</h2>
+<p>This is an R Shiny application for finding out about your girlfriend’s engagement ring preferences. The idea behind is to vote for one ring out of of two (see <a href="https://en.wikipedia.org/wiki/Ranked_pairs">Ranked Pairs</a>.</p>
+<div class="figure">
+<img src="/images/post/ring-screenshot.png" alt="Screenshot" />
+<p class="caption"><em>Screenshot</em></p>
+</div>
+<p>At the end of this post is the full code, which is also available on <a href="https://github.com/mgei/engagement-ring">Github</a>.</p>
+</div>
+<div id="how-it-works" class="section level2">
+<h2>How it works</h2>
+<p>t each round two random images are shown. The user can click on one according to his preference. With the <em>superlike</em> button, one can express special liking. If out of the two images both are not liked, one can select <em>none of those</em>.</p>
+<p>Initially, a data frame with the image paths is created and saved in <a href="https://blog.rstudio.com/2016/03/29/feather/">feather format</a>. It is alimented by the contents in the <em>rings</em> folder. If it already exists, then it is simply loaded. <strong>Feather</strong> is a fast storage format for R (and support in Python). It is particularely useful in web applications.</p>
+<p>There is the option to build in <em>easter egg</em> images in a <em>specials</em> folder. The probability of showing a special image set is defined as <em>easteregg_prob</em> in <code>randomid()</code>.</p>
+<p>The user inputs are written to a timestamped csv, see <em>sessionfile</em>.</p>
+<p>Shiny allows to create a <em>clickable</em> plot or image with <code>renderImage()</code> and <code>imageOutput()</code>. User clicking on an image or plot can be used as an input. For example:</p>
+<pre class="r"><code># ui
+imageOutput(&quot;image1&quot;, click = &quot;first&quot;)
+
+# server
+observeEvent(input$first, { ... })</code></pre>
+<p>To <strong>append to csv</strong> we use <code>write.table()</code>.</p>
+<pre class="r"><code>write.table(tblheader, file = sessionfile, sep = &quot;,&quot;, col.names = F)</code></pre>
+<p>with tblheader being a one-row matrix to append, and sessionfile being the timestamped csv.</p>
+<p>The csv file can later be used for analysis of the preference.</p>
+</div>
+<div id="notes" class="section level2">
+<h2>Notes</h2>
+<ul>
+<li>The images were downloaded from a jewelry seller’s website using <a href="https://chrome.google.com/webstore/detail/simple-mass-downloader/abdkkegmcbiomijcbdaodaflgehfffed">Simple mass downloader</a> Chrome extension.</li>
+<li>It supports several 100s of images.</li>
+<li>App displays well on a Smartphone also.</li>
+<li>Why would one use R Shiny for this? Yes, there are a lot of frameworks that would do the job, but why not Shiny? As I would also do the user’s data analysis in R later, it’s a tool that is easily available and fast for an app one needs nothing but a one-use prototype.</li>
+</ul>
+</div>
+<div id="code" class="section level2">
+<h2>Code</h2>
+<pre class="r"><code>library(shiny)
+library(feather)
+library(dplyr)
+
+if (file.exists(&quot;rings.fth&quot;)) {
+  rings &lt;- read_feather(&quot;rings.fth&quot;)
+} else {
+  
+  library(tidyverse)
+  
+  files &lt;- list.files(&quot;rings&quot;)
+  rings &lt;- tibble(files) %&gt;% 
+    mutate(path = &quot;./rings&quot;)
+  
+  files_specials &lt;- list.files(&quot;specials&quot;)
+  specials &lt;- tibble(files = files_specials) %&gt;% 
+    mutate(path = &quot;./specials&quot;)
+  
+  rings &lt;- bind_rows(rings, specials)
+  
+  rings &lt;- rings %&gt;% 
+    mutate(name = str_sub(files, start = 1, end = -5)) %&gt;% 
+    separate(name, into = c(&quot;name&quot;, &quot;variant&quot;), sep = &quot;\\(&quot;) %&gt;% 
+    mutate(name = str_trim(name),
+           variant = variant %&gt;% str_remove(&quot;\\)&quot;) %&gt;% as.integer(),
+           id = row_number())
+  rings %&gt;% write_feather(&quot;rings.fth&quot;)
+}
+
+nrings &lt;- nrow(rings)
+
+randomid &lt;- function(n, easteregg_prob = 0.00) {
+  if (runif(1) &lt; easteregg_prob) {
+    r &lt;- c(n-1, n)
+  } else {
+    r &lt;- sample(1:(n-2), 2)
+  }
+  return(r)
+}
+
+sessionfile &lt;- paste0(&quot;session&quot;, as.integer(Sys.time()), &quot;.csv&quot;)
+# sessionfile &lt;- &quot;session_responses.csv&quot;
+
+tblheader &lt;- matrix(c(&quot;round&quot;, &quot;id&quot;, &quot;name&quot;, &quot;file&quot;, &quot;choice&quot;, &quot;tdiff&quot;), nrow = 1) #%&gt;% as_tibble(rownames = NA)
+
+write.table(tblheader, file = sessionfile, sep = &quot;,&quot;, col.names = F)
+
+ui &lt;- fluidPage(
+  
+  tags$head(
+    tags$style(HTML(&quot;
+      @import url(&#39;//fonts.googleapis.com/css?family=Dancing+Script&#39;);
+      
+      h1 {
+        font-family: &#39;Dancing Script&#39;, cursive;
+        font-weight: 500;
+        line-height: 5;
+        color: #000000;
+      }
+    &quot;))
+  ),
+  
+  fluidRow(column(12, h1(&quot;If you had to choose one...&quot;)), align = &quot;center&quot;),
+  br(), 
+  fluidRow(
+    column(6, class = &quot;col-xs-6  col-md-6 col-lg-6&quot;, 
+           imageOutput(&quot;image1&quot;, click = &quot;first&quot;), 
+           actionButton(&quot;superfirst&quot;, &quot;superlike&quot;, icon = icon(&quot;grin-stars&quot;),
+                        style=&quot;color: #fff; background-color: #5f9fff&quot;),
+           align = &quot;right&quot;),
+    column(6, class = &quot;col-xs-6 col-md-6 col-lg-6&quot;,
+           imageOutput(&quot;image2&quot;, click = &quot;second&quot;),
+           actionButton(&quot;supersecond&quot;, &quot;superlike&quot;, icon = icon(&quot;grin-stars&quot;),
+                        style=&quot;color: #fff; background-color: #5f9fff&quot;),
+           align = &quot;left&quot;)
+  ),
+
+  br(), br(),
+  fluidRow(
+    column(10, actionButton(&quot;none&quot;, &quot;none of these please&quot;, icon = icon(&quot;child&quot;)), align = &quot;right&quot;)
+  )
+)
+
+server &lt;- function(input, output, session) {
+  
+  
+  # counter for knowing in which round we are, i.e. which images were displayed together
+  counter &lt;- reactiveValues(count = 1)
+  rimage &lt;- reactiveValues(r = sample(1:(nrings-2), 2))
+  choice &lt;- reactiveValues(c = c(0, 0))
+  t0 &lt;- reactiveValues(t = Sys.time())
+  
+  # normal likes
+  observeEvent(input$first, {
+    
+    choice$c &lt;- c(1, -1)
+    
+    temptbl &lt;- tibble(round = rep(counter$count, 2),
+                      id = rimage$r,
+                      image = rings[rimage$r, &quot;name&quot;] %&gt;% unlist(),
+                      file = rings[rimage$r, &quot;files&quot;] %&gt;% unlist(),
+                      choice = choice$c,
+                      tdiff = as.integer(difftime(Sys.time(), t0$t, units = &quot;secs&quot;)))
+    # print(temptbl)
+    write.table(temptbl, sessionfile, sep = &quot;,&quot;, col.names = F, append = T)
+    
+    counter$count &lt;- counter$count + 1
+    # rimage$r &lt;- sample(1:nrings, 2)
+    rimage$r &lt;- randomid(nrings)
+    t0$t &lt;- Sys.time()
+  })
+  
+  observeEvent(input$second, {
+    
+    choice$c &lt;- c(-1, 1)
+    
+    temptbl &lt;- tibble(round = rep(counter$count, 2),
+                      id = rimage$r,
+                      image = rings[rimage$r, &quot;name&quot;] %&gt;% unlist(),
+                      file = rings[rimage$r, &quot;files&quot;] %&gt;% unlist(),
+                      choice = choice$c,
+                      tdiff = as.integer(difftime(Sys.time(), t0$t, units = &quot;secs&quot;)))
+    # print(temptbl)
+    write.table(temptbl, sessionfile, sep = &quot;,&quot;, col.names = F, append = T)
+    
+    counter$count &lt;- counter$count + 1
+    rimage$r &lt;- randomid(nrings)
+    t0$t &lt;- Sys.time()
+  })
+  
+  # super likes
+  observeEvent(input$superfirst, {
+    
+    choice$c &lt;- c(2, 0)
+    
+    temptbl &lt;- tibble(round = rep(counter$count, 2),
+                      id = rimage$r,
+                      image = rings[rimage$r, &quot;name&quot;] %&gt;% unlist(),
+                      file = rings[rimage$r, &quot;files&quot;] %&gt;% unlist(),
+                      choice = choice$c,
+                      tdiff = as.integer(difftime(Sys.time(), t0$t, units = &quot;secs&quot;)))
+    # print(temptbl)
+    write.table(temptbl, sessionfile, sep = &quot;,&quot;, col.names = F, append = T)
+    
+    counter$count &lt;- counter$count + 1
+    rimage$r &lt;- randomid(nrings)
+    t0$t &lt;- Sys.time()
+  })
+  
+  observeEvent(input$supersecond, {
+    
+    choice$c &lt;- c(0, 2)
+    
+    temptbl &lt;- tibble(round = rep(counter$count, 2),
+                      id = rimage$r,
+                      image = rings[rimage$r, &quot;name&quot;] %&gt;% unlist(),
+                      file = rings[rimage$r, &quot;files&quot;] %&gt;% unlist(),
+                      choice = choice$c,
+                      tdiff = as.integer(difftime(Sys.time(), t0$t, units = &quot;secs&quot;)))
+    # print(temptbl)
+    write.table(temptbl, sessionfile, sep = &quot;,&quot;, col.names = F, append = T)
+    
+    counter$count &lt;- counter$count + 1
+    rimage$r &lt;- randomid(nrings)
+    t0$t &lt;- Sys.time()
+  })
+  
+  observeEvent(input$none, {
+    
+    choice$c &lt;- c(-2, -2)
+
+    temptbl &lt;- tibble(round = rep(counter$count, 2),
+                      id = rimage$r,
+                      image = rings[rimage$r, &quot;name&quot;] %&gt;% unlist(),
+                      file = rings[rimage$r, &quot;files&quot;] %&gt;% unlist(),
+                      choice = choice$c,
+                      tdiff = as.integer(difftime(Sys.time(), t0$t, units = &quot;secs&quot;)))
+    # print(temptbl)
+    write.table(temptbl, sessionfile, sep = &quot;,&quot;, col.names = F, append = T)
+
+    counter$count &lt;- counter$count + 1
+    rimage$r &lt;- randomid(nrings)
+    t0$t &lt;- Sys.time()
+  })
+
+  
+  output$image1 &lt;- renderImage({
+    
+    # path1 &lt;- normalizePath(file.path(&#39;./rings&#39;, rings[rimage$r[1], &quot;files&quot;]))
+    path1 &lt;- normalizePath(file.path(rings[rimage$r[1], &quot;path&quot;], 
+                                     rings[rimage$r[1], &quot;files&quot;]))
+    # path1 &lt;- rings[rimage$r[1], &quot;path&quot;]
+    
+    # Return a list containing the filename and alt text
+    list(src = path1,
+         alt = &quot;alt&quot;)
+    
+  }, deleteFile = FALSE)
+  
+  
+  output$image2 &lt;- renderImage({
+    
+    path2 &lt;- normalizePath(file.path(rings[rimage$r[2], &quot;path&quot;], 
+                                     rings[rimage$r[2], &quot;files&quot;]))
+
+    list(src = path2,
+         alt = &quot;alt&quot;)
+
+  }, deleteFile = FALSE)
+}
+
+
+shinyApp(ui, server)</code></pre>
+</div>
+
+</div>
+
+  
+<footer class='entry-footer'>
+  <div class='container sep-before'><div class='tags'><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <path d="M20.59,13.41l-7.17,7.17a2,2,0,0,1-2.83,0L2,12V2H12l8.59,8.59A2,2,0,0,1,20.59,13.41Z"/>
+  <line x1="7" y1="7" x2="7" y2="7"/>
+  
+</svg>
+<span class='screen-reader-text'>Tags: </span><a class='tag' href='/tags/shiny/'>shiny</a>, <a class='tag' href='/tags/r/'>R</a>, <a class='tag' href='/tags/app/'>app</a>, <a class='tag' href='/tags/feather-format/'>feather format</a></div>
+
+  </div>
+</footer>
+
+
+</article>
+
+<nav class='entry-nav'>
+  <div class='container'><div class='prev-entry sep-before'>
+      <a href='/post/drivingtimes/'>
+        <span aria-hidden='true'><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <line x1="20" y1="12" x2="4" y2="12"/>
+  <polyline points="10 18 4 12 10 6"/>
+  
+</svg>
+ Previous</span>
+        <span class='screen-reader-text'>Previous post: </span>How far to the closest hospital?</a>
+    </div><div class='next-entry sep-before'>
+      <a href='/post/econovo-lawyers/'>
+        <span class='screen-reader-text'>Next post: </span>(de) In welchen Kantonen es mehr Anwälte als Ärzte gibt<span aria-hidden='true'>Next <svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <line x1="4" y1="12" x2="20" y2="12"/>
+  <polyline points="14 6 20 12 14 18"/>
+  
+</svg>
+</span>
+      </a>
+    </div></div>
+</nav>
+
+
+
+
+      </main>
+
+      <footer id='footer' class='footer'>
+        <div class='container sep-before'><section class='widget widget-social_menu sep-after'><nav aria-label='Social Menu'>
+    <ul><li>
+        <a href='mailto:mg@econovo.ch' target='_blank' rel='noopener'>
+          <span class='screen-reader-text'>Contact via Email</span><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+  <polyline points="22,6 12,13 2,6"/>
+  
+</svg>
+</a>
+      </li><li>
+        <a href='https://github.com/mgei' target='_blank' rel='noopener'>
+          <span class='screen-reader-text'>Open Github account in new tab</span><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+  
+</svg>
+</a>
+      </li><li>
+        <a href='https://twitter.com//' target='_blank' rel='noopener'>
+          <span class='screen-reader-text'>Open Twitter account in new tab</span><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/>
+  
+</svg>
+</a>
+      </li><li>
+        <a href='https://linkedin.com/in/martin-geissmann-59034a10b' target='_blank' rel='noopener'>
+          <span class='screen-reader-text'>Open Linkedin account in new tab</span><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+  <rect x="2" y="9" width="4" height="12"/>
+  <circle cx="4" cy="4" r="2"/>
+  
+</svg>
+</a>
+      </li><li>
+        <a href='https://www.youtube.com/channel/UCUYqJUnI_P0XYk6_FRyvb2w' target='_blank' rel='noopener'>
+          <span class='screen-reader-text'>Open Youtube account in new tab</span><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z" />
+  <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02" />
+  
+</svg>
+</a>
+      </li></ul>
+  </nav>
+</section><div class='copyright'>
+  <p> &copy; 2019 Martin Geissmann </p>
+</div>
+
+        </div>
+      </footer>
+
+    </div>
+  </div><script>window.__assets_js_src="/assets/js/"</script>
+
+<script src='/assets/js/main.9e5c4cf4.js'></script><script src='/js/custom.js'></script>
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+</body>
+
+</html>
+

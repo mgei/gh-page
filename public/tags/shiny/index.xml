@@ -5,10 +5,22 @@
     <link>https://mgei.github.io/tags/shiny/</link>
     <description>Recent content in shiny on mgei.github.io</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Wed, 20 Mar 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 12 Apr 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://mgei.github.io/tags/shiny/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>R Shiny app for preference expression</title>
+      <link>https://mgei.github.io/post/engagement-ring/</link>
+      <pubDate>Fri, 12 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgei.github.io/post/engagement-ring/</guid>
+      <description>Engagement ring This is an R Shiny application for finding out about your girlfriend’s engagement ring preferences. The idea behind is to vote for one ring out of of two (see Ranked Pairs.
+Screenshot
+ At the end of this post is the full code, which is also available on Github.
+ How it works t each round two random images are shown. The user can click on one according to his preference.</description>
+    </item>
     
     <item>
       <title>Swiss Hospitals Classification</title>
