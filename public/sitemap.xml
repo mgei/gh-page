@@ -8,12 +8,12 @@
   
   <url>
     <loc>https://mgei.github.io/</loc>
-    <lastmod>2019-05-08T00:00:00+00:00</lastmod>
+    <lastmod>2019-05-27T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://mgei.github.io/post/</loc>
-    <lastmod>2019-05-08T00:00:00+00:00</lastmod>
+    <lastmod>2019-05-27T00:00:00+00:00</lastmod>
   </url>
   
   <url>
@@ -29,25 +29,66 @@
   </url>
   
   <url>
-    <loc>https://mgei.github.io/authors/</loc>
-    <lastmod>2019-05-08T00:00:00+00:00</lastmod>
+    <loc>https://mgei.github.io/post/china-us-trade/</loc>
+    <lastmod>2019-05-27T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://mgei.github.io/post/github-page/</loc>
-    <lastmod>2019-05-08T00:00:00+00:00</lastmod>
+    <loc>https://mgei.github.io/authors/</loc>
+    <lastmod>2019-05-27T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://mgei.github.io/tags/china/</loc>
+    <lastmod>2019-05-27T00:00:00+00:00</lastmod>
+    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://mgei.github.io/tags/r/</loc>
-    <lastmod>2019-05-08T00:00:00+00:00</lastmod>
+    <lastmod>2019-05-27T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://mgei.github.io/tags/</loc>
-    <lastmod>2019-05-08T00:00:00+00:00</lastmod>
+    <lastmod>2019-05-27T00:00:00+00:00</lastmod>
     <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://mgei.github.io/tags/usa/</loc>
+    <lastmod>2019-05-27T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://mgei.github.io/tags/comtradr/</loc>
+    <lastmod>2019-05-27T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://mgei.github.io/tags/economics/</loc>
+    <lastmod>2019-05-27T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://mgei.github.io/authors/mgei/</loc>
+    <lastmod>2019-05-27T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://mgei.github.io/tags/world-trade/</loc>
+    <lastmod>2019-05-27T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://mgei.github.io/post/github-page/</loc>
+    <lastmod>2019-05-08T00:00:00+00:00</lastmod>
   </url>
   
   <url>
@@ -64,12 +105,6 @@
   
   <url>
     <loc>https://mgei.github.io/tags/hugo/</loc>
-    <lastmod>2019-05-08T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://mgei.github.io/authors/mgei/</loc>
     <lastmod>2019-05-08T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
