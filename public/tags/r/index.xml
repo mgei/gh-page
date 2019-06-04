@@ -5,10 +5,19 @@
     <link>https://mgei.github.io/tags/r/</link>
     <description>Recent content in R on mgei.github.io</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Mon, 27 May 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 03 Jun 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://mgei.github.io/tags/r/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>The Market as of June 2019, VIX and inverted yield curve</title>
+      <link>https://mgei.github.io/post/market-june19/</link>
+      <pubDate>Mon, 03 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgei.github.io/post/market-june19/</guid>
+      <description>What’s up?  US’ new deal policy  trade war China, US, Mexico import taxes and trade barriers (Huawei)  instability in middle East  Iran, Isreal, Saudi Arabia Turkey  EU  post parliament elections Austria Ibiza scandal Brexit  China more fragile than thought   Equities First let’s load some R packages. Note that for Quandl you need a API code that is for free but required registration.</description>
+    </item>
     
     <item>
       <title>A closer look at the China-US trade</title>

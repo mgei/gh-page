@@ -1,0 +1,289 @@
+---
+slug: "market-june19"
+date: "2019-06-03"
+title: "The Market as of June 2019, VIX and inverted yield curve"
+tags: ["R", "tidyquant", "finance", "stock market", "plotting"]
+authors: [mgei]
+---
+
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(echo=TRUE, warning=FALSE, message=FALSE)
+```
+
+# What's up?
+
+* US' new deal policy
+    * trade war China, US, Mexico
+    * import taxes and trade barriers (Huawei)
+* instability in middle East
+    * Iran, Isreal, Saudi Arabia
+    * Turkey
+* EU
+    * post parliament elections
+    * Austria Ibiza scandal
+    * Brexit
+* China more fragile than thought
+
+# Equities
+
+First let's load some R packages. Note that for [Quandl](https://www.quandl.com/) you need a API code that is for free but required registration.
+
+```{r libraries}
+library(tidyverse)
+library(tidyquant)
+# library(gganimate)
+library(ggrepel)
+library(readr)
+library(Quandl)
+
+# Quandl.api_key(read_file("quandl.key"))
+```
+
+We are interested in actual investable ETFs, i.e.
+
+* SPY for the S&P 500
+* QQQ for Nasdaq
+* EWL tracking MSCI Switzerland
+* GLD Gold
+* SLV Silver
+* TUR MSCI Turkey
+* EWW MSCI Mexico
+* GXC S&P China
+* EGPT Egypt
+
+```{r equities}
+# etfs <- tq_get(c("SPY", "QQQ", "EWL", "GLD", "SLV", "TUR", "EWW", "GXC", "EGPT"),
+#                get  = "stock.prices",
+#                from = "2009-01-01",
+#                to   = Sys.Date())
+# 
+# etfs %>% saveRDS("postdata/market-june19/etfs.RDS")
+
+etfs <- readRDS("postdata/market-june19/etfs.RDS")
+
+etfs %>% 
+  filter(date >= date("2010-01-01")) %>%
+  group_by(symbol) %>%
+  mutate(adjusted_rel = adjusted/first(adjusted)-1) %>% 
+  ungroup() %>% 
+  ggplot(aes(x = date, y = adjusted_rel, color = symbol, size = (symbol == "SPY"))) +
+  geom_line() +
+  geom_label_repel(aes(label = if_else(date == max(date), symbol, NA_character_)), 
+                   direction = "y", nudge_x = 1000, segment.color = "black", size = 4) +
+  # Greece
+  geom_vline(xintercept = date("2010-04-27"), alpha = 0.2) +
+  annotate(geom = "text", x = date("2010-04-27")-40, y = 1, color = "black", 
+           label = "Greece downgrade", angle = 90, alpha = 0.5) +
+  # China crash
+  geom_vline(xintercept = date("2015-06-12"), alpha = 0.2) +
+  annotate(geom = "text", x = date("2015-06-12")-40, y = 2.4, color = "black", 
+           label = "China market crash", angle = 90, alpha = 0.5) +
+  # Mkr turndown
+  geom_vline(xintercept = date("2018-09-20"), alpha = 0.2) +
+  annotate(geom = "text", x = date("2018-09-20")-40, y = 2.1, color = "black", 
+           label = "US market turndown", angle = 90, alpha = 0.5) +
+  geom_hline(yintercept = 0, color = "red", alpha = 0.2) +
+  scale_y_continuous(labels = scales::percent, breaks = seq(-1, 6, by = 0.2)) +
+  scale_x_date(limits = c(date("2010-01-01"), date("2019-12-31")), date_breaks = "1 year", date_labels = "%Y", expand = c(0, 100)) +
+  scale_size_discrete(range = c(0.25, 1)) +
+  labs(title = "Performance of selected ETFs", subtitle = "since Jan 2010",
+       x = "", y = "performance on adjusted price",
+       caption = "Data: Yahoo Finance, graph: mgei.github.io") +
+  theme_tq() +
+  theme(legend.position = "none")
+
+etfs %>% 
+  filter(date >= date("2018-09-20")) %>%
+  group_by(symbol) %>%
+  mutate(adjusted_rel = adjusted/first(adjusted)-1) %>% 
+  ungroup() %>% 
+  ggplot(aes(x = date, y = adjusted_rel, color = symbol, size = (symbol == "SPY"))) +
+  geom_line() +
+  geom_label_repel(aes(label = if_else(date == max(date), symbol, NA_character_)), 
+                   direction = "y", nudge_x = 1000, segment.color = "black", size = 4) +
+  scale_y_continuous(labels = scales::percent, breaks = seq(-1, 6, by = 0.05)) +
+  scale_x_date(limits = c(date("2018-09-20"), date("2019-06-30")), date_breaks = "1 month", date_labels = "%m-%Y") +
+  scale_size_discrete(range = c(0.25, 1)) +
+  labs(title = "Performance of selected ETFs", subtitle = "since 20 September 2018 ",
+       x = "", y = "performance on adjusted price",
+       caption = "Data: Yahoo Finance, graph: mgei.github.io") +
+  theme_tq() +
+  theme(legend.position = "none")
+```
+
+# Indicators
+
+## VIX
+
+> The CBOE Volatility Index, known by its ticker symbol VIX, is a popular measure of the stock market's expectation of volatility implied by S&P 500 index options. It is calculated and disseminated on a real-time basis by the Chicago Board Options Exchange (CBOE), and is commonly referred to as the fear index or the fear gauge.
+- https://en.wikipedia.org/wiki/VIX
+
+```{r vix}
+# vix <- tq_get(c("^VIX"),
+#                get  = "stock.prices",
+#                from = "2009-01-01",
+#                to   = Sys.Date()) %>% 
+#   mutate(symbol = "VIX")
+# 
+# vix %>% saveRDS("postdata/market-june19/vix.RDS")
+
+vix <- readRDS("postdata/market-june19/vix.RDS")
+
+years <- tibble(year = seq(2010, 2019), 
+                from = seq.Date(date("2010-01-01"), date("2019-01-01"), by = "years"),
+                to   = seq.Date(date("2010-12-31"), date("2019-12-31"), by = "years"))
+
+vix %>% 
+  filter(year(date) >= 2010) %>%
+  ggplot(aes(x = date, y = adjusted, color = symbol)) +
+  geom_rect(data = years, inherit.aes = F, aes(xmin = from, xmax = to, ymin = -Inf, ymax = Inf, fill = factor(year)), alpha = 0.2) +
+  geom_line() +
+  geom_smooth(color = "black") +
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y", expand = c(0, 0)) +
+  scale_y_continuous(breaks = seq(0,100, by = 5)) +
+  scale_fill_brewer(type = "qual", palette = "Set3", guide = F) +
+  labs(title = "CBOE Volatility Index (VIX)", subtitle = "since Jan 2010",
+       x = "", y = "value", caption = "Data: Yahoo Finance, graph: mgei.github.io") +
+  theme_tq() +
+  theme(legend.position = "none")
+```
+
+## Yield curves
+
+> In finance, the yield curve is a curve showing several yields or interest rates across different contract lengths (2 month, 2 year, 20 year, etc. ...) for a similar debt contract.
+- https://en.wikipedia.org/wiki/Yield_curve
+
+```{r yieldsusd}
+# usd_yields_raw <- Quandl("USTREASURY/YIELD")
+# 
+# usd_yields_raw %>% saveRDS("postdata/market-june19/usd_yields_raw.RDS")
+
+usd_yields_raw <- readRDS("postdata/market-june19/usd_yields_raw.RDS")
+
+usd_yields <- usd_yields_raw %>% 
+  as_tibble() %>%
+  gather(term, Value, -Date) %>% 
+  mutate(term = case_when(term == "1 MO" ~ 1/12,
+                          term == "2 MO" ~ 1/6,
+                          term == "3 MO" ~ 1/4,
+                          term == "6 MO" ~ 1/2,
+                          T ~ str_remove(term, " YR") %>% as.numeric()))
+
+usd_yields %>% 
+  filter(year(Date) %in% c(2019)) %>%
+  group_by(month(Date)) %>% 
+  filter(Date == max(Date)) %>% 
+  ggplot(aes(x = term, y = Value/100, alpha = Date, group = Date, linetype = if_else(Date < max(Date), "previous", "current"))) +
+  geom_rect(inherit.aes = F, aes(xmin = -Inf, xmax = Inf, ymin = 0.0225, ymax = 0.025),  fill = "lightblue") +
+  geom_line(aes(x = if_else(term %in% c(1/12, 10), term, NA_real_), y = if_else(term  %in% c(1/12, 10), Value/100, NA_real_)), color = "red") +
+  geom_line(color = "black") +
+  labs(title = "Yield Curve USD", subtitle = "Year 2019, red connecting line indicating the slope (1mt-10yr), in lightblue the target range",
+       x = "Term in years", y = "yield",
+       caption = "Data: Quandl/USTREASURY, graph: mgei.github.io",
+       linetype = "Observation") +
+  scale_x_continuous(breaks = pull(unique(usd_yields["term"]))) +
+  scale_y_continuous(breaks = seq(-0.01, 1, by = 0.001), labels = scales::percent) +
+  theme_bw()
+```
+
+```{r yields}
+chf_yiels <- read_csv2("postdata/market-june19/snb-data-rendoblim-en-selection-20190603_1430.csv", skip = 3) %>% 
+  mutate(Date = ymd(paste0(Date, "-01")), 
+         term = D0 %>% str_remove("J") %>% as.numeric(),
+         Value = as.numeric(Value))
+
+chf_yiels %>% 
+  filter(year(Date) %in% c(2019)) %>% 
+  ggplot(aes(x = term, y = Value/100, alpha = Date, group = Date, linetype = if_else(Date < max(Date), "previous", "current"))) +
+  geom_hline(yintercept = 0, color = "red", alpha = 0.5) +
+  geom_hline(yintercept = -0.0075, color = "blue", alpha = 0.5) +
+  geom_rect(inherit.aes = F, aes(xmin = -Inf, xmax = Inf, ymin = -0.0125, ymax = -0.0025),  fill = "lightblue") +
+  geom_line(aes(x = if_else(term %in% c(1, 10), term, NA_real_), y = if_else(term  %in% c(1, 10), Value/100, NA_real_)), color = "red") +
+  geom_line() +
+  labs(title = "Yield Curve CHF", subtitle = "Year 2019",
+       x = "Term in years", y = "yield",
+       caption = "Data: SNB, graph: mgei.github.io",
+       linetype = "Observation") +
+  scale_x_continuous(breaks = pull(unique(chf_yiels["term"]))) +
+  scale_y_continuous(breaks = seq(-0.015, 1, by = 0.001), labels = scales::percent) +
+  theme_bw()
+```
+
+## Why care about the yield curve?
+
+> The slope of the yield curve is one of the most powerful predictors of future economic growth, inflation, and recessions.
+- https://en.wikipedia.org/wiki/Yield_curve#Relationship_to_the_business_cycle
+
+```{r yieldinverted}
+# SPX <- tq_get("^GSPC", from = "1990-01-01")
+# 
+# SPX %>% saveRDS("postdata/market-june19/SPX.RDS")
+
+SPX <- readRDS("postdata/market-june19/SPX.RDS")
+
+yield_curve <- usd_yields_raw %>% 
+  as_tibble() %>% 
+  mutate(adjusted = `10 YR` - `3 MO`, 
+         symbol = "yield 10yr-3mt") %>% 
+  select(date = Date, adjusted, symbol)
+
+dropindicators <- yield_curve %>% 
+  filter(adjusted < 0) %>% 
+  group_by(year(date)) %>% 
+  filter(date == min(date)) %>% 
+  ungroup() %>% 
+  filter(week(date) > 1)
+  
+bind_rows(SPX %>% mutate(symbol = "SPX"),
+          yield_curve) %>% 
+  ggplot(aes(x = date, y = adjusted, color = symbol)) +
+  geom_hline(yintercept = 0, color = "red") +
+  geom_line() +
+  geom_vline(data = bind_rows(dropindicators, dropindicators %>% mutate(symbol = "SPX")), aes(xintercept = date), alpha = 0.6) +
+  facet_wrap(~symbol, ncol = 1, scales = "free_y") +
+  labs(title = "S&P500 vs. the Yield Curve", subtitle = "Since 1990",
+       x = "", y = "value",
+       caption = "Data: Yahoo Finance, Quandl/USTREASURY, graph: mgei.github.io",
+       linetype = "Observation") +
+  scale_x_date(date_breaks = "1 year", date_labels = "%y", expand = c(0, 100)) +
+  scale_y_continuous() +
+  # scale_size_continuous(breaks = c(0.25, 0.5)) +
+  theme_tq() +
+  theme(legend.position = "none")
+```
+
+```{r spx}
+SPX %>% 
+  ggplot(aes(x = date, y = adjusted)) +
+  geom_line(color = "red") +
+  geom_vline(data = bind_rows(dropindicators, dropindicators %>% mutate(symbol = "SPX")), aes(xintercept = date), alpha = 0.6) +
+  labs(title = "S&P500", subtitle = "Log-scale, since 1990",
+       x = "", y = "log value",
+       caption = "Data: Yahoo Finance, Quandl/USTREASURY, graph: mgei.github.io",
+       linetype = "Observation") +
+  scale_x_date(date_breaks = "1 year", date_labels = "%y", expand = c(0, 100)) +
+  scale_y_log10(breaks = round((1:100)^3, -1)) +
+  # scale_size_continuous(breaks = c(0.25, 0.5)) +
+  theme_tq() +
+  theme(legend.position = "none")
+```
+
+To keep in mind is that interest rates were higher before the financial crisis.
+
+```{r yields2}
+usd_yields %>% 
+  filter(term %in% c(3/12, 10)) %>% 
+  ggplot(aes(x = Date, y = Value, color = factor(term), group = factor(term))) +
+  geom_line() +
+  geom_vline(data = bind_rows(dropindicators, dropindicators %>% mutate(symbol = "SPX")), aes(xintercept = date), alpha = 0.6) +
+  labs(title = "US treasury yields", subtitle = "Since 1990",
+       x = "", y = "value",
+       color = "term",
+       caption = "Data: Yahoo Finance, Quandl/USTREASURY, graph: mgei.github.io",
+       linetype = "Observation") +
+  scale_x_date(date_breaks = "1 year", date_labels = "%y", expand = c(0, 100)) +
+  scale_color_discrete(labels = c("3mt", "10yr")) +
+  # scale_y_log10() +
+  # scale_size_continuous(breaks = c(0.25, 0.5)) +
+  theme_tq()
+```

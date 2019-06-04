@@ -5,10 +5,55 @@
     <link>https://mgei.github.io/tags/</link>
     <description>Recent content in Tags on mgei.github.io</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Mon, 27 May 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 03 Jun 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://mgei.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>R</title>
+      <link>https://mgei.github.io/tags/r/</link>
+      <pubDate>Mon, 03 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgei.github.io/tags/r/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>finance</title>
+      <link>https://mgei.github.io/tags/finance/</link>
+      <pubDate>Mon, 03 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgei.github.io/tags/finance/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>plotting</title>
+      <link>https://mgei.github.io/tags/plotting/</link>
+      <pubDate>Mon, 03 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgei.github.io/tags/plotting/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>stock market</title>
+      <link>https://mgei.github.io/tags/stock-market/</link>
+      <pubDate>Mon, 03 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgei.github.io/tags/stock-market/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>tidyquant</title>
+      <link>https://mgei.github.io/tags/tidyquant/</link>
+      <pubDate>Mon, 03 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgei.github.io/tags/tidyquant/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>China</title>
@@ -16,15 +61,6 @@
       <pubDate>Mon, 27 May 2019 00:00:00 +0000</pubDate>
       
       <guid>https://mgei.github.io/tags/china/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>R</title>
-      <link>https://mgei.github.io/tags/r/</link>
-      <pubDate>Mon, 27 May 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://mgei.github.io/tags/r/</guid>
       <description></description>
     </item>
     
@@ -97,42 +133,6 @@
       <pubDate>Wed, 08 May 2019 00:00:00 +0000</pubDate>
       
       <guid>https://mgei.github.io/tags/website/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>finance</title>
-      <link>https://mgei.github.io/tags/finance/</link>
-      <pubDate>Mon, 06 May 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://mgei.github.io/tags/finance/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>plotting</title>
-      <link>https://mgei.github.io/tags/plotting/</link>
-      <pubDate>Mon, 06 May 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://mgei.github.io/tags/plotting/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>stock market</title>
-      <link>https://mgei.github.io/tags/stock-market/</link>
-      <pubDate>Mon, 06 May 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://mgei.github.io/tags/stock-market/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>tidyquant</title>
-      <link>https://mgei.github.io/tags/tidyquant/</link>
-      <pubDate>Mon, 06 May 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://mgei.github.io/tags/tidyquant/</guid>
       <description></description>
     </item>
     

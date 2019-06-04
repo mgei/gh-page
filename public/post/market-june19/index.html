@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang='en'><head>
+  <meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'>
+<meta name='description' content='What’s up?  US’ new deal policy  trade war China, US, Mexico import taxes and trade barriers (Huawei)  instability in middle East  Iran, Isreal, Saudi Arabia Turkey  EU  post parliament elections Austria Ibiza scandal Brexit  China more fragile than thought   Equities First let’s load some R packages. Note that for Quandl you need a API code that is for free but required registration.'>
+<meta name='theme-color' content='#ffb266'>
+
+<meta property='og:title' content='The Market as of June 2019, VIX and inverted yield curve • Martin Geissmann'>
+<meta property='og:description' content='What’s up?  US’ new deal policy  trade war China, US, Mexico import taxes and trade barriers (Huawei)  instability in middle East  Iran, Isreal, Saudi Arabia Turkey  EU  post parliament elections Austria Ibiza scandal Brexit  China more fragile than thought   Equities First let’s load some R packages. Note that for Quandl you need a API code that is for free but required registration.'>
+<meta property='og:url' content='https://mgei.github.io/post/market-june19/'>
+<meta property='og:site_name' content='mgei.github.io'>
+<meta property='og:type' content='article'><meta property='og:image' content='https://www.gravatar.com/avatar/a525a84fae399669fa8861e2661df00b?s=256'><meta property='article:section' content='post'><meta property='article:tag' content='R'><meta property='article:tag' content='tidyquant'><meta property='article:tag' content='finance'><meta property='article:tag' content='stock market'><meta property='article:tag' content='plotting'><meta property='article:published_time' content='2019-06-03T00:00:00Z'/><meta property='article:modified_time' content='2019-06-03T00:00:00Z'/><meta name='twitter:card' content='summary'>
+
+<meta name="generator" content="Hugo 0.55.5" />
+
+  <title>The Market as of June 2019, VIX and inverted yield curve • Martin Geissmann</title>
+  <link rel='canonical' href='https://mgei.github.io/post/market-june19/'>
+  
+  
+  <link rel='icon' href='/favicon.ico'>
+<link rel='stylesheet' href='/assets/css/main.fb20af92.css'><link rel='stylesheet' href='/css/custom.css'><style>
+:root{--color-accent:#ffb266;}
+</style>
+
+  
+
+</head>
+<body class='page type-post has-sidebar'>
+
+  <div class='site'><div id='sidebar' class='sidebar'>
+  <a class='screen-reader-text' href='#main-menu'>Skip to Main Menu</a>
+
+  <div class='container'><section class='widget widget-about sep-after'>
+  <header>
+    
+    <div class='logo'>
+      <a href='/'>
+        <img src='/images/logo.png'>
+      </a>
+    </div>
+    
+    <h2 class='title site-title '>
+      <a href='/'>
+      mgei.github.io
+      </a>
+    </h2>
+    <div class='desc'>
+    personal archive
+    </div>
+  </header>
+
+</section>
+<section class='widget widget-sidebar_menu sep-after'><nav id='sidebar-menu' class='menu sidebar-menu' aria-label='Sidebar Menu'>
+    <div class='container'>
+      <ul><li class='item'>
+  <a href='/'>Home</a></li><li class='item'>
+  <a href='/post/'>Archive</a></li><li class='item'>
+  <a href='/tags/'>Tags</a></li><li class='item'>
+  <a href='/search/'>Search</a></li><li class='item'>
+  <a href='/about/'>About</a></li></ul>
+    </div>
+  </nav>
+
+</section></div>
+
+  <div class='sidebar-overlay'></div>
+</div><div class='main'><a class='screen-reader-text' href='#content'>Skip to Content</a>
+
+<button id='sidebar-toggler' class='sidebar-toggler' aria-controls='sidebar'>
+  <span class='screen-reader-text'>Toggle Sidebar</span>
+  <span class='open'><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <line x1="3" y1="12" x2="21" y2="12" />
+  <line x1="3" y1="6" x2="21" y2="6" />
+  <line x1="3" y1="18" x2="21" y2="18" />
+  
+</svg>
+</span>
+  <span class='close'><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <line x1="18" y1="6" x2="6" y2="18" />
+  <line x1="6" y1="6" x2="18" y2="18" />
+  
+</svg>
+</span>
+</button><div class='header-widgets'>
+        <div class='container'>
+    
+    <style>.widget-breadcrumbs li:after{content:'\2f '}</style>
+  <section class='widget widget-breadcrumbs sep-after'>
+    <nav id='breadcrumbs'>
+      <ol><li><a href='/'>Home</a></li><li><span>The Market as of June 2019, VIX and inverted yield curve</span></li></ol>
+    </nav>
+  </section></div>
+      </div>
+
+      <header id='header' class='header site-header'>
+        <div class='container sep-after'>
+          <div class='header-info'><p class='site-title title'>mgei.github.io</p><p class='desc site-desc'>personal archive</p>
+          </div>
+        </div>
+      </header>
+
+      <main id='content'>
+
+
+<article lang='en' class='entry'>
+  <header class='header entry-header'>
+  <div class='container sep-after'>
+    <div class='header-info'>
+      <h1 class='title'>The Market as of June 2019, VIX and inverted yield curve</h1>
+      
+
+    </div>
+    <div class='entry-meta'>
+  <span class='posted-on'><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+  <line x1="16" y1="2" x2="16" y2="6"/>
+  <line x1="8" y1="2" x2="8" y2="6"/>
+  <line x1="3" y1="10" x2="21" y2="10"/>
+  
+</svg>
+<span class='screen-reader-text'>Posted on </span>
+  <time class='entry-date' datetime='2019-06-03T00:00:00Z'>03 Jun 2019</time>
+</span>
+
+  <span class='byline'><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <path d="M21,21V20c0-2.76-4-5-9-5s-9,2.24-9,5v1"/>
+  <path d="M16,6.37A4,4,0,1,1,12.63,3,4,4,0,0,1,16,6.37Z"/>
+  
+</svg>
+<span class='screen-reader-text'> by </span><a href='/authors/mgei'>Martin Geissmann</a></span>
+  
+
+</div>
+
+
+  </div>
+</header>
+
+  
+  
+
+  <div class='container entry-content'>
+  
+
+
+<div id="whats-up" class="section level1">
+<h1>What’s up?</h1>
+<ul>
+<li>US’ new deal policy
+<ul>
+<li>trade war China, US, Mexico</li>
+<li>import taxes and trade barriers (Huawei)</li>
+</ul></li>
+<li>instability in middle East
+<ul>
+<li>Iran, Isreal, Saudi Arabia</li>
+<li>Turkey</li>
+</ul></li>
+<li>EU
+<ul>
+<li>post parliament elections</li>
+<li>Austria Ibiza scandal</li>
+<li>Brexit</li>
+</ul></li>
+<li>China more fragile than thought</li>
+</ul>
+</div>
+<div id="equities" class="section level1">
+<h1>Equities</h1>
+<p>First let’s load some R packages. Note that for <a href="https://www.quandl.com/">Quandl</a> you need a API code that is for free but required registration.</p>
+<pre class="r"><code>library(tidyverse)
+library(tidyquant)
+# library(gganimate)
+library(ggrepel)
+library(readr)
+library(Quandl)
+
+# Quandl.api_key(read_file(&quot;quandl.key&quot;))</code></pre>
+<p>We are interested in actual investable ETFs, i.e.</p>
+<ul>
+<li>SPY for the S&amp;P 500</li>
+<li>QQQ for Nasdaq</li>
+<li>EWL tracking MSCI Switzerland</li>
+<li>GLD Gold</li>
+<li>SLV Silver</li>
+<li>TUR MSCI Turkey</li>
+<li>EWW MSCI Mexico</li>
+<li>GXC S&amp;P China</li>
+<li>EGPT Egypt</li>
+</ul>
+<pre class="r"><code># etfs &lt;- tq_get(c(&quot;SPY&quot;, &quot;QQQ&quot;, &quot;EWL&quot;, &quot;GLD&quot;, &quot;SLV&quot;, &quot;TUR&quot;, &quot;EWW&quot;, &quot;GXC&quot;, &quot;EGPT&quot;),
+#                get  = &quot;stock.prices&quot;,
+#                from = &quot;2009-01-01&quot;,
+#                to   = Sys.Date())
+# 
+# etfs %&gt;% saveRDS(&quot;postdata/market-june19/etfs.RDS&quot;)
+
+etfs &lt;- readRDS(&quot;postdata/market-june19/etfs.RDS&quot;)
+
+etfs %&gt;% 
+  filter(date &gt;= date(&quot;2010-01-01&quot;)) %&gt;%
+  group_by(symbol) %&gt;%
+  mutate(adjusted_rel = adjusted/first(adjusted)-1) %&gt;% 
+  ungroup() %&gt;% 
+  ggplot(aes(x = date, y = adjusted_rel, color = symbol, size = (symbol == &quot;SPY&quot;))) +
+  geom_line() +
+  geom_label_repel(aes(label = if_else(date == max(date), symbol, NA_character_)), 
+                   direction = &quot;y&quot;, nudge_x = 1000, segment.color = &quot;black&quot;, size = 4) +
+  # Greece
+  geom_vline(xintercept = date(&quot;2010-04-27&quot;), alpha = 0.2) +
+  annotate(geom = &quot;text&quot;, x = date(&quot;2010-04-27&quot;)-40, y = 1, color = &quot;black&quot;, 
+           label = &quot;Greece downgrade&quot;, angle = 90, alpha = 0.5) +
+  # China crash
+  geom_vline(xintercept = date(&quot;2015-06-12&quot;), alpha = 0.2) +
+  annotate(geom = &quot;text&quot;, x = date(&quot;2015-06-12&quot;)-40, y = 2.4, color = &quot;black&quot;, 
+           label = &quot;China market crash&quot;, angle = 90, alpha = 0.5) +
+  # Mkr turndown
+  geom_vline(xintercept = date(&quot;2018-09-20&quot;), alpha = 0.2) +
+  annotate(geom = &quot;text&quot;, x = date(&quot;2018-09-20&quot;)-40, y = 2.1, color = &quot;black&quot;, 
+           label = &quot;US market turndown&quot;, angle = 90, alpha = 0.5) +
+  geom_hline(yintercept = 0, color = &quot;red&quot;, alpha = 0.2) +
+  scale_y_continuous(labels = scales::percent, breaks = seq(-1, 6, by = 0.2)) +
+  scale_x_date(limits = c(date(&quot;2010-01-01&quot;), date(&quot;2019-12-31&quot;)), date_breaks = &quot;1 year&quot;, date_labels = &quot;%Y&quot;, expand = c(0, 100)) +
+  scale_size_discrete(range = c(0.25, 1)) +
+  labs(title = &quot;Performance of selected ETFs&quot;, subtitle = &quot;since Jan 2010&quot;,
+       x = &quot;&quot;, y = &quot;performance on adjusted price&quot;,
+       caption = &quot;Data: Yahoo Finance, graph: mgei.github.io&quot;) +
+  theme_tq() +
+  theme(legend.position = &quot;none&quot;)</code></pre>
+<p><img src="/post/market-june19_files/figure-html/equities-1.png" width="672" /></p>
+<pre class="r"><code>etfs %&gt;% 
+  filter(date &gt;= date(&quot;2018-09-20&quot;)) %&gt;%
+  group_by(symbol) %&gt;%
+  mutate(adjusted_rel = adjusted/first(adjusted)-1) %&gt;% 
+  ungroup() %&gt;% 
+  ggplot(aes(x = date, y = adjusted_rel, color = symbol, size = (symbol == &quot;SPY&quot;))) +
+  geom_line() +
+  geom_label_repel(aes(label = if_else(date == max(date), symbol, NA_character_)), 
+                   direction = &quot;y&quot;, nudge_x = 1000, segment.color = &quot;black&quot;, size = 4) +
+  scale_y_continuous(labels = scales::percent, breaks = seq(-1, 6, by = 0.05)) +
+  scale_x_date(limits = c(date(&quot;2018-09-20&quot;), date(&quot;2019-06-30&quot;)), date_breaks = &quot;1 month&quot;, date_labels = &quot;%m-%Y&quot;) +
+  scale_size_discrete(range = c(0.25, 1)) +
+  labs(title = &quot;Performance of selected ETFs&quot;, subtitle = &quot;since 20 September 2018 &quot;,
+       x = &quot;&quot;, y = &quot;performance on adjusted price&quot;,
+       caption = &quot;Data: Yahoo Finance, graph: mgei.github.io&quot;) +
+  theme_tq() +
+  theme(legend.position = &quot;none&quot;)</code></pre>
+<p><img src="/post/market-june19_files/figure-html/equities-2.png" width="672" /></p>
+</div>
+<div id="indicators" class="section level1">
+<h1>Indicators</h1>
+<div id="vix" class="section level2">
+<h2>VIX</h2>
+<blockquote>
+<p>The CBOE Volatility Index, known by its ticker symbol VIX, is a popular measure of the stock market’s expectation of volatility implied by S&amp;P 500 index options. It is calculated and disseminated on a real-time basis by the Chicago Board Options Exchange (CBOE), and is commonly referred to as the fear index or the fear gauge. - <a href="https://en.wikipedia.org/wiki/VIX" class="uri">https://en.wikipedia.org/wiki/VIX</a></p>
+</blockquote>
+<pre class="r"><code># vix &lt;- tq_get(c(&quot;^VIX&quot;),
+#                get  = &quot;stock.prices&quot;,
+#                from = &quot;2009-01-01&quot;,
+#                to   = Sys.Date()) %&gt;% 
+#   mutate(symbol = &quot;VIX&quot;)
+# 
+# vix %&gt;% saveRDS(&quot;postdata/market-june19/vix.RDS&quot;)
+
+vix &lt;- readRDS(&quot;postdata/market-june19/vix.RDS&quot;)
+
+years &lt;- tibble(year = seq(2010, 2019), 
+                from = seq.Date(date(&quot;2010-01-01&quot;), date(&quot;2019-01-01&quot;), by = &quot;years&quot;),
+                to   = seq.Date(date(&quot;2010-12-31&quot;), date(&quot;2019-12-31&quot;), by = &quot;years&quot;))
+
+vix %&gt;% 
+  filter(year(date) &gt;= 2010) %&gt;%
+  ggplot(aes(x = date, y = adjusted, color = symbol)) +
+  geom_rect(data = years, inherit.aes = F, aes(xmin = from, xmax = to, ymin = -Inf, ymax = Inf, fill = factor(year)), alpha = 0.2) +
+  geom_line() +
+  geom_smooth(color = &quot;black&quot;) +
+  scale_x_date(date_breaks = &quot;1 year&quot;, date_labels = &quot;%Y&quot;, expand = c(0, 0)) +
+  scale_y_continuous(breaks = seq(0,100, by = 5)) +
+  scale_fill_brewer(type = &quot;qual&quot;, palette = &quot;Set3&quot;, guide = F) +
+  labs(title = &quot;CBOE Volatility Index (VIX)&quot;, subtitle = &quot;since Jan 2010&quot;,
+       x = &quot;&quot;, y = &quot;value&quot;, caption = &quot;Data: Yahoo Finance, graph: mgei.github.io&quot;) +
+  theme_tq() +
+  theme(legend.position = &quot;none&quot;)</code></pre>
+<p><img src="/post/market-june19_files/figure-html/vix-1.png" width="672" /></p>
+</div>
+<div id="yield-curves" class="section level2">
+<h2>Yield curves</h2>
+<blockquote>
+<p>In finance, the yield curve is a curve showing several yields or interest rates across different contract lengths (2 month, 2 year, 20 year, etc. …) for a similar debt contract. - <a href="https://en.wikipedia.org/wiki/Yield_curve" class="uri">https://en.wikipedia.org/wiki/Yield_curve</a></p>
+</blockquote>
+<pre class="r"><code># usd_yields_raw &lt;- Quandl(&quot;USTREASURY/YIELD&quot;)
+# 
+# usd_yields_raw %&gt;% saveRDS(&quot;postdata/market-june19/usd_yields_raw.RDS&quot;)
+
+usd_yields_raw &lt;- readRDS(&quot;postdata/market-june19/usd_yields_raw.RDS&quot;)
+
+usd_yields &lt;- usd_yields_raw %&gt;% 
+  as_tibble() %&gt;%
+  gather(term, Value, -Date) %&gt;% 
+  mutate(term = case_when(term == &quot;1 MO&quot; ~ 1/12,
+                          term == &quot;2 MO&quot; ~ 1/6,
+                          term == &quot;3 MO&quot; ~ 1/4,
+                          term == &quot;6 MO&quot; ~ 1/2,
+                          T ~ str_remove(term, &quot; YR&quot;) %&gt;% as.numeric()))
+
+usd_yields %&gt;% 
+  filter(year(Date) %in% c(2019)) %&gt;%
+  group_by(month(Date)) %&gt;% 
+  filter(Date == max(Date)) %&gt;% 
+  ggplot(aes(x = term, y = Value/100, alpha = Date, group = Date, linetype = if_else(Date &lt; max(Date), &quot;previous&quot;, &quot;current&quot;))) +
+  geom_rect(inherit.aes = F, aes(xmin = -Inf, xmax = Inf, ymin = 0.0225, ymax = 0.025),  fill = &quot;lightblue&quot;) +
+  geom_line(aes(x = if_else(term %in% c(1/12, 10), term, NA_real_), y = if_else(term  %in% c(1/12, 10), Value/100, NA_real_)), color = &quot;red&quot;) +
+  geom_line(color = &quot;black&quot;) +
+  labs(title = &quot;Yield Curve USD&quot;, subtitle = &quot;Year 2019, red connecting line indicating the slope (1mt-10yr), in lightblue the target range&quot;,
+       x = &quot;Term in years&quot;, y = &quot;yield&quot;,
+       caption = &quot;Data: Quandl/USTREASURY, graph: mgei.github.io&quot;,
+       linetype = &quot;Observation&quot;) +
+  scale_x_continuous(breaks = pull(unique(usd_yields[&quot;term&quot;]))) +
+  scale_y_continuous(breaks = seq(-0.01, 1, by = 0.001), labels = scales::percent) +
+  theme_bw()</code></pre>
+<p><img src="/post/market-june19_files/figure-html/yieldsusd-1.png" width="672" /></p>
+<pre class="r"><code>chf_yiels &lt;- read_csv2(&quot;postdata/market-june19/snb-data-rendoblim-en-selection-20190603_1430.csv&quot;, skip = 3) %&gt;% 
+  mutate(Date = ymd(paste0(Date, &quot;-01&quot;)), 
+         term = D0 %&gt;% str_remove(&quot;J&quot;) %&gt;% as.numeric(),
+         Value = as.numeric(Value))
+
+chf_yiels %&gt;% 
+  filter(year(Date) %in% c(2019)) %&gt;% 
+  ggplot(aes(x = term, y = Value/100, alpha = Date, group = Date, linetype = if_else(Date &lt; max(Date), &quot;previous&quot;, &quot;current&quot;))) +
+  geom_hline(yintercept = 0, color = &quot;red&quot;, alpha = 0.5) +
+  geom_hline(yintercept = -0.0075, color = &quot;blue&quot;, alpha = 0.5) +
+  geom_rect(inherit.aes = F, aes(xmin = -Inf, xmax = Inf, ymin = -0.0125, ymax = -0.0025),  fill = &quot;lightblue&quot;) +
+  geom_line(aes(x = if_else(term %in% c(1, 10), term, NA_real_), y = if_else(term  %in% c(1, 10), Value/100, NA_real_)), color = &quot;red&quot;) +
+  geom_line() +
+  labs(title = &quot;Yield Curve CHF&quot;, subtitle = &quot;Year 2019&quot;,
+       x = &quot;Term in years&quot;, y = &quot;yield&quot;,
+       caption = &quot;Data: SNB, graph: mgei.github.io&quot;,
+       linetype = &quot;Observation&quot;) +
+  scale_x_continuous(breaks = pull(unique(chf_yiels[&quot;term&quot;]))) +
+  scale_y_continuous(breaks = seq(-0.015, 1, by = 0.001), labels = scales::percent) +
+  theme_bw()</code></pre>
+<p><img src="/post/market-june19_files/figure-html/yields-1.png" width="672" /></p>
+</div>
+<div id="why-care-about-the-yield-curve" class="section level2">
+<h2>Why care about the yield curve?</h2>
+<blockquote>
+<p>The slope of the yield curve is one of the most powerful predictors of future economic growth, inflation, and recessions. - <a href="https://en.wikipedia.org/wiki/Yield_curve#Relationship_to_the_business_cycle" class="uri">https://en.wikipedia.org/wiki/Yield_curve#Relationship_to_the_business_cycle</a></p>
+</blockquote>
+<pre class="r"><code># SPX &lt;- tq_get(&quot;^GSPC&quot;, from = &quot;1990-01-01&quot;)
+# 
+# SPX %&gt;% saveRDS(&quot;postdata/market-june19/SPX.RDS&quot;)
+
+SPX &lt;- readRDS(&quot;postdata/market-june19/SPX.RDS&quot;)
+
+yield_curve &lt;- usd_yields_raw %&gt;% 
+  as_tibble() %&gt;% 
+  mutate(adjusted = `10 YR` - `3 MO`, 
+         symbol = &quot;yield 10yr-3mt&quot;) %&gt;% 
+  select(date = Date, adjusted, symbol)
+
+dropindicators &lt;- yield_curve %&gt;% 
+  filter(adjusted &lt; 0) %&gt;% 
+  group_by(year(date)) %&gt;% 
+  filter(date == min(date)) %&gt;% 
+  ungroup() %&gt;% 
+  filter(week(date) &gt; 1)
+  
+bind_rows(SPX %&gt;% mutate(symbol = &quot;SPX&quot;),
+          yield_curve) %&gt;% 
+  ggplot(aes(x = date, y = adjusted, color = symbol)) +
+  geom_hline(yintercept = 0, color = &quot;red&quot;) +
+  geom_line() +
+  geom_vline(data = bind_rows(dropindicators, dropindicators %&gt;% mutate(symbol = &quot;SPX&quot;)), aes(xintercept = date), alpha = 0.6) +
+  facet_wrap(~symbol, ncol = 1, scales = &quot;free_y&quot;) +
+  labs(title = &quot;S&amp;P500 vs. the Yield Curve&quot;, subtitle = &quot;Since 1990&quot;,
+       x = &quot;&quot;, y = &quot;value&quot;,
+       caption = &quot;Data: Yahoo Finance, Quandl/USTREASURY, graph: mgei.github.io&quot;,
+       linetype = &quot;Observation&quot;) +
+  scale_x_date(date_breaks = &quot;1 year&quot;, date_labels = &quot;%y&quot;, expand = c(0, 100)) +
+  scale_y_continuous() +
+  # scale_size_continuous(breaks = c(0.25, 0.5)) +
+  theme_tq() +
+  theme(legend.position = &quot;none&quot;)</code></pre>
+<p><img src="/post/market-june19_files/figure-html/yieldinverted-1.png" width="672" /></p>
+<pre class="r"><code>SPX %&gt;% 
+  ggplot(aes(x = date, y = adjusted)) +
+  geom_line(color = &quot;red&quot;) +
+  geom_vline(data = bind_rows(dropindicators, dropindicators %&gt;% mutate(symbol = &quot;SPX&quot;)), aes(xintercept = date), alpha = 0.6) +
+  labs(title = &quot;S&amp;P500&quot;, subtitle = &quot;Log-scale, since 1990&quot;,
+       x = &quot;&quot;, y = &quot;log value&quot;,
+       caption = &quot;Data: Yahoo Finance, Quandl/USTREASURY, graph: mgei.github.io&quot;,
+       linetype = &quot;Observation&quot;) +
+  scale_x_date(date_breaks = &quot;1 year&quot;, date_labels = &quot;%y&quot;, expand = c(0, 100)) +
+  scale_y_log10(breaks = round((1:100)^3, -1)) +
+  # scale_size_continuous(breaks = c(0.25, 0.5)) +
+  theme_tq() +
+  theme(legend.position = &quot;none&quot;)</code></pre>
+<p><img src="/post/market-june19_files/figure-html/spx-1.png" width="672" /></p>
+<p>To keep in mind is that interest rates were higher before the financial crisis.</p>
+<pre class="r"><code>usd_yields %&gt;% 
+  filter(term %in% c(3/12, 10)) %&gt;% 
+  ggplot(aes(x = Date, y = Value, color = factor(term), group = factor(term))) +
+  geom_line() +
+  geom_vline(data = bind_rows(dropindicators, dropindicators %&gt;% mutate(symbol = &quot;SPX&quot;)), aes(xintercept = date), alpha = 0.6) +
+  labs(title = &quot;US treasury yields&quot;, subtitle = &quot;Since 1990&quot;,
+       x = &quot;&quot;, y = &quot;value&quot;,
+       color = &quot;term&quot;,
+       caption = &quot;Data: Yahoo Finance, Quandl/USTREASURY, graph: mgei.github.io&quot;,
+       linetype = &quot;Observation&quot;) +
+  scale_x_date(date_breaks = &quot;1 year&quot;, date_labels = &quot;%y&quot;, expand = c(0, 100)) +
+  scale_color_discrete(labels = c(&quot;3mt&quot;, &quot;10yr&quot;)) +
+  # scale_y_log10() +
+  # scale_size_continuous(breaks = c(0.25, 0.5)) +
+  theme_tq()</code></pre>
+<p><img src="/post/market-june19_files/figure-html/yields2-1.png" width="672" /></p>
+</div>
+</div>
+
+</div>
+
+  
+<footer class='entry-footer'>
+  <div class='container sep-before'><div class='tags'><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <path d="M20.59,13.41l-7.17,7.17a2,2,0,0,1-2.83,0L2,12V2H12l8.59,8.59A2,2,0,0,1,20.59,13.41Z"/>
+  <line x1="7" y1="7" x2="7" y2="7"/>
+  
+</svg>
+<span class='screen-reader-text'>Tags: </span><a class='tag' href='/tags/r/'>R</a>, <a class='tag' href='/tags/tidyquant/'>tidyquant</a>, <a class='tag' href='/tags/finance/'>finance</a>, <a class='tag' href='/tags/stock-market/'>stock market</a>, <a class='tag' href='/tags/plotting/'>plotting</a></div>
+
+  </div>
+</footer>
+
+
+</article>
+
+<nav class='entry-nav'>
+  <div class='container'><div class='prev-entry sep-before'>
+      <a href='/post/china-us-trade/'>
+        <span aria-hidden='true'><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <line x1="20" y1="12" x2="4" y2="12"/>
+  <polyline points="10 18 4 12 10 6"/>
+  
+</svg>
+ Previous</span>
+        <span class='screen-reader-text'>Previous post: </span>A closer look at the China-US trade</a>
+    </div></div>
+</nav>
+
+
+
+
+      </main>
+
+      <footer id='footer' class='footer'>
+        <div class='container sep-before'><section class='widget widget-social_menu sep-after'><nav aria-label='Social Menu'>
+    <ul><li>
+        <a href='mailto:mg@econovo.ch' target='_blank' rel='noopener'>
+          <span class='screen-reader-text'>Contact via Email</span><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+  <polyline points="22,6 12,13 2,6"/>
+  
+</svg>
+</a>
+      </li><li>
+        <a href='https://github.com/mgei' target='_blank' rel='noopener'>
+          <span class='screen-reader-text'>Open Github account in new tab</span><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+  
+</svg>
+</a>
+      </li><li>
+        <a href='https://twitter.com//' target='_blank' rel='noopener'>
+          <span class='screen-reader-text'>Open Twitter account in new tab</span><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/>
+  
+</svg>
+</a>
+      </li><li>
+        <a href='https://linkedin.com/in/martin-geissmann-59034a10b' target='_blank' rel='noopener'>
+          <span class='screen-reader-text'>Open Linkedin account in new tab</span><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+  <rect x="2" y="9" width="4" height="12"/>
+  <circle cx="4" cy="4" r="2"/>
+  
+</svg>
+</a>
+      </li><li>
+        <a href='https://www.youtube.com/channel/UCUYqJUnI_P0XYk6_FRyvb2w' target='_blank' rel='noopener'>
+          <span class='screen-reader-text'>Open Youtube account in new tab</span><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z" />
+  <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02" />
+  
+</svg>
+</a>
+      </li></ul>
+  </nav>
+</section><div class='copyright'>
+  <p> &copy; 2019 Martin Geissmann </p>
+</div>
+
+        </div>
+      </footer>
+
+    </div>
+  </div><script>window.__assets_js_src="/assets/js/"</script>
+
+<script src='/assets/js/main.9e5c4cf4.js'></script><script src='/js/custom.js'></script>
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+</body>
+
+</html>
+
