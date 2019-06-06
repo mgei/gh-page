@@ -5,10 +5,20 @@
     <link>https://mgei.github.io/tags/stock-market/</link>
     <description>Recent content in stock market on mgei.github.io</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Mon, 03 Jun 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 06 Jun 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://mgei.github.io/tags/stock-market/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Portfolio performance evaluation</title>
+      <link>https://mgei.github.io/post/performance-eval/</link>
+      <pubDate>Thu, 06 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgei.github.io/post/performance-eval/</guid>
+      <description>library(tidyverse) library(tidyquant) library(Quandl) library(lubridate) library(ggrepel) library(httr) library(scales) library(kableExtra) # Quandl.api_key(read_file(&amp;quot;quandl.key&amp;quot;)) Goal The goal is to evaluate an investment strategy suggested by an investment advisor in February 2016. The strategy plans to invest in 20 Swiss stocks and ETFs with a focus on dividend payout (dividend strategy). The constituents are equal weighted (5%) and rule based rebalancing takes place monthly. Dividends are not reinvested.
+symbolsEUR &amp;lt;- c(&amp;quot;MUV2.DE&amp;quot;, &amp;quot;ALV.DE&amp;quot;, &amp;quot;BAS.DE&amp;quot;, &amp;quot;C029.</description>
+    </item>
     
     <item>
       <title>The Market as of June 2019, VIX and inverted yield curve</title>
