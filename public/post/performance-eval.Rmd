@@ -425,3 +425,403 @@ table_data %>%
 ```
 
 Is it worth it?
+
+# Yet another portfolio
+
+The goal is to evaluate an investment strategy suggested by an investment advisor (code *SS*) in December 2016. The strategy plans to invest in 17 Swiss stocks with a focus on dividend payout (*dividend strategy*). The constituents weighted 10.5 to 2.4% (average target 5%) and rule based rebalancing takes place monthly. Dividends are not reinvested.
+
+```{r symbols2, eval = F, echo = F}
+
+symbolsCHF <- c("MOBN.SW",
+                "NESN.SW",
+                "NOVN.SW",
+                "ROG.SW",
+                "CMBN.SW",
+                "PGHN.SW",
+                "SREN.SW",
+                "SGSN.SW",
+                "ABBN.SW",
+                "BCVN.SW",
+                "GIVN.SW",
+                "ZURN.SW",
+                "ADEN.SW",
+                "SCMN.SW",
+                "SLHN.SW",
+                "GEBN.SW",
+                "KNIN.SW") 
+
+symbols_namesCHF <- c("Mobimo Hld",
+                      "Nestle",
+                      "Novartis",
+                      "Roche",
+                      "Cembra",
+                      "Partners Grp",
+                      "Swiss Re",
+                      "SGS",
+                      "ABB",
+                      "Banque Cant Vaud",
+                      "Givaudan",
+                      "Zurich Insur",
+                      "Adecco",
+                      "Swisscom",
+                      "Swiss Life",
+                      "Geberit",
+                      "Kuehne+Nagel")
+
+pricesCHF <- tq_get(symbolsCHF, from = "2017-01-01") %>% mutate(close_chf = close)
+# pricesEUR <- tq_get(symbolsEUR, from = "2016-01-01")
+
+dividendsCHF <- tq_get(symbolsCHF, from = "2017-01-01", get = "dividends") %>% mutate(dividends_chf = dividends)
+# dividendsEUR <- tq_get(symbolsEUR, from = "2016-01-01", get = "dividends")
+
+# VALOR: 1065278 / ISIN: IE0008471009
+# https://www.finanzen.ch/etf/historisch/ishares-ii-plc---ishares-core-euro-stoxx-50-ucits-etf-eur-dist/swx/1.1.2015_6.6.2019
+# pricesfinanzenCHF <- read_csv("data/iShares_EURO_STOXX_50_CHF.csv") %>% 
+#   mutate(symbol = "iSharesSTOXXDiv", date = dmy(Datum)) %>% 
+#   select(symbol, date, 
+#          open = Eröffnung, high = Tageshoch, low = Tagestief, close = Tagestief, 
+#          volume = `Umsatz (St.)`) %>% 
+#   filter(date >= "2016-01-01") %>% 
+#   mutate(close_chf = close)
+# 
+# dividendsfinanzenCHF <- tibble(symbol = "iSharesSTOXXDiv",
+#                                date = date(c("2016-12-30", "2017-12-29", "2018-12-31", "2019-05-31")),
+#                                dividends = c(1.23, 1.14, 1.29, 0.49)) %>% 
+#   mutate(dividends_chf = dividends)
+# 
+# # VALOR: 42746037 / ISIN: LU1812092168
+# # https://www.finanzen.ch/etf/historisch/lyxor-stoxx-europe-select-dividend-30-ucits-etf---dist/fse/1.1.2015_6.6.2019
+# pricesfinanzenEUR <- read_csv("data/Lyxor_STOXX_Europe_Select_Dividend_EUR.csv") %>% 
+#   mutate(symbol = "LyxorSTOXXSelDiv", date = dmy(Datum)) %>% 
+#   select(symbol, date, 
+#          open = Eröffnung, high = Tageshoch, low = Tagestief, close = Tagestief, 
+#          volume = `Umsatz (St.)`) %>% 
+#   filter(date >= "2016-01-01")
+# 
+# dividendsfinanzenEUR <- tibble(symbol = "LyxorSTOXXSelDiv",
+#                                date = date(c("2016-12-30", "2017-12-29", "2018-12-31", "2019-05-31")),
+#                                dividends = c(0.83, 0.76, 0.81, 0))
+# 
+# eurchf <- Quandl("ECB/EURCHF", start_date="2016-01-01")
+# 
+# pricesEUR_CHF <- pricesEUR %>% 
+#   left_join(eurchf %>% rename(eurchf = Value), by = c("date" = "Date")) %>% 
+#   mutate(close_chf = close*eurchf)
+# 
+# pricesfinanzenEUR_CHF <- pricesfinanzenEUR %>% 
+#   left_join(eurchf %>% rename(eurchf = Value), by = c("date" = "Date")) %>% 
+#   mutate(close_chf = close*eurchf)
+# 
+# dividendsEUR_CHF <- dividendsEUR %>% 
+#   left_join(eurchf %>% rename(eurchf = Value), by = c("date" = "Date")) %>% 
+#   mutate(dividends_chf = dividends*eurchf)
+# 
+# dividendsfinanzenEUR_CHF <- dividendsfinanzenEUR %>% 
+#   left_join(eurchf %>% rename(eurchf = Value), by = c("date" = "Date")) %>% 
+#   mutate(dividends_chf = dividends*eurchf)
+
+cash <- tibble(symbol = "Cash CHF", date = sort(unique(pricesCHF$date)), close_chf = 1)
+
+# putting it all togethet
+prices <- bind_rows(cash, pricesCHF) %>% #, pricesEUR_CHF, pricesfinanzenCHF, pricesfinanzenEUR_CHF) %>% 
+  arrange(symbol, date) %>%
+  group_by(symbol) %>%
+  mutate(close_chf = na.locf(close_chf)) %>% 
+  ungroup()
+
+dividends <- bind_rows(dividendsCHF) #, dividendsEUR_CHF, dividendsfinanzenCHF, dividendsfinanzenEUR_CHF)
+
+names_lut <- bind_rows(tibble(symbol = "Cash CHF", names = "Cash CHF"),
+                       tibble(symbol = symbolsCHF, names = symbols_namesCHF))
+
+prices %>% saveRDS("postdata/performance-eval/pricesSS.RDS")
+dividends %>% saveRDS("postdata/performance-eval/dividendsSS.RDS")
+names_lut %>% saveRDS("postdata/performance-eval/names_lutSS.RDS")
+```
+
+# Performance analysis
+
+```{r readdata2, echo = F}
+prices <- readRDS("postdata/performance-eval/pricesSS.RDS")
+dividends <- readRDS("postdata/performance-eval/dividendsSS.RDS")
+names_lut <- readRDS("postdata/performance-eval/names_lutSS.RDS")
+```
+
+Check that we have 20 titles and all dividends. Actually we only need monthly (end-of-month) returns.
+
+```{r lookatthedata2, echo = F}
+# # how many stocks do we have?
+# prices %>% group_by(symbol) %>% count() %>% ungroup() %>% count()
+
+# # did all pay dividends?
+# dividends %>% group_by(symbol) %>% count() %>% ungroup() %>% count()
+
+# #which is the one that did not pay?
+# prices %>% select(symbol) %>% anti_join(dividends) %>% unique()
+# # 0DZH.L is xtrackers SMI
+```
+
+```{r monthlyrets2, echo = F}
+price_returns <- prices %>% 
+  group_by(symbol) %>%
+  tq_transmute(select     = close_chf, 
+               mutate_fun = periodReturn, 
+               period     = "monthly", 
+               col_rename = "Ra") %>%
+  mutate(date = ceiling_date(date, "month")-1) %>% 
+  ungroup()
+
+price_returns %>% 
+  left_join(names_lut, by = "symbol") %>% 
+  ggplot(aes(y = Ra, x = reorder(names, desc(names)), color = names)) +
+  geom_hline(yintercept = 0, color = "red") +
+  geom_boxplot(color = "black", alpha = 0.5) +
+  geom_point() +
+  scale_y_continuous(labels = scales::percent) +
+  coord_flip() +
+  labs(title = "Price returns of selected stocks/ETFs", subtitle = "Jan 2017 - June 2019, monthly returns, arithmetic, excl. dividends",
+       x = "Stock", y = "return",
+       caption = "Data: Yahoo Finance, graph: mgei.github.io") +
+  theme_tq() +
+  theme(legend.position = "none")
+```
+
+## Portfolio
+
+Define the weights as suggested by the advisor.
+
+```{r portfoliodef2, fig.height=1.5, echo = F}
+# weights = rep(1/20, 20)
+weights <- c(9.1, 5.5, 10.5, 10, 8.4, 6.1, 5.8, 5.7, 5.4, 5, 4.4, 4.3, 4.3, 3.9, 3.9, 2.7, 2.6, 2.4)/100
+
+portfolio_returns <- price_returns %>% filter(date > date("2017-01-01")) %>% 
+  tq_portfolio(assets_col  = symbol, 
+               returns_col = Ra, 
+               weights     = weights, 
+               col_rename  = "Ra",
+               rebalance_on = "months")
+
+portfolio_returns %>% mutate(symbol = "Portfolio") %>% 
+  ggplot(aes(y = Ra, x = reorder(symbol, desc(symbol)), color = symbol)) +
+  geom_hline(yintercept = 0, color = "red") +
+  geom_boxplot(color = "black", alpha = 0.5) +
+  geom_point() +
+  scale_y_continuous(labels = scales::percent) +
+  coord_flip() +
+  labs(title = "Price returns on equal weightes stocks/ETFs portfolio", subtitle = "Jan 2017 - June 2019, monthly returns, arithmetic, excl. dividends",
+       x = "", y = "return",
+       caption = "Data: Yahoo Finance, graph: mgei.github.io") +
+  theme_tq() +
+  theme(legend.position = "none")
+```
+
+How did the portfolio grow over time? Need wealth index. Also we want data for the SMI and SPI for comparison. This is available from [SIX](https://www.six-group.com/exchanges/indices/data_centre/shares/smi_en.html).
+
+```{r sixdata2, eval = F, echo = F}
+# SMI
+url <- "https://www.six-group.com/exchanges/downloads/indexdata/hsmi.csv"
+GET(url, write_disk("postdata/performance-eval/temp.csv", overwrite = T))
+data <- read_csv2("postdata/performance-eval/temp.csv", skip = 2)
+
+smi <- data[-1:-4,] %>% 
+  rename(Date = "SYMBOL") %>% 
+  mutate(Date = as.Date(Date, "%d.%m.%Y")) %>% 
+  mutate_if(is.character, funs(as.numeric(.))) %>% 
+  select(date = Date, SMI)
+
+# SPI
+url <- "https://www.six-group.com/exchanges/downloads/indexdata/hspipr.csv"
+GET(url, write_disk("postdata/performance-eval/temp.csv", overwrite = T))
+data <- read_csv2("postdata/performance-eval/temp.csv", skip = 2) 
+
+spi <- data[-1:-4,] %>% 
+  rename(Date = "SYMBOL") %>% 
+  mutate(Date = as.Date(Date, "%d.%m.%Y")) %>% 
+  mutate_if(is.character, funs(as.numeric(.))) %>% 
+  select(date = Date, SPI = SPIX)
+
+benchmark <- bind_rows(smi %>% mutate(symbol = "SMI") %>% select(symbol, date, close_chf = SMI),
+                       spi %>% mutate(symbol = "SPI") %>% select(symbol, date, close_chf = SPI))
+
+benchmark %>% saveRDS("postdata/performance-eval/benchmark.RDS")
+```
+
+```{r benchmarkret2, echo = F}
+benchmark <- readRDS("postdata/performance-eval/benchmark.RDS")
+
+benchmark_returns <- benchmark %>% 
+  filter(year(date) >= 2016) %>% 
+  group_by(symbol) %>%
+  tq_transmute(select     = close_chf, 
+               mutate_fun = periodReturn, 
+               period     = "monthly", 
+               col_rename = "Ra") %>%
+  mutate(date = ceiling_date(date, "month")-1)
+
+SMI_cumret <- benchmark_returns %>% filter(date > date("2017-01-01")) %>% 
+  tq_portfolio(assets_col  = symbol, 
+               returns_col = Ra, 
+               weights     = c(1,0), 
+               col_rename  = "wealth",
+               rebalance_on = "months",
+               wealth.index = T)
+
+SPI_cumret <- benchmark_returns %>% filter(date > date("2017-01-01")) %>% 
+  tq_portfolio(assets_col  = symbol, 
+               returns_col = Ra, 
+               weights     = c(0,1), 
+               col_rename  = "wealth",
+               rebalance_on = "months",
+               wealth.index = T)
+```
+
+```{r wealth2, echo = F}
+portfolio_value <- price_returns %>% filter(date > date("2017-01-01")) %>% 
+  tq_portfolio(assets_col  = symbol, 
+               returns_col = Ra, 
+               weights     = weights, 
+               col_rename  = "wealth",
+               rebalance_on = "months",
+               wealth.index = T)
+  
+bind_rows(portfolio_value %>% mutate(return = "Portfolio"),
+          SMI_cumret %>% mutate(return = "SMI"),
+          SPI_cumret %>% mutate(return = "SPI")) %>% 
+  bind_rows(tibble(date = date("2017-01-01"), wealth = 1, return = c("Portfolio", "SMI", "SPI"))) %>% 
+  ggplot(aes(x = date, y = wealth-1)) +
+  geom_line(aes(color = return, size = if_else(return == "Portfolio", 2, 1))) +
+  geom_hline(yintercept = 0, color = "red") +
+  geom_hline(yintercept = max(portfolio_value["wealth"])-1, color = "red") +
+  scale_x_date(date_breaks = "3 months", date_labels = "%b %y") +
+  scale_y_continuous(labels = scales::percent, breaks = seq(0,1,0.025)) +
+  scale_size_continuous(range = c(0.5, 2), guide = F) +
+  labs(title = "Portfolio performance over time",
+       subtitle = "Jan 2917 - June 2019, monthly returns, arithmetic, excl. dividends",
+       x = "", y = "Cumulative return", color = "",
+       caption = "Data: Yahoo Finance, graph: mgei.github.io") +
+  theme_tq() +
+  theme(axis.text.x = element_text(angle = 90))
+
+```
+
+## Risk return plot
+
+```{r riskreturn2, echo = F}
+price_returns %>% filter(date > date("2017-01-01")) %>%
+  left_join(names_lut) %>% mutate(symbol = names) %>% 
+  bind_rows(portfolio_returns %>% mutate(symbol = "Portfolio")) %>% 
+  bind_rows(benchmark_returns %>% filter(date > date("2017-01-01"))) %>% 
+  group_by(symbol) %>% 
+  summarise(mu = (1+mean(Ra))^12-1, sigma = sd(Ra)/sqrt(1/12)) %>% 
+  ggplot(aes(x = sigma, y = mu, color = symbol, size = factor(symbol %in% c("Portfolio", "SMI", "SPI")))) +
+  geom_point(alpha = 0.7) +
+  geom_text_repel(aes(label = symbol)) +
+  scale_size_discrete(range = c(3,7)) +
+  scale_x_continuous(labels = scales::percent, breaks = seq(-1,1, by = 0.025)) +
+  scale_y_continuous(labels = scales::percent, breaks = seq(-1,1, by = 0.025)) +
+  labs(title = "Risk return diagram", subtitle = "Jan 2017 - June 2019, annualized values, portfolio equal weighted and monthly rebalanced",
+       x = "Risk (Volatility, sigma)", y = "Return (mu)",
+       caption = "Data: Yahoo Finance, graph: mgei.github.io") +
+  theme_tq() +
+  theme(legend.position = "none")
+```
+
+## Dividends
+
+For the dividends we need the number of stocks for each month and title. As defined above we have an equal weight portfolio with monthly rebalancement. The amount invested is 10 Mio. Swiss Francs.
+
+```{r numberofstocks2, echo = F}
+
+total_portfolio <- 10000000 # 1 million CHF
+total_per_title = total_portfolio/(prices %>% group_by(symbol) %>% count() %>% ungroup() %>% count() %>% pull())
+
+shares <- prices %>% 
+  group_by(symbol, year(date), month(date)) %>% 
+  filter(date == max(date)) %>% 
+  ungroup() %>% 
+  select(symbol, date, close_chf) %>% 
+  mutate(date = ceiling_date(date, "month") - 1) %>% 
+  mutate(shares = total_per_title/close_chf)
+
+dividends_paid <- dividends %>% 
+  mutate(date = ceiling_date(date, "month") - 1) %>% 
+  group_by(symbol, date) %>% 
+  summarise(dividends_chf = sum(dividends_chf)) %>% 
+  ungroup() %>% 
+  left_join(shares, by = c("symbol", "date")) %>% 
+  mutate(dividend_payout = dividends_chf*shares) %>% 
+  group_by(symbol, year = year(date)) %>% 
+  summarise(dividend_payout = sum(dividend_payout)) %>% 
+  ungroup() %>% 
+  mutate(dividend_return = dividend_payout/total_per_title)
+
+dividends_paid %>% 
+  left_join(names_lut) %>% mutate(symbol = names) %>% 
+  ggplot(aes(x = year, y = reorder(symbol, desc(symbol)))) + 
+  geom_point(aes(size = dividend_payout, color = symbol)) +
+  geom_label(aes(label = number(dividend_payout, big.mark = "'")), hjust = 0, nudge_x = 0.1) +
+  geom_label(aes(label = scales::percent(dividend_return, accuracy = 0.1)), hjust = 0, nudge_x = 0.45, size = 3) +
+  scale_x_continuous(limits = c(2017, 2019.7), breaks = c(2017,2018,2019)) +
+  scale_size_continuous(range = c(0, 10)) +
+  labs(title = "Dividends", subtitle = "Portfolio",
+       x = "", y = "",
+       caption = "Data: Yahoo Finance, graph: mgei.github.io") +
+  theme_tq() +
+  theme(legend.position = "none")
+```
+
+# Overall perspective
+
+How did we perform? We shall take into account:
+
+* appreciation of portfolio value
+* dividends recieved
+* bank/broker flat fee (40 basis points)
+* income tax (on dividends, assume flat 27%)
+* wealth tax (on portfolio valuation, assume flat 0.8%)
+
+Initial sum invested 10 million CHF.
+
+```{r overall2, echo = F}
+initial_sum <- 10000000
+flatfee_rate <- 0.01
+income_tax_rate <- 0.27
+wealth_tax_rate <- 0.008
+
+dividends_paid_yearly <- dividends_paid %>% 
+  group_by(year) %>% 
+  summarise(dividend_payout = sum(dividend_payout))
+
+table_data <- tibble(portfolio_value = initial_sum, year = 2015) %>% 
+  bind_rows(portfolio_value %>% 
+              mutate(portfolio_value = wealth*initial_sum) %>% 
+              group_by(year = year(date)) %>% 
+              filter(date == max(date)) %>% 
+              ungroup()) %>% 
+  left_join(dividends_paid_yearly, by = "year") %>% 
+  mutate(fee = if_else(year>2015, portfolio_value*flatfee_rate, NA_real_),
+         income_tax = dividend_payout*income_tax_rate,
+         wealth_tax = if_else(year>2015, portfolio_value*wealth_tax_rate, NA_real_),
+         cash_in_pocket = dividend_payout - fee - income_tax - wealth_tax,
+         change_in_portfolio_value = portfolio_value-lag(portfolio_value),
+         total_performance = cash_in_pocket+change_in_portfolio_value) %>% 
+  select("Year" = year, "Portfolio value" = portfolio_value, 
+         "Total dividends paid" = dividend_payout,
+         "Bank/broker fee" = fee,
+         "Income tax" = income_tax,
+         "Wealth tax" = wealth_tax,
+         "Cash in hand after fee and tax" = cash_in_pocket,
+         "Change in portfolio value" = change_in_portfolio_value,
+         "Total performance after fee and tax" = total_performance) %>% 
+  mutate(Year = as.character(Year) %>% str_replace("2015", "initial"))
+
+options(knitr.kable.NA = "")
+
+table_data %>% 
+  kable(format.args = list(big.mark = "'"), digits = 0) %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>% 
+  row_spec(0, bold = T)
+  
+```
+
+Is this one worth it?
