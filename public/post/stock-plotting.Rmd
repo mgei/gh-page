@@ -1,0 +1,121 @@
+---
+slug: "stock-plotting"
+date: "2019-06-11"
+title: "Plotting stock performance in R"
+tags: ["plotting", "R", "tidyquant", "finance", "stock market"]
+draft: true
+authors: [mgei]
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = T, warning = F, message = F)
+```
+
+```{r packages}
+library(tidyverse)
+library(tidyquant)
+# library(Quandl)
+library(lubridate)
+library(ggrepel)
+# library(httr)
+library(scales)
+library(kableExtra)
+library(plotly)
+
+# Quandl.api_key(read_file("quandl.key"))
+```
+
+# Currency data
+
+```{r currency}
+
+fx <- read_delim("postdata/stock-plotting/snb-data-devkum-en-all-20190603_1430.csv",
+                skip = 3, delim = ";") %>% 
+  filter(D0 == "M1", # end of month only
+         !is.na(Value)) %>% 
+  mutate(Date = ceiling_date(ymd(paste0(Date, "-01")), "month")-1,
+         currency = str_sub(D1, 1,3))
+
+fx %>% 
+  group_by(D1) %>% 
+  summarise(from = min(Date), to = max(Date)) %>% 
+  print(n = 26)
+
+range_from <- as.Date("2018-02-01")
+
+fx_range <- fx %>% 
+  filter(Date >= range_from,
+         currency %in% c("EUR", "USD", "NOK", "SEK", "NZD", "AUD", "SGD")) %>% 
+  group_by(currency) %>% 
+  mutate(performance = Value/first(Value)-1)
+
+p <- fx_range %>% 
+  ggplot(aes(x = Date, y = performance, color = currency)) +
+  geom_line() +
+  geom_hline(yintercept = 0, color = "red", alpha = 0.3) +
+  geom_label_repel(aes(label = if_else(Date == max(Date), paste(currency, percent(performance)), NA_character_)), 
+                   direction = "y", segment.color = "black", size = 4) +
+  scale_y_continuous(labels = scales::percent, breaks = seq(-1, 1, 0.05)) +
+  labs(title = "Performance ausgewählter Währungen gegenüber dem Schweizer Franken",
+       subtitle = paste(year(range_from), "bis Mai 2019"),
+       x = "", y = "") +
+  theme_tq() +
+  theme(legend.position = "none")
+
+p
+
+# same but without repel
+p <- fx_range %>% 
+  ggplot(aes(x = Date, y = performance, color = currency)) +
+  geom_line() +
+  geom_hline(yintercept = 0, color = "red", alpha = 0.3) +
+  # geom_label_repel(aes(label = if_else(Date == max(Date), paste(currency, percent(performance)), NA_character_)), 
+  #                  direction = "y", segment.color = "black", size = 4) +
+  scale_y_continuous(labels = scales::percent, breaks = seq(-1, 1, 0.05)) +
+  labs(title = "Performance ausgewählter Währungen gegenüber dem Schweizer Franken",
+       subtitle = paste(year(range_from), "bis Mai 2019"),
+       x = "", y = "") +
+  theme_tq() +
+  theme(legend.position = "none")
+
+ggplotly(p, dynamicTicks = T) %>%
+  rangeslider(borderwidth = 1) %>%
+  layout(hovermode = "x", yaxis = list(tickformat = "%"))
+
+```
+
+
+```{r dygraphs, eval = F}
+
+fx %>% filter(D1 == "SEK100") %>% select(Date, Value)
+
+eur_dy <- eur %>% column_to_rownames("Date")
+
+dygraph(eur_dy) %>% 
+  dyRangeSelector() %>% 
+  dyUnzoom() 
+
+```
+
+```{r ggplotly, eval = F}
+
+stocks <- tq_get(c("AAPL", "MSFT"), from = "2019-01-01")
+
+range_from <- as.Date("2019-02-01")
+
+stocks_range <- stocks %>% 
+  filter(date >= range_from) %>% 
+  group_by(symbol) %>% 
+  mutate(performance = adjusted/first(adjusted)-1)
+
+p <- stocks_range %>% 
+  group_by(symbol) %>% 
+  ggplot(aes(x = date, y = (adjusted/first(adjusted)-1), color = symbol, group = symbol)) +
+  geom_line()
+
+p
+
+ggplotly(p, dynamicTicks = T) %>%
+  rangeslider(borderwidth = 1) %>%
+  layout(hovermode = "x", yaxis = list(tickformat = "%"))
+```
