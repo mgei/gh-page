@@ -5,10 +5,19 @@
     <link>https://mgei.github.io/tags/r/</link>
     <description>Recent content in R on mgei.github.io</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Thu, 06 Jun 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 17 Jun 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://mgei.github.io/tags/r/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Plotting stock relative performance with R Plotly&#39;s rangeslider</title>
+      <link>https://mgei.github.io/post/rangeslider-plotly/</link>
+      <pubDate>Mon, 17 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgei.github.io/post/rangeslider-plotly/</guid>
+      <description>Rangeslider option for stock market plots The one feature that I liked most about Google Finance was the ability to easily compare the performance of stocks over specified periods. In the application (Google used Flash) one could specify a stock and then add several others to it. The starting point would be zero (%) and the performance line the return given equal amount invested in both assets (performance in %).</description>
+    </item>
     
     <item>
       <title>Portfolio performance evaluation</title>

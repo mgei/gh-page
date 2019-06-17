@@ -1,0 +1,128 @@
+---
+slug: "rangeslider-plotly"
+date: "2019-06-17"
+title: "Plotting stock relative performance with R Plotly's rangeslider"
+tags: ["R", "tidyquant", "finance", "stock market", "plotly", "plotting"]
+authors: [mgei]
+---
+
+
+
+<div id="rangeslider-option-for-stock-market-plots" class="section level1">
+<h1>Rangeslider option for stock market plots</h1>
+<p>The one feature that I liked most about Google Finance was the ability to easily compare the performance of stocks over specified periods. In the application (Google used Flash) one could specify a stock and then add several others to it. The starting point would be zero (%) and the performance line the return given equal amount invested in both assets (performance in %). Unfortunately, Google Finance <a href="https://www.marketwatch.com/story/google-finance-as-you-know-it-is-going-away-here-is-what-will-remain-2017-09-27">has been discontinued</a>.</p>
+<p><a href="https://plot.ly/">Plotly</a> “provides online graphing, analytics, and statistics tools for individuals and collaboration, as well as scientific graphing libraries for Python, R, MATLAB, Perl, Julia, Arduino, and REST.” (<a href="https://en.wikipedia.org/wiki/Plotly">Wiki</a>). One recently added feature is the <em>rangeslider</em>. With it one can select an area on the x-axis and zoom in in the main plot’s view. That’s great for comparing stocks.</p>
+<p>However, we like to compare stocks in terms of performance. Else it it practically impossible to compare a penny stock to Berkshire Hathaway class A stocks (currently trading at 308’206 USD).</p>
+</div>
+<div id="examples" class="section level1">
+<h1>Examples</h1>
+<div id="gold-vs.silver-etf" class="section level2">
+<h2>Gold vs. Silver ETF</h2>
+<div class="figure">
+<img src="/images/post/rangeslider-plotly/gldslv.png" />
+
+</div>
+</div>
+<div id="herbalife" class="section level2">
+<h2>Herbalife</h2>
+<div class="figure">
+<img src="/images/post/rangeslider-plotly/hbl.png" />
+
+</div>
+</div>
+<div id="sp500-vs.vix" class="section level2">
+<h2>S&amp;P500 vs. VIX</h2>
+<div class="figure">
+<img src="/images/post/rangeslider-plotly/spxvix.png" />
+
+</div>
+</div>
+<div id="bitcoin" class="section level2">
+<h2>Bitcoin</h2>
+<div class="figure">
+<img src="/images/post/rangeslider-plotly/btc.png" />
+
+</div>
+</div>
+</div>
+<div id="code" class="section level1">
+<h1>Code</h1>
+<pre class="r"><code>library(shiny)
+library(plotly)
+library(tidyquant)
+library(lubridate)
+
+# stocks &lt;- tq_get(c(&quot;AAPL&quot;, &quot;MSFT&quot;), from = &quot;1990-01-01&quot;)
+# stocks &lt;- readRDS(&quot;data/stocks.RDS&quot;)
+
+ui &lt;- fluidPage(
+  tags$head(
+    tags$style(HTML(&quot;
+      @import url(&#39;//fonts.googleapis.com/css?family=Dancing+Script&#39;);
+      
+      h2 {
+        font-family: &#39;Dancing Script&#39;, cursive;
+        font-weight: 500;
+        line-height: 5;
+        color: #000000;
+      }
+    &quot;))
+  ),
+  
+    titlePanel(&quot;Rangesliding performance&quot;),
+        mainPanel(
+          textInput(&quot;tickers&quot;, &quot;Tickers (use comma to separate)&quot;),
+          dateInput(&quot;fromdate&quot;, &quot;from&quot;, value = &quot;2000-01-01&quot;, min = &quot;1960-01-01&quot;, max = Sys.Date()),
+          actionButton(&quot;gobutton&quot;, &quot;Go&quot;),
+          
+          plotlyOutput(&quot;plot&quot;)
+        )
+)
+
+server &lt;- function(input, output) {
+  
+  stocksy &lt;- eventReactive(input$gobutton, {
+                                              t &lt;- input$tickers %&gt;% str_remove_all(&quot; &quot;) %&gt;% str_split(&quot;,&quot;)
+                                              tq_get(t[[1]], from = input$fromdate) #, from = &quot;1990-01-01&quot;)
+    })
+  
+  # stocksy &lt;- eventReactive(input$gobutton, {
+  #                                             stocks
+  #   })
+  
+  # observe({ print(stocksy()) })
+
+  d &lt;- reactive({ e &lt;- event_data(&quot;plotly_relayout&quot;)
+                  if (is.null(e)) {
+                    e$xaxis.range &lt;- c(min(stocksy()$date), max(stocksy()$date))
+                  }
+                  e })
+  
+  stocks_range_dyn &lt;- reactive({
+    s &lt;- stocksy() %&gt;%
+      group_by(symbol) %&gt;%
+      mutate(performance = adjusted/first(adjusted)-1)
+    
+    if (!is.null(d())) {
+      s &lt;- s %&gt;%
+        mutate(performance = adjusted/nth(adjusted, which.min(abs(date - date(d()$xaxis.range[[1]]))))-1)
+    }
+    
+    s
+  })
+
+    output$plot &lt;- renderPlotly({
+
+      plot_ly(stocks_range_dyn(), x = ~date, y = ~performance, color = ~symbol) %&gt;% 
+        add_lines() %&gt;%
+        rangeslider(start =  d()$xaxis.range[[1]], end =  d()$xaxis.range[[2]], borderwidth = 1) %&gt;% 
+        layout(xaxis = list(title = &quot;&quot;), 
+               yaxis = list(title = &quot;return performance&quot;, tickformat = &quot;%&quot;,
+                            autorange = T, fixedrange = F)) %&gt;% 
+        config(displayModeBar = F)
+      
+      })
+}
+
+shinyApp(ui = ui, server = server)</code></pre>
+</div>

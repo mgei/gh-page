@@ -1,0 +1,116 @@
+---
+slug: "rangeslider-plotly"
+date: "2019-06-17"
+title: "Plotting stock relative performance with R Plotly's rangeslider"
+tags: ["R", "tidyquant", "finance", "stock market", "plotly", "plotting"]
+authors: [mgei]
+---
+
+# Rangeslider option for stock market plots
+
+The one feature that I liked most about Google Finance was the ability to easily compare the performance of stocks over specified periods. In the application (Google used Flash) one could specify a stock and then add several others to it. The starting point would be zero (%) and the performance line the return given equal amount invested in both assets (performance in %). Unfortunately, Google Finance [has been discontinued](https://www.marketwatch.com/story/google-finance-as-you-know-it-is-going-away-here-is-what-will-remain-2017-09-27).
+
+[Plotly](https://plot.ly/) "provides online graphing, analytics, and statistics tools for individuals and collaboration, as well as scientific graphing libraries for Python, R, MATLAB, Perl, Julia, Arduino, and REST." ([Wiki](https://en.wikipedia.org/wiki/Plotly)). One recently added feature is the *rangeslider*. With it one can select an area on the x-axis and zoom in in the main plot's view. That's great for comparing stocks.
+
+However, we like to compare stocks in terms of performance. Else it it practically impossible to compare a penny stock to Berkshire Hathaway class A stocks (currently trading at 308'206 USD).
+
+# Examples
+
+## Gold vs. Silver ETF
+
+![](/images/post/rangeslider-plotly/gldslv.png)
+
+## Herbalife
+
+![](/images/post/rangeslider-plotly/hbl.png)
+
+## S&P500 vs. VIX
+
+![](/images/post/rangeslider-plotly/spxvix.png)
+
+## Bitcoin
+
+![](/images/post/rangeslider-plotly/btc.png)
+
+# Code
+
+```{r shinycode, eval = F}
+library(shiny)
+library(plotly)
+library(tidyquant)
+library(lubridate)
+
+# stocks <- tq_get(c("AAPL", "MSFT"), from = "1990-01-01")
+# stocks <- readRDS("data/stocks.RDS")
+
+ui <- fluidPage(
+  tags$head(
+    tags$style(HTML("
+      @import url('//fonts.googleapis.com/css?family=Dancing+Script');
+      
+      h2 {
+        font-family: 'Dancing Script', cursive;
+        font-weight: 500;
+        line-height: 5;
+        color: #000000;
+      }
+    "))
+  ),
+  
+    titlePanel("Rangesliding performance"),
+        mainPanel(
+          textInput("tickers", "Tickers (use comma to separate)"),
+          dateInput("fromdate", "from", value = "2000-01-01", min = "1960-01-01", max = Sys.Date()),
+          actionButton("gobutton", "Go"),
+          
+          plotlyOutput("plot")
+        )
+)
+
+server <- function(input, output) {
+  
+  stocksy <- eventReactive(input$gobutton, {
+                                              t <- input$tickers %>% str_remove_all(" ") %>% str_split(",")
+                                              tq_get(t[[1]], from = input$fromdate) #, from = "1990-01-01")
+    })
+  
+  # stocksy <- eventReactive(input$gobutton, {
+  #                                             stocks
+  #   })
+  
+  # observe({ print(stocksy()) })
+
+  d <- reactive({ e <- event_data("plotly_relayout")
+                  if (is.null(e)) {
+                    e$xaxis.range <- c(min(stocksy()$date), max(stocksy()$date))
+                  }
+                  e })
+  
+  stocks_range_dyn <- reactive({
+    s <- stocksy() %>%
+      group_by(symbol) %>%
+      mutate(performance = adjusted/first(adjusted)-1)
+    
+    if (!is.null(d())) {
+      s <- s %>%
+        mutate(performance = adjusted/nth(adjusted, which.min(abs(date - date(d()$xaxis.range[[1]]))))-1)
+    }
+    
+    s
+  })
+
+    output$plot <- renderPlotly({
+
+      plot_ly(stocks_range_dyn(), x = ~date, y = ~performance, color = ~symbol) %>% 
+        add_lines() %>%
+        rangeslider(start =  d()$xaxis.range[[1]], end =  d()$xaxis.range[[2]], borderwidth = 1) %>% 
+        layout(xaxis = list(title = ""), 
+               yaxis = list(title = "return performance", tickformat = "%",
+                            autorange = T, fixedrange = F)) %>% 
+        config(displayModeBar = F)
+      
+      })
+}
+
+shinyApp(ui = ui, server = server)
+```
