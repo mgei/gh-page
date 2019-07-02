@@ -14,25 +14,84 @@ The one feature that I liked most about Google Finance was the ability to easily
 
 However, we like to compare stocks in terms of performance. Else it it practically impossible to compare a penny stock to Berkshire Hathaway class A stocks (currently trading at 308'206 USD).
 
-# Examples
+# Solutions
 
-## Gold vs. Silver ETF
+## Option with dygraphs
 
-![](/images/post/rangeslider-plotly/gldslv.png)
+Suggested [here](https://stackoverflow.com/a/56793779/9285732).
 
-## Herbalife
+```{r dygraphs, message=F, warning=F}
+library(dygraphs)
+library(tidyquant)
+library(timetk)
+library(tidyr)
 
-![](/images/post/rangeslider-plotly/hbl.png)
+stocks <- tq_get(c("AAPL", "MSFT"), from = "2017-01-01")
 
-## S&P500 vs. VIX
+stocks %>% 
+  dplyr::select(symbol, date, adjusted) %>% 
+  tidyr::spread(key = symbol, value = adjusted) %>% 
+  timetk::tk_xts() %>% 
+  dygraph() %>%
+  dyRebase(value = 1) %>% 
+  dyRangeSelector()
+```
 
-![](/images/post/rangeslider-plotly/spxvix.png)
+## Option with plotly
 
-## Bitcoin
+Suggested [here](https://stackoverflow.com/a/56793779/9285732).
 
-![](/images/post/rangeslider-plotly/btc.png)
+Requires some JavaScript.
 
-# Code
+```{r plotly, message=F, warning=F}
+
+library(tidyquant)
+library(plotly)
+library(htmlwidgets)
+library(dplyr)
+
+# stocks <- tq_get(c("AAPL", "MSFT"), from = "2019-01-01")
+
+pltly <- 
+  stocks %>% 
+  dplyr::group_by(symbol) %>% 
+  dplyr::mutate(adjusted = adjusted / adjusted[1L]) %>% 
+  plotly::plot_ly(x = ~date, y = ~adjusted, color = ~symbol,
+                  type = "scatter", mode = "lines") %>% 
+  plotly::layout(dragmode = "zoom", 
+                 datarevision = 0) %>% 
+  rangeslider(borderwidth = 1)
+
+onRenderRebaseTxt <- "
+  function(el, x) {
+el.on('plotly_relayout', function(rlyt) {
+        var nrTrcs = el.data.length;
+        // array of x index to rebase to; defaults to zero when all x are shown, needs to be one per trace
+        baseX = Array.from({length: nrTrcs}, (v, i) => 0);
+        // if x zoomed, increase baseX until first x point larger than x-range start
+        if (el.layout.xaxis.autorange == false) {
+            for (var trc = 0; trc < nrTrcs; trc++) {
+                while (el.data[[trc]].x[baseX[trc]] < el.layout.xaxis.range[0]) {baseX[trc]++;}
+            }   
+        }
+        // rebase each trace
+        for (var trc = 0; trc < nrTrcs; trc++) {
+            el.data[trc].y = el.data[[trc]].y.map(x => x / el.data[[trc]].y[baseX[trc]]);
+        }
+        el.layout.yaxis.autorange = true; // to show all traces if y was zoomed as well
+        el.layout.datarevision++; // needs to change for react method to show data changes
+        Plotly.react(el, el.data, el.layout);
+
+});
+  }
+"
+htmlwidgets::onRender(pltly, onRenderRebaseTxt)
+
+```
+
+## Option with Shiny
+
+Suggested [here](https://stackoverflow.com/a/56619834/9285732).
 
 ```{r shinycode, eval = F}
 library(shiny)
@@ -73,12 +132,6 @@ server <- function(input, output) {
                                               t <- input$tickers %>% str_remove_all(" ") %>% str_split(",")
                                               tq_get(t[[1]], from = input$fromdate) #, from = "1990-01-01")
     })
-  
-  # stocksy <- eventReactive(input$gobutton, {
-  #                                             stocks
-  #   })
-  
-  # observe({ print(stocksy()) })
 
   d <- reactive({ e <- event_data("plotly_relayout")
                   if (is.null(e)) {
@@ -114,3 +167,20 @@ server <- function(input, output) {
 
 shinyApp(ui = ui, server = server)
 ```
+
+
+### Gold vs. Silver ETF
+
+![](/images/post/rangeslider-plotly/gldslv.png)
+
+### Herbalife
+
+![](/images/post/rangeslider-plotly/hbl.png)
+
+### S&P500 vs. VIX
+
+![](/images/post/rangeslider-plotly/spxvix.png)
+
+### Bitcoin
+
+![](/images/post/rangeslider-plotly/btc.png)

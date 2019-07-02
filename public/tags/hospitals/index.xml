@@ -2,30 +2,30 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>hospitals on mgei.github.io</title>
-    <link>https://mgei.github.io/tags/hospitals/</link>
+    <link>/tags/hospitals/</link>
     <description>Recent content in hospitals on mgei.github.io</description>
     <generator>Hugo -- gohugo.io</generator>
     <lastBuildDate>Wed, 27 Mar 2019 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://mgei.github.io/tags/hospitals/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/tags/hospitals/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>How far to the closest hospital?</title>
-      <link>https://mgei.github.io/post/drivingtimes/</link>
+      <link>/post/drivingtimes/</link>
       <pubDate>Wed, 27 Mar 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://mgei.github.io/post/drivingtimes/</guid>
+      <guid>/post/drivingtimes/</guid>
       <description>Originally published on RPubs: http://rpubs.com/mgei/drivingtimes
  Intro Imagine you just fell out of a plane over Switzerland and landed at a random location. As you are wounded your number one concern it to get to a hospital asap. Not any hospital but one that has an emergency room and is equipped at least with a CT to check for fractures.</description>
     </item>
     
     <item>
       <title>Swiss Hospitals Classification</title>
-      <link>https://mgei.github.io/post/swiss-hospitals-classification/</link>
+      <link>/post/swiss-hospitals-classification/</link>
       <pubDate>Wed, 20 Mar 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://mgei.github.io/post/swiss-hospitals-classification/</guid>
+      <guid>/post/swiss-hospitals-classification/</guid>
       <description>Originally published on Github: https://github.com/mgei/swiss-hospitals-classification
  R Shiny app for cluster analysis A simple R Shiny app to classify Swiss hospitals according to their DRG positions using clustering and wordclouds.
 The app is also live for trying here: http://swiss-hospitals-classification.econovo.io/
@@ -34,10 +34,10 @@ The app is also live for trying here: http://swiss-hospitals-classification.econ
     
     <item>
       <title>(de) Über die Fallzahlen in Schweizer Spitälern</title>
-      <link>https://mgei.github.io/post/econovo-fallzahlen-cluster/</link>
+      <link>/post/econovo-fallzahlen-cluster/</link>
       <pubDate>Mon, 18 Mar 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://mgei.github.io/post/econovo-fallzahlen-cluster/</guid>
+      <guid>/post/econovo-fallzahlen-cluster/</guid>
       <description>  Published here: https://www.econovo.ch/en/2019/03/18/fallzahlen-cluster/
  </description>
     </item>

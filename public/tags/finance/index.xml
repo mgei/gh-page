@@ -2,48 +2,57 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>finance on mgei.github.io</title>
-    <link>https://mgei.github.io/tags/finance/</link>
+    <link>/tags/finance/</link>
     <description>Recent content in finance on mgei.github.io</description>
     <generator>Hugo -- gohugo.io</generator>
     <lastBuildDate>Mon, 17 Jun 2019 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://mgei.github.io/tags/finance/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/tags/finance/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Plotting stock relative performance with R Plotly&#39;s rangeslider</title>
-      <link>https://mgei.github.io/post/rangeslider-plotly/</link>
+      <link>/post/rangeslider-plotly/</link>
       <pubDate>Mon, 17 Jun 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://mgei.github.io/post/rangeslider-plotly/</guid>
+      <guid>/post/rangeslider-plotly/</guid>
       <description>Rangeslider option for stock market plots The one feature that I liked most about Google Finance was the ability to easily compare the performance of stocks over specified periods. In the application (Google used Flash) one could specify a stock and then add several others to it. The starting point would be zero (%) and the performance line the return given equal amount invested in both assets (performance in %).</description>
     </item>
     
     <item>
+      <title>Plotting stock performance in R</title>
+      <link>/post/stock-plotting/</link>
+      <pubDate>Tue, 11 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/post/stock-plotting/</guid>
+      <description>library(tidyverse) library(tidyquant) # library(Quandl) library(lubridate) library(ggrepel) # library(httr) library(scales) library(kableExtra) library(plotly) # Quandl.api_key(read_file(&amp;quot;quandl.key&amp;quot;)) Currency data fx &amp;lt;- read_delim(&amp;quot;postdata/stock-plotting/snb-data-devkum-en-all-20190603_1430.csv&amp;quot;, skip = 3, delim = &amp;quot;;&amp;quot;) %&amp;gt;% filter(D0 == &amp;quot;M1&amp;quot;, # end of month only !is.na(Value)) %&amp;gt;% mutate(Date = ceiling_date(ymd(paste0(Date, &amp;quot;-01&amp;quot;)), &amp;quot;month&amp;quot;)-1, currency = str_sub(D1, 1,3)) fx %&amp;gt;% group_by(D1) %&amp;gt;% summarise(from = min(Date), to = max(Date)) %&amp;gt;% print(n = 26) ## # A tibble: 26 x 3 ## D1 from to ## &amp;lt;chr&amp;gt; &amp;lt;date&amp;gt; &amp;lt;date&amp;gt; ## 1 ARS100 1999-01-31 2019-05-31 ## 2 AUD1 1992-01-31 2019-05-31 ## 3 BRL100 1999-01-31 2019-05-31 ## 4 CAD1 1970-01-31 2019-05-31 ## 5 CNY100 1998-12-31 2019-05-31 ## 6 CZK100 1999-01-31 2019-05-31 ## 7 DKK100 1970-01-31 2019-05-31 ## 8 EUR1 1999-01-31 2019-05-31 ## 9 GBP1 1970-01-31 2019-05-31 ## 10 HKD100 1999-01-31 2019-05-31 ## 11 HUF100 1999-01-31 2019-05-31 ## 12 JPY100 1972-01-31 2019-05-31 ## 13 KRW100 1999-01-31 2019-05-31 ## 14 MXN100 1999-01-31 2019-05-31 ## 15 MYR100 1999-01-31 2019-05-31 ## 16 NOK100 1970-01-31 2019-05-31 ## 17 NZD1 1999-01-31 2019-05-31 ## 18 PLN100 1999-01-31 2019-05-31 ## 19 RUB1 1998-01-31 2019-05-31 ## 20 SEK100 1970-01-31 2019-05-31 ## 21 SGD1 1999-01-31 2019-05-31 ## 22 THB100 1999-01-31 2019-05-31 ## 23 TRY100 1999-01-31 2019-05-31 ## 24 USD1 1970-01-31 2019-05-31 ## 25 XDR1 1978-01-31 2019-05-31 ## 26 ZAR1 1992-07-31 2019-05-31 range_from &amp;lt;- as.</description>
+    </item>
+    
+    <item>
       <title>Portfolio performance evaluation</title>
-      <link>https://mgei.github.io/post/performance-eval/</link>
+      <link>/post/performance-eval/</link>
       <pubDate>Thu, 06 Jun 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://mgei.github.io/post/performance-eval/</guid>
+      <guid>/post/performance-eval/</guid>
       <description>library(tidyverse) library(tidyquant) library(Quandl) library(lubridate) library(ggrepel) library(httr) library(scales) library(kableExtra) # Quandl.api_key(read_file(&amp;quot;quandl.key&amp;quot;)) Goal The goal is to evaluate an investment strategy suggested by an investment advisor in February 2016. The strategy plans to invest in 20 Swiss stocks and ETFs with a focus on dividend payout (dividend strategy). The constituents are equal weighted (5%) and rule based rebalancing takes place monthly. Dividends are not reinvested.
 symbolsEUR &amp;lt;- c(&amp;quot;MUV2.DE&amp;quot;, &amp;quot;ALV.DE&amp;quot;, &amp;quot;BAS.DE&amp;quot;, &amp;quot;C029.</description>
     </item>
     
     <item>
       <title>The Market as of June 2019, VIX and inverted yield curve</title>
-      <link>https://mgei.github.io/post/market-june19/</link>
+      <link>/post/market-june19/</link>
       <pubDate>Mon, 03 Jun 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://mgei.github.io/post/market-june19/</guid>
+      <guid>/post/market-june19/</guid>
       <description>What’s up?  US’ new deal policy  trade war China, US, Mexico import taxes and trade barriers (Huawei)  instability in middle East  Iran, Isreal, Saudi Arabia Turkey  EU  post parliament elections Austria Ibiza scandal Brexit  China more fragile than thought   Equities First let’s load some R packages. Note that for Quandl you need a API code that is for free but required registration.</description>
     </item>
     
     <item>
       <title>Europe&#39;s Largest Banks</title>
-      <link>https://mgei.github.io/post/european-banks/</link>
+      <link>/post/european-banks/</link>
       <pubDate>Mon, 06 May 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://mgei.github.io/post/european-banks/</guid>
+      <guid>/post/european-banks/</guid>
       <description>Originally published on RPubs: http://rpubs.com/mgei/european-banks
  Loading the packages and getting the data We use tidyquant.
 We are interested in the following largest banks in Europe: Gross, grösser, HSBC: Die 50 grössten Banken, die Europa zu bieten hat
@@ -52,10 +61,10 @@ We are interested in the following largest banks in Europe: Gross, grösser, HSB
     
     <item>
       <title>PCA use case</title>
-      <link>https://mgei.github.io/post/pca-usecase/</link>
+      <link>/post/pca-usecase/</link>
       <pubDate>Tue, 23 Apr 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://mgei.github.io/post/pca-usecase/</guid>
+      <guid>/post/pca-usecase/</guid>
       <description>Originally published on RPubs: http://rpubs.com/mgei/pca-usecase
  library(tidyverse) library(tidyquant) library(quantmod) library(lubridate) library(broom) # for tidying up linear models library(factoextra) Data FTSE 350 Industrial Engineering index. The index components are Bodycote, Hill&amp;amp;Smith, IMI, Rotork, Spirax-Sarco Engineering, and Weir Group (components).
 index &amp;lt;- read_csv(&amp;quot;postdata/pca-usecase/FTSE 350 Industrial Engineering Historical Data.csv&amp;quot;) index %&amp;lt;&amp;gt;% rename(date = Date) %&amp;gt;% mutate(date = mdy(date), adjusted = Price) %&amp;gt;% select(-Vol., -`Change %`) # gets data from Yahoo Finance bodycote &amp;lt;- tq_get(&amp;quot;BOY.</description>
@@ -63,10 +72,10 @@ index &amp;lt;- read_csv(&amp;quot;postdata/pca-usecase/FTSE 350 Industrial Engi
     
     <item>
       <title>Create a T-account plot for a balance sheet or income statement using ggplot2 in R</title>
-      <link>https://mgei.github.io/post/t-account-ggplot2/</link>
+      <link>/post/t-account-ggplot2/</link>
       <pubDate>Wed, 16 Jan 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://mgei.github.io/post/t-account-ggplot2/</guid>
+      <guid>/post/t-account-ggplot2/</guid>
       <description>Originally published on a Github gist: https://gist.github.com/mgei/14e44b7121fcee18f3809cf4bfd1af71
  Loading the packages and getting the data library(tidyverse) library(scales) Because the native quantmod::getFinancials() and tidyquant::tq_get(get = financials) do not work anymore (discontinued due to a change in Yahoo Finance), we use an alternative posted on Stackoverflow. Here’s the function:
 scrapy_stocks &amp;lt;- function(stock){ if (&amp;quot;rvest&amp;quot; %in% installed.packages()) { library(rvest) }else{ install.packages(&amp;quot;rvest&amp;quot;) library(rvest) } for (i in 1:length(stock)) { tryCatch( { url &amp;lt;- &amp;quot;https://finance.</description>
@@ -74,10 +83,10 @@ scrapy_stocks &amp;lt;- function(stock){ if (&amp;quot;rvest&amp;quot; %in% inst
     
     <item>
       <title>Principal Component Analysis in R for Portfolio Diversification</title>
-      <link>https://mgei.github.io/post/pca-tutorial/</link>
+      <link>/post/pca-tutorial/</link>
       <pubDate>Wed, 12 Dec 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://mgei.github.io/post/pca-tutorial/</guid>
+      <guid>/post/pca-tutorial/</guid>
       <description>Youtube video https://www.youtube.com/watch?v=yrH5A0ZPxf0
    I perform a PCA on a set of six MSCI indices. First, I go download the data and import it into R with readxl. Then I look at the data and the returns with some very basic techniques like plotting the performance with ggplot and tidyquant. Later I perform a PCA and also apply a varimax transformation on the loadings (the eigenvectors). Lastly, I look at how an equal-weighted portfolio performed versus a portfolio with components selected based on the PCA/varimax results.</description>
     </item>

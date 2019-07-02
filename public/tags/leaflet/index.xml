@@ -2,30 +2,30 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>leaflet on mgei.github.io</title>
-    <link>https://mgei.github.io/tags/leaflet/</link>
+    <link>/tags/leaflet/</link>
     <description>Recent content in leaflet on mgei.github.io</description>
     <generator>Hugo -- gohugo.io</generator>
     <lastBuildDate>Wed, 27 Mar 2019 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://mgei.github.io/tags/leaflet/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/tags/leaflet/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>How far to the closest hospital?</title>
-      <link>https://mgei.github.io/post/drivingtimes/</link>
+      <link>/post/drivingtimes/</link>
       <pubDate>Wed, 27 Mar 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://mgei.github.io/post/drivingtimes/</guid>
+      <guid>/post/drivingtimes/</guid>
       <description>Originally published on RPubs: http://rpubs.com/mgei/drivingtimes
  Intro Imagine you just fell out of a plane over Switzerland and landed at a random location. As you are wounded your number one concern it to get to a hospital asap. Not any hospital but one that has an emergency room and is equipped at least with a CT to check for fractures.</description>
     </item>
     
     <item>
       <title>Generate mock addresses with realistic names and locations</title>
-      <link>https://mgei.github.io/post/mock-addresses/</link>
+      <link>/post/mock-addresses/</link>
       <pubDate>Mon, 14 Jan 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://mgei.github.io/post/mock-addresses/</guid>
+      <guid>/post/mock-addresses/</guid>
       <description>Originally published on a Github gist: https://gist.github.com/mgei/0269fb9e4120be24af6b5d1d344b89b6
  Fake name generator Fake Name Generator allows to generate mock names/addresses. One can choose from plenty of fields to include besides names and addresses, such as date of birth, phone number, ID number, and also lon/lat coordinates.
 For the following purpose we will order as many addresses as possible and should not forget to include longitude and latitude.</description>

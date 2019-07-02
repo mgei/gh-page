@@ -2,542 +2,542 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on mgei.github.io</title>
-    <link>https://mgei.github.io/tags/</link>
+    <link>/tags/</link>
     <description>Recent content in Tags on mgei.github.io</description>
     <generator>Hugo -- gohugo.io</generator>
     <lastBuildDate>Mon, 17 Jun 2019 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://mgei.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>R</title>
-      <link>https://mgei.github.io/tags/r/</link>
+      <link>/tags/r/</link>
       <pubDate>Mon, 17 Jun 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://mgei.github.io/tags/r/</guid>
+      <guid>/tags/r/</guid>
       <description></description>
     </item>
     
     <item>
       <title>finance</title>
-      <link>https://mgei.github.io/tags/finance/</link>
+      <link>/tags/finance/</link>
       <pubDate>Mon, 17 Jun 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://mgei.github.io/tags/finance/</guid>
+      <guid>/tags/finance/</guid>
       <description></description>
     </item>
     
     <item>
       <title>plotly</title>
-      <link>https://mgei.github.io/tags/plotly/</link>
+      <link>/tags/plotly/</link>
       <pubDate>Mon, 17 Jun 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://mgei.github.io/tags/plotly/</guid>
+      <guid>/tags/plotly/</guid>
       <description></description>
     </item>
     
     <item>
       <title>plotting</title>
-      <link>https://mgei.github.io/tags/plotting/</link>
+      <link>/tags/plotting/</link>
       <pubDate>Mon, 17 Jun 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://mgei.github.io/tags/plotting/</guid>
+      <guid>/tags/plotting/</guid>
       <description></description>
     </item>
     
     <item>
       <title>stock market</title>
-      <link>https://mgei.github.io/tags/stock-market/</link>
+      <link>/tags/stock-market/</link>
       <pubDate>Mon, 17 Jun 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://mgei.github.io/tags/stock-market/</guid>
+      <guid>/tags/stock-market/</guid>
       <description></description>
     </item>
     
     <item>
       <title>tidyquant</title>
-      <link>https://mgei.github.io/tags/tidyquant/</link>
+      <link>/tags/tidyquant/</link>
       <pubDate>Mon, 17 Jun 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://mgei.github.io/tags/tidyquant/</guid>
+      <guid>/tags/tidyquant/</guid>
       <description></description>
     </item>
     
     <item>
       <title>China</title>
-      <link>https://mgei.github.io/tags/china/</link>
+      <link>/tags/china/</link>
       <pubDate>Mon, 27 May 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://mgei.github.io/tags/china/</guid>
+      <guid>/tags/china/</guid>
       <description></description>
     </item>
     
     <item>
       <title>USA</title>
-      <link>https://mgei.github.io/tags/usa/</link>
+      <link>/tags/usa/</link>
       <pubDate>Mon, 27 May 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://mgei.github.io/tags/usa/</guid>
+      <guid>/tags/usa/</guid>
       <description></description>
     </item>
     
     <item>
       <title>comtradr</title>
-      <link>https://mgei.github.io/tags/comtradr/</link>
+      <link>/tags/comtradr/</link>
       <pubDate>Mon, 27 May 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://mgei.github.io/tags/comtradr/</guid>
+      <guid>/tags/comtradr/</guid>
       <description></description>
     </item>
     
     <item>
       <title>economics</title>
-      <link>https://mgei.github.io/tags/economics/</link>
+      <link>/tags/economics/</link>
       <pubDate>Mon, 27 May 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://mgei.github.io/tags/economics/</guid>
+      <guid>/tags/economics/</guid>
       <description></description>
     </item>
     
     <item>
       <title>world trade</title>
-      <link>https://mgei.github.io/tags/world-trade/</link>
+      <link>/tags/world-trade/</link>
       <pubDate>Mon, 27 May 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://mgei.github.io/tags/world-trade/</guid>
+      <guid>/tags/world-trade/</guid>
       <description></description>
     </item>
     
     <item>
       <title>blogdown</title>
-      <link>https://mgei.github.io/tags/blogdown/</link>
+      <link>/tags/blogdown/</link>
       <pubDate>Wed, 08 May 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://mgei.github.io/tags/blogdown/</guid>
+      <guid>/tags/blogdown/</guid>
       <description></description>
     </item>
     
     <item>
       <title>github-page</title>
-      <link>https://mgei.github.io/tags/github-page/</link>
+      <link>/tags/github-page/</link>
       <pubDate>Wed, 08 May 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://mgei.github.io/tags/github-page/</guid>
+      <guid>/tags/github-page/</guid>
       <description></description>
     </item>
     
     <item>
       <title>hugo</title>
-      <link>https://mgei.github.io/tags/hugo/</link>
+      <link>/tags/hugo/</link>
       <pubDate>Wed, 08 May 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://mgei.github.io/tags/hugo/</guid>
+      <guid>/tags/hugo/</guid>
       <description></description>
     </item>
     
     <item>
       <title>website</title>
-      <link>https://mgei.github.io/tags/website/</link>
+      <link>/tags/website/</link>
       <pubDate>Wed, 08 May 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://mgei.github.io/tags/website/</guid>
+      <guid>/tags/website/</guid>
       <description></description>
     </item>
     
     <item>
       <title>PCA</title>
-      <link>https://mgei.github.io/tags/pca/</link>
+      <link>/tags/pca/</link>
       <pubDate>Tue, 23 Apr 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://mgei.github.io/tags/pca/</guid>
+      <guid>/tags/pca/</guid>
       <description></description>
     </item>
     
     <item>
       <title>linear model</title>
-      <link>https://mgei.github.io/tags/linear-model/</link>
+      <link>/tags/linear-model/</link>
       <pubDate>Tue, 23 Apr 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://mgei.github.io/tags/linear-model/</guid>
+      <guid>/tags/linear-model/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Youtube</title>
-      <link>https://mgei.github.io/tags/youtube/</link>
+      <link>/tags/youtube/</link>
       <pubDate>Mon, 22 Apr 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://mgei.github.io/tags/youtube/</guid>
+      <guid>/tags/youtube/</guid>
       <description></description>
     </item>
     
     <item>
       <title>ggplot</title>
-      <link>https://mgei.github.io/tags/ggplot/</link>
+      <link>/tags/ggplot/</link>
       <pubDate>Mon, 22 Apr 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://mgei.github.io/tags/ggplot/</guid>
+      <guid>/tags/ggplot/</guid>
       <description></description>
     </item>
     
     <item>
       <title>lawyers</title>
-      <link>https://mgei.github.io/tags/lawyers/</link>
+      <link>/tags/lawyers/</link>
       <pubDate>Mon, 22 Apr 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://mgei.github.io/tags/lawyers/</guid>
+      <guid>/tags/lawyers/</guid>
       <description></description>
     </item>
     
     <item>
       <title>maps</title>
-      <link>https://mgei.github.io/tags/maps/</link>
+      <link>/tags/maps/</link>
       <pubDate>Mon, 22 Apr 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://mgei.github.io/tags/maps/</guid>
+      <guid>/tags/maps/</guid>
       <description></description>
     </item>
     
     <item>
       <title>spatial</title>
-      <link>https://mgei.github.io/tags/spatial/</link>
+      <link>/tags/spatial/</link>
       <pubDate>Mon, 22 Apr 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://mgei.github.io/tags/spatial/</guid>
+      <guid>/tags/spatial/</guid>
       <description></description>
     </item>
     
     <item>
       <title>statistics</title>
-      <link>https://mgei.github.io/tags/statistics/</link>
+      <link>/tags/statistics/</link>
       <pubDate>Mon, 22 Apr 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://mgei.github.io/tags/statistics/</guid>
+      <guid>/tags/statistics/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Econovo</title>
-      <link>https://mgei.github.io/tags/econovo/</link>
+      <link>/tags/econovo/</link>
       <pubDate>Sun, 14 Apr 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://mgei.github.io/tags/econovo/</guid>
+      <guid>/tags/econovo/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Switzerland</title>
-      <link>https://mgei.github.io/tags/switzerland/</link>
+      <link>/tags/switzerland/</link>
       <pubDate>Sun, 14 Apr 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://mgei.github.io/tags/switzerland/</guid>
+      <guid>/tags/switzerland/</guid>
       <description></description>
     </item>
     
     <item>
       <title>healthcare</title>
-      <link>https://mgei.github.io/tags/healthcare/</link>
+      <link>/tags/healthcare/</link>
       <pubDate>Sun, 14 Apr 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://mgei.github.io/tags/healthcare/</guid>
+      <guid>/tags/healthcare/</guid>
       <description></description>
     </item>
     
     <item>
       <title>app</title>
-      <link>https://mgei.github.io/tags/app/</link>
+      <link>/tags/app/</link>
       <pubDate>Fri, 12 Apr 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://mgei.github.io/tags/app/</guid>
+      <guid>/tags/app/</guid>
       <description></description>
     </item>
     
     <item>
       <title>feather format</title>
-      <link>https://mgei.github.io/tags/feather-format/</link>
+      <link>/tags/feather-format/</link>
       <pubDate>Fri, 12 Apr 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://mgei.github.io/tags/feather-format/</guid>
+      <guid>/tags/feather-format/</guid>
       <description></description>
     </item>
     
     <item>
       <title>shiny</title>
-      <link>https://mgei.github.io/tags/shiny/</link>
+      <link>/tags/shiny/</link>
       <pubDate>Fri, 12 Apr 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://mgei.github.io/tags/shiny/</guid>
+      <guid>/tags/shiny/</guid>
       <description></description>
     </item>
     
     <item>
       <title>OSRM</title>
-      <link>https://mgei.github.io/tags/osrm/</link>
+      <link>/tags/osrm/</link>
       <pubDate>Wed, 27 Mar 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://mgei.github.io/tags/osrm/</guid>
+      <guid>/tags/osrm/</guid>
       <description></description>
     </item>
     
     <item>
       <title>ggmap</title>
-      <link>https://mgei.github.io/tags/ggmap/</link>
+      <link>/tags/ggmap/</link>
       <pubDate>Wed, 27 Mar 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://mgei.github.io/tags/ggmap/</guid>
+      <guid>/tags/ggmap/</guid>
       <description></description>
     </item>
     
     <item>
       <title>hospitals</title>
-      <link>https://mgei.github.io/tags/hospitals/</link>
+      <link>/tags/hospitals/</link>
       <pubDate>Wed, 27 Mar 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://mgei.github.io/tags/hospitals/</guid>
+      <guid>/tags/hospitals/</guid>
       <description></description>
     </item>
     
     <item>
       <title>leaflet</title>
-      <link>https://mgei.github.io/tags/leaflet/</link>
+      <link>/tags/leaflet/</link>
       <pubDate>Wed, 27 Mar 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://mgei.github.io/tags/leaflet/</guid>
+      <guid>/tags/leaflet/</guid>
       <description></description>
     </item>
     
     <item>
       <title>API</title>
-      <link>https://mgei.github.io/tags/api/</link>
+      <link>/tags/api/</link>
       <pubDate>Thu, 21 Mar 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://mgei.github.io/tags/api/</guid>
+      <guid>/tags/api/</guid>
       <description></description>
     </item>
     
     <item>
       <title>dplyr</title>
-      <link>https://mgei.github.io/tags/dplyr/</link>
+      <link>/tags/dplyr/</link>
       <pubDate>Thu, 21 Mar 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://mgei.github.io/tags/dplyr/</guid>
+      <guid>/tags/dplyr/</guid>
       <description></description>
     </item>
     
     <item>
       <title>web scraping</title>
-      <link>https://mgei.github.io/tags/web-scraping/</link>
+      <link>/tags/web-scraping/</link>
       <pubDate>Thu, 21 Mar 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://mgei.github.io/tags/web-scraping/</guid>
+      <guid>/tags/web-scraping/</guid>
       <description></description>
     </item>
     
     <item>
       <title>cluster analysis</title>
-      <link>https://mgei.github.io/tags/cluster-analysis/</link>
+      <link>/tags/cluster-analysis/</link>
       <pubDate>Wed, 20 Mar 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://mgei.github.io/tags/cluster-analysis/</guid>
+      <guid>/tags/cluster-analysis/</guid>
       <description></description>
     </item>
     
     <item>
       <title>AI</title>
-      <link>https://mgei.github.io/tags/ai/</link>
+      <link>/tags/ai/</link>
       <pubDate>Sun, 10 Mar 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://mgei.github.io/tags/ai/</guid>
+      <guid>/tags/ai/</guid>
       <description></description>
     </item>
     
     <item>
       <title>deep learning</title>
-      <link>https://mgei.github.io/tags/deep-learning/</link>
+      <link>/tags/deep-learning/</link>
       <pubDate>Sun, 10 Mar 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://mgei.github.io/tags/deep-learning/</guid>
+      <guid>/tags/deep-learning/</guid>
       <description></description>
     </item>
     
     <item>
       <title>other</title>
-      <link>https://mgei.github.io/tags/other/</link>
+      <link>/tags/other/</link>
       <pubDate>Sun, 10 Mar 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://mgei.github.io/tags/other/</guid>
+      <guid>/tags/other/</guid>
       <description></description>
     </item>
     
     <item>
       <title>timevis</title>
-      <link>https://mgei.github.io/tags/timevis/</link>
+      <link>/tags/timevis/</link>
       <pubDate>Thu, 21 Feb 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://mgei.github.io/tags/timevis/</guid>
+      <guid>/tags/timevis/</guid>
       <description></description>
     </item>
     
     <item>
       <title>audit</title>
-      <link>https://mgei.github.io/tags/audit/</link>
+      <link>/tags/audit/</link>
       <pubDate>Fri, 01 Feb 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://mgei.github.io/tags/audit/</guid>
+      <guid>/tags/audit/</guid>
       <description></description>
     </item>
     
     <item>
       <title>business intelligence</title>
-      <link>https://mgei.github.io/tags/business-intelligence/</link>
+      <link>/tags/business-intelligence/</link>
       <pubDate>Fri, 01 Feb 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://mgei.github.io/tags/business-intelligence/</guid>
+      <guid>/tags/business-intelligence/</guid>
       <description></description>
     </item>
     
     <item>
       <title>due diligence</title>
-      <link>https://mgei.github.io/tags/due-diligence/</link>
+      <link>/tags/due-diligence/</link>
       <pubDate>Fri, 01 Feb 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://mgei.github.io/tags/due-diligence/</guid>
+      <guid>/tags/due-diligence/</guid>
       <description></description>
     </item>
     
     <item>
       <title>network analysis</title>
-      <link>https://mgei.github.io/tags/network-analysis/</link>
+      <link>/tags/network-analysis/</link>
       <pubDate>Fri, 01 Feb 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://mgei.github.io/tags/network-analysis/</guid>
+      <guid>/tags/network-analysis/</guid>
       <description></description>
     </item>
     
     <item>
       <title>ggplot2</title>
-      <link>https://mgei.github.io/tags/ggplot2/</link>
+      <link>/tags/ggplot2/</link>
       <pubDate>Wed, 16 Jan 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://mgei.github.io/tags/ggplot2/</guid>
+      <guid>/tags/ggplot2/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Tarmed</title>
-      <link>https://mgei.github.io/tags/tarmed/</link>
+      <link>/tags/tarmed/</link>
       <pubDate>Mon, 14 Jan 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://mgei.github.io/tags/tarmed/</guid>
+      <guid>/tags/tarmed/</guid>
       <description></description>
     </item>
     
     <item>
       <title>mock data</title>
-      <link>https://mgei.github.io/tags/mock-data/</link>
+      <link>/tags/mock-data/</link>
       <pubDate>Mon, 14 Jan 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://mgei.github.io/tags/mock-data/</guid>
+      <guid>/tags/mock-data/</guid>
       <description></description>
     </item>
     
     <item>
       <title>radiology</title>
-      <link>https://mgei.github.io/tags/radiology/</link>
+      <link>/tags/radiology/</link>
       <pubDate>Mon, 14 Jan 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://mgei.github.io/tags/radiology/</guid>
+      <guid>/tags/radiology/</guid>
       <description></description>
     </item>
     
     <item>
       <title>tariffs</title>
-      <link>https://mgei.github.io/tags/tariffs/</link>
+      <link>/tags/tariffs/</link>
       <pubDate>Mon, 14 Jan 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://mgei.github.io/tags/tariffs/</guid>
+      <guid>/tags/tariffs/</guid>
       <description></description>
     </item>
     
     <item>
       <title>geocode</title>
-      <link>https://mgei.github.io/tags/geocode/</link>
+      <link>/tags/geocode/</link>
       <pubDate>Wed, 12 Dec 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://mgei.github.io/tags/geocode/</guid>
+      <guid>/tags/geocode/</guid>
       <description></description>
     </item>
     
     <item>
       <title>medical care</title>
-      <link>https://mgei.github.io/tags/medical-care/</link>
+      <link>/tags/medical-care/</link>
       <pubDate>Wed, 19 Sep 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://mgei.github.io/tags/medical-care/</guid>
+      <guid>/tags/medical-care/</guid>
       <description></description>
     </item>
     
     <item>
       <title>horse videos</title>
-      <link>https://mgei.github.io/tags/horse-videos/</link>
+      <link>/tags/horse-videos/</link>
       <pubDate>Wed, 30 May 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://mgei.github.io/tags/horse-videos/</guid>
+      <guid>/tags/horse-videos/</guid>
       <description></description>
     </item>
     
     <item>
       <title>video</title>
-      <link>https://mgei.github.io/tags/video/</link>
+      <link>/tags/video/</link>
       <pubDate>Wed, 30 May 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://mgei.github.io/tags/video/</guid>
+      <guid>/tags/video/</guid>
       <description></description>
     </item>
     
     <item>
       <title>drone videos</title>
-      <link>https://mgei.github.io/tags/drone-videos/</link>
+      <link>/tags/drone-videos/</link>
       <pubDate>Fri, 29 Dec 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://mgei.github.io/tags/drone-videos/</guid>
+      <guid>/tags/drone-videos/</guid>
       <description></description>
     </item>
     
     <item>
       <title>misc</title>
-      <link>https://mgei.github.io/tags/misc/</link>
+      <link>/tags/misc/</link>
       <pubDate>Sun, 01 Jan 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://mgei.github.io/tags/misc/</guid>
+      <guid>/tags/misc/</guid>
       <description></description>
     </item>
     
     <item>
       <title>page</title>
-      <link>https://mgei.github.io/tags/page/</link>
+      <link>/tags/page/</link>
       <pubDate>Sun, 01 Jan 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://mgei.github.io/tags/page/</guid>
+      <guid>/tags/page/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Configuration</title>
-      <link>https://mgei.github.io/tags/config/</link>
+      <link>/tags/config/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://mgei.github.io/tags/config/</guid>
+      <guid>/tags/config/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Opengraph</title>
-      <link>https://mgei.github.io/tags/og/</link>
+      <link>/tags/og/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://mgei.github.io/tags/og/</guid>
+      <guid>/tags/og/</guid>
       <description></description>
     </item>
     

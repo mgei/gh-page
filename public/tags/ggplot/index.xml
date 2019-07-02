@@ -2,20 +2,20 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>ggplot on mgei.github.io</title>
-    <link>https://mgei.github.io/tags/ggplot/</link>
+    <link>/tags/ggplot/</link>
     <description>Recent content in ggplot on mgei.github.io</description>
     <generator>Hugo -- gohugo.io</generator>
     <lastBuildDate>Mon, 22 Apr 2019 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://mgei.github.io/tags/ggplot/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/tags/ggplot/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Analyzing the Swiss cantons with more lawyers than medical doctors</title>
-      <link>https://mgei.github.io/post/lawyer-physicians/</link>
+      <link>/post/lawyer-physicians/</link>
       <pubDate>Mon, 22 Apr 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://mgei.github.io/post/lawyer-physicians/</guid>
+      <guid>/post/lawyer-physicians/</guid>
       <description>Originally published on RPubs: http://rpubs.com/mgei/lawyers
  Intro In 2017 Switzerland had 18’858 free physician working in individual doctor’s offices (Aerzte mit Praxistätigkeit as opposed to doctors employed by hospitals). Also Switzerland currently has 12’967 registered lawyers.1 Relative to the number of inhabitants of nearly 8.5 million (2017), that’s on average 2.2 physicians and 1.5 lawyers per 1’000 inhabitants.
 As we will see, in four cantons lawyers outnumber physicians.</description>

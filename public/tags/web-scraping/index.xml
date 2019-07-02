@@ -2,20 +2,20 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>web scraping on mgei.github.io</title>
-    <link>https://mgei.github.io/tags/web-scraping/</link>
+    <link>/tags/web-scraping/</link>
     <description>Recent content in web scraping on mgei.github.io</description>
     <generator>Hugo -- gohugo.io</generator>
     <lastBuildDate>Thu, 21 Mar 2019 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://mgei.github.io/tags/web-scraping/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/tags/web-scraping/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>R function for accessing the tel.search.ch API</title>
-      <link>https://mgei.github.io/post/tel-search-api/</link>
+      <link>/post/tel-search-api/</link>
       <pubDate>Thu, 21 Mar 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://mgei.github.io/post/tel-search-api/</guid>
+      <guid>/post/tel-search-api/</guid>
       <description>Originally published on Github: https://github.com/mgei/telsearchR
  tel.search.ch API This function allows to fetch enteries from the Swiss telephone directory tel.search.ch. It returns a tibble (dplyr).
 Here’s the official API documentation. The R function allows for all of the fields. Additionally, when adj_formats is set to TRUE (default), then the column formats are set appropriately (character, date/time, integer).

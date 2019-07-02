@@ -2,11 +2,11 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Series on mgei.github.io</title>
-    <link>https://mgei.github.io/series/</link>
+    <link>/series/</link>
     <description>Recent content in Series on mgei.github.io</description>
     <generator>Hugo -- gohugo.io</generator>
     
-	<atom:link href="https://mgei.github.io/series/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/series/index.xml" rel="self" type="application/rss+xml" />
     
     
   </channel>

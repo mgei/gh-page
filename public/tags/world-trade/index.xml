@@ -2,20 +2,20 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>world trade on mgei.github.io</title>
-    <link>https://mgei.github.io/tags/world-trade/</link>
+    <link>/tags/world-trade/</link>
     <description>Recent content in world trade on mgei.github.io</description>
     <generator>Hugo -- gohugo.io</generator>
     <lastBuildDate>Mon, 27 May 2019 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://mgei.github.io/tags/world-trade/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/tags/world-trade/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>A closer look at the China-US trade</title>
-      <link>https://mgei.github.io/post/china-us-trade/</link>
+      <link>/post/china-us-trade/</link>
       <pubDate>Mon, 27 May 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://mgei.github.io/post/china-us-trade/</guid>
+      <guid>/post/china-us-trade/</guid>
       <description>Also published on RPubs: https://rpubs.com/mgei/china-us-trade
  What we shall answer  What’s the total annual US import and export? Who are the main trading partners? How’s the picture for China? Import and exports? A look at the GDP growth What type of goods are traded?   UN Comtrade UN Comtrade is a repository of official international trade statistics and relevant analytical tables. It allows to view and download detailed global trade data, i.</description>
     </item>
