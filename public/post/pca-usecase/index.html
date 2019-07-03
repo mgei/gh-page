@@ -11,14 +11,14 @@ index &lt;- read_csv(&quot;postdata/pca-usecase/FTSE 350 Industrial Engineering 
 <meta property='og:description' content='Originally published on RPubs: http://rpubs.com/mgei/pca-usecase
  library(tidyverse) library(tidyquant) library(quantmod) library(lubridate) library(broom) # for tidying up linear models library(factoextra) Data FTSE 350 Industrial Engineering index. The index components are Bodycote, Hill&amp;Smith, IMI, Rotork, Spirax-Sarco Engineering, and Weir Group (components).
 index &lt;- read_csv(&quot;postdata/pca-usecase/FTSE 350 Industrial Engineering Historical Data.csv&quot;) index %&lt;&gt;% rename(date = Date) %&gt;% mutate(date = mdy(date), adjusted = Price) %&gt;% select(-Vol., -`Change %`) # gets data from Yahoo Finance bodycote &lt;- tq_get(&quot;BOY.'>
-<meta property='og:url' content='/post/pca-usecase/'>
+<meta property='og:url' content='https://mgei.github.io/post/pca-usecase/'>
 <meta property='og:site_name' content='mgei.github.io'>
 <meta property='og:type' content='article'><meta property='og:image' content='https://www.gravatar.com/avatar/a525a84fae399669fa8861e2661df00b?s=256'><meta property='article:section' content='post'><meta property='article:tag' content='PCA'><meta property='article:tag' content='R'><meta property='article:tag' content='tidyquant'><meta property='article:tag' content='finance'><meta property='article:tag' content='stock market'><meta property='article:tag' content='linear model'><meta property='article:published_time' content='2019-04-23T00:00:00Z'/><meta property='article:modified_time' content='2019-04-23T00:00:00Z'/><meta name='twitter:card' content='summary'>
 
 <meta name="generator" content="Hugo 0.55.5" />
 
   <title>PCA use case • Martin Geissmann</title>
-  <link rel='canonical' href='/post/pca-usecase/'>
+  <link rel='canonical' href='https://mgei.github.io/post/pca-usecase/'>
   
   
   <link rel='icon' href='/favicon.ico'>

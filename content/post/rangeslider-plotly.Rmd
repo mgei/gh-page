@@ -60,7 +60,7 @@ pltly <-
                   type = "scatter", mode = "lines") %>% 
   plotly::layout(dragmode = "zoom", 
                  datarevision = 0) %>% 
-  rangeslider(borderwidth = 1s)
+  rangeslider(borderwidth = 1)
 
 onRenderRebaseTxt <- "
   function(el, x) {

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>mintos.com on mgei.github.io</title>
+    <link>https://mgei.github.io/tags/mintos.com/</link>
+    <description>Recent content in mintos.com on mgei.github.io</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Wed, 03 Jul 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://mgei.github.io/tags/mintos.com/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>A look at Mintos.com loan characteristics and default rates</title>
+      <link>https://mgei.github.io/post/mintos-stylized-facts/</link>
+      <pubDate>Wed, 03 Jul 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgei.github.io/post/mintos-stylized-facts/</guid>
+      <description>What is Mintos? Mintos.com is a P2P lending platform. One can invest in loans offered by various loan organizers from various countries. Most loans are short-term and personal loans from FSU countries such as Georgia, Armenia, Russia, but also Spain or Indonesia etc. Many loans are very short term (1 month) but there’s also some with longer terms (several years). The majority of loans are denominated in Euro but the share of loans in other currencies is increasing.</description>
+    </item>
+    
+  </channel>
+</rss>

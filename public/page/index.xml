@@ -2,37 +2,37 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Page on mgei.github.io</title>
-    <link>/page/</link>
+    <link>https://mgei.github.io/page/</link>
     <description>Recent content in Page on mgei.github.io</description>
     <generator>Hugo -- gohugo.io</generator>
     
-	<atom:link href="/page/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://mgei.github.io/page/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Tags</title>
-      <link>/tags/</link>
+      <link>https://mgei.github.io/tags/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>/tags/</guid>
+      <guid>https://mgei.github.io/tags/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Search</title>
-      <link>/search/</link>
+      <link>https://mgei.github.io/search/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>/search/</guid>
+      <guid>https://mgei.github.io/search/</guid>
       <description></description>
     </item>
     
     <item>
       <title>About</title>
-      <link>/about/</link>
+      <link>https://mgei.github.io/about/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>/about/</guid>
+      <guid>https://mgei.github.io/about/</guid>
       <description>This site The goal is to consolidate the content that I have published on my Youtube channel, RPubs, Github, my company&amp;rsquo;s website, as well as non-confidential material from on my own work. The main purpose is to have an archive ready as a personal reference, i.e. myself looking things up. Maybe it also helps others.
 Me My name is Martin Geissmann. I studied economics in Basel and Zurich before my professional track led me to healthcare management.</description>
     </item>

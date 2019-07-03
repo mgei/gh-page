@@ -13,14 +13,14 @@ library(tidyverse) library(lubridate) library(httr) library(xml2) library(purrr)
  tel.search.ch API This function allows to fetch enteries from the Swiss telephone directory tel.search.ch. It returns a tibble (dplyr).
 Here’s the official API documentation. The R function allows for all of the fields. Additionally, when adj_formats is set to TRUE (default), then the column formats are set appropriately (character, date/time, integer).
 library(tidyverse) library(lubridate) library(httr) library(xml2) library(purrr) telsearch &lt;- function(was, wo, q, privat = 1, firma = 1, pos, maxnum = 200, key, lang, count_only = 0, adj_formats = T) { if (missing(was)) { stop(&quot;was keyword is mandatory&quot;) } if (missing(key) &amp; maxnum &gt; 10) { warning(&quot;without a key the maxnum is 10&quot;) maxnum &lt;- 10 } url &lt;- paste0(&quot;https://tel.'>
-<meta property='og:url' content='/post/tel-search-api/'>
+<meta property='og:url' content='https://mgei.github.io/post/tel-search-api/'>
 <meta property='og:site_name' content='mgei.github.io'>
 <meta property='og:type' content='article'><meta property='og:image' content='https://www.gravatar.com/avatar/a525a84fae399669fa8861e2661df00b?s=256'><meta property='article:section' content='post'><meta property='article:tag' content='R'><meta property='article:tag' content='API'><meta property='article:tag' content='dplyr'><meta property='article:tag' content='web scraping'><meta property='article:published_time' content='2019-03-21T00:00:00Z'/><meta property='article:modified_time' content='2019-03-21T00:00:00Z'/><meta name='twitter:card' content='summary'>
 
 <meta name="generator" content="Hugo 0.55.5" />
 
   <title>R function for accessing the tel.search.ch API • Martin Geissmann</title>
-  <link rel='canonical' href='/post/tel-search-api/'>
+  <link rel='canonical' href='https://mgei.github.io/post/tel-search-api/'>
   
   
   <link rel='icon' href='/favicon.ico'>
@@ -239,15 +239,15 @@ library(purrr)</code></pre>
 <pre><code>## # A tibble: 9 x 8
 ##   id    updated             published           title content author link 
 ##   &lt;chr&gt; &lt;dttm&gt;              &lt;dttm&gt;              &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;  &lt;chr&gt;
-## 1 urn:… 2019-06-17 02:00:00 2019-06-17 02:00:00 Oepf… &quot;Oepfe… tel.s… &quot;&quot;   
-## 2 urn:… 2019-06-17 02:00:00 2019-06-17 02:00:00 Biol… &quot;Biola… tel.s… &quot;&quot;   
-## 3 urn:… 2019-06-17 02:00:00 2019-06-17 02:00:00 Biol… &quot;Biola… tel.s… &quot;&quot;   
-## 4 urn:… 2019-06-17 02:00:00 2019-06-17 02:00:00 Biol… &quot;Biola… tel.s… &quot;&quot;   
-## 5 urn:… 2019-06-17 02:00:00 2019-06-17 02:00:00 Geno… &quot;Genos… tel.s… &quot;&quot;   
-## 6 urn:… 2019-06-17 02:00:00 2019-06-17 02:00:00 Benn… &quot;Benny… tel.s… &quot;&quot;   
-## 7 urn:… 2019-06-17 02:00:00 2019-06-17 02:00:00 Teuf… &quot;Teufe… tel.s… &quot;&quot;   
-## 8 urn:… 2019-06-17 02:00:00 2019-06-17 02:00:00 Stif… &quot;Stift… tel.s… &quot;&quot;   
-## 9 urn:… 2019-06-17 02:00:00 2019-06-17 02:00:00 Zum … &quot;Zum B… tel.s… &quot;&quot;   
+## 1 urn:… 2019-07-03 02:00:00 2019-07-03 02:00:00 Oepf… &quot;Oepfe… tel.s… &quot;&quot;   
+## 2 urn:… 2019-07-03 02:00:00 2019-07-03 02:00:00 Biol… &quot;Biola… tel.s… &quot;&quot;   
+## 3 urn:… 2019-07-03 02:00:00 2019-07-03 02:00:00 Biol… &quot;Biola… tel.s… &quot;&quot;   
+## 4 urn:… 2019-07-03 02:00:00 2019-07-03 02:00:00 Biol… &quot;Biola… tel.s… &quot;&quot;   
+## 5 urn:… 2019-07-03 02:00:00 2019-07-03 02:00:00 Geno… &quot;Genos… tel.s… &quot;&quot;   
+## 6 urn:… 2019-07-03 02:00:00 2019-07-03 02:00:00 Benn… &quot;Benny… tel.s… &quot;&quot;   
+## 7 urn:… 2019-07-03 02:00:00 2019-07-03 02:00:00 Teuf… &quot;Teufe… tel.s… &quot;&quot;   
+## 8 urn:… 2019-07-03 02:00:00 2019-07-03 02:00:00 Stif… &quot;Stift… tel.s… &quot;&quot;   
+## 9 urn:… 2019-07-03 02:00:00 2019-07-03 02:00:00 Zum … &quot;Zum B… tel.s… &quot;&quot;   
 ## # … with 1 more variable: nopromo &lt;chr&gt;</code></pre>
 </div>
 <div id="api-key" class="section level1">

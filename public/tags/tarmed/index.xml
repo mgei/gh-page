@@ -2,50 +2,50 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tarmed on mgei.github.io</title>
-    <link>/tags/tarmed/</link>
+    <link>https://mgei.github.io/tags/tarmed/</link>
     <description>Recent content in Tarmed on mgei.github.io</description>
     <generator>Hugo -- gohugo.io</generator>
     <lastBuildDate>Mon, 14 Jan 2019 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="/tags/tarmed/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://mgei.github.io/tags/tarmed/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>(de) Tarifentwicklung und Abrechnung in der Radiologie</title>
-      <link>/post/econovo-tarifentwicklung-radiologie/</link>
+      <link>https://mgei.github.io/post/econovo-tarifentwicklung-radiologie/</link>
       <pubDate>Mon, 14 Jan 2019 00:00:00 +0000</pubDate>
       
-      <guid>/post/econovo-tarifentwicklung-radiologie/</guid>
+      <guid>https://mgei.github.io/post/econovo-tarifentwicklung-radiologie/</guid>
       <description>  Published here: https://www.econovo.ch/en/2019/01/14/tarifentwicklung-radiologie/
  </description>
     </item>
     
     <item>
       <title>(de) MRI unter der atm-tms neuen Tarifstruktur</title>
-      <link>/post/econovo-neue-tarifstruktur/</link>
+      <link>https://mgei.github.io/post/econovo-neue-tarifstruktur/</link>
       <pubDate>Fri, 30 Nov 2018 00:00:00 +0000</pubDate>
       
-      <guid>/post/econovo-neue-tarifstruktur/</guid>
+      <guid>https://mgei.github.io/post/econovo-neue-tarifstruktur/</guid>
       <description>  Published here: https://www.econovo.ch/en/2018/11/30/mri-neue-tarifstruktur/
  </description>
     </item>
     
     <item>
       <title>(de) Die ärztliche Leistung in der Neuroradiologie</title>
-      <link>/post/econovo-al-neuroradiology/</link>
+      <link>https://mgei.github.io/post/econovo-al-neuroradiology/</link>
       <pubDate>Tue, 20 Nov 2018 00:00:00 +0000</pubDate>
       
-      <guid>/post/econovo-al-neuroradiology/</guid>
+      <guid>https://mgei.github.io/post/econovo-al-neuroradiology/</guid>
       <description>  Published here: https://www.econovo.ch/en/2018/11/20/al-neuroradiologie/
  </description>
     </item>
     
     <item>
       <title>(de) Kapitel 39 im TARMED 2018</title>
-      <link>/post/econovo-kapitel-39-tarmed/</link>
+      <link>https://mgei.github.io/post/econovo-kapitel-39-tarmed/</link>
       <pubDate>Wed, 19 Sep 2018 00:00:00 +0000</pubDate>
       
-      <guid>/post/econovo-kapitel-39-tarmed/</guid>
+      <guid>https://mgei.github.io/post/econovo-kapitel-39-tarmed/</guid>
       <description>  Published here: https://www.econovo.ch/en/2018/09/19/tarmed-kapitel-39/
  </description>
     </item>

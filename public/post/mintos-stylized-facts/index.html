@@ -1,0 +1,4344 @@
+<!DOCTYPE html>
+<html lang='en'><head>
+  <meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'>
+<meta name='description' content='What is Mintos? Mintos.com is a P2P lending platform. One can invest in loans offered by various loan organizers from various countries. Most loans are short-term and personal loans from FSU countries such as Georgia, Armenia, Russia, but also Spain or Indonesia etc. Many loans are very short term (1 month) but there’s also some with longer terms (several years). The majority of loans are denominated in Euro but the share of loans in other currencies is increasing.'>
+<meta name='theme-color' content='#ffb266'>
+
+<meta property='og:title' content='A look at Mintos.com loan characteristics and default rates • Martin Geissmann'>
+<meta property='og:description' content='What is Mintos? Mintos.com is a P2P lending platform. One can invest in loans offered by various loan organizers from various countries. Most loans are short-term and personal loans from FSU countries such as Georgia, Armenia, Russia, but also Spain or Indonesia etc. Many loans are very short term (1 month) but there’s also some with longer terms (several years). The majority of loans are denominated in Euro but the share of loans in other currencies is increasing.'>
+<meta property='og:url' content='https://mgei.github.io/post/mintos-stylized-facts/'>
+<meta property='og:site_name' content='mgei.github.io'>
+<meta property='og:type' content='article'><meta property='og:image' content='https://www.gravatar.com/avatar/a525a84fae399669fa8861e2661df00b?s=256'><meta property='article:section' content='post'><meta property='article:tag' content='R'><meta property='article:tag' content='mintos.com'><meta property='article:tag' content='dplyr'><meta property='article:tag' content='big data'><meta property='article:tag' content='correlation'><meta property='article:tag' content='plotting'><meta property='article:published_time' content='2019-07-03T00:00:00Z'/><meta property='article:modified_time' content='2019-07-03T00:00:00Z'/><meta name='twitter:card' content='summary'>
+
+<meta name="generator" content="Hugo 0.55.5" />
+
+  <title>A look at Mintos.com loan characteristics and default rates • Martin Geissmann</title>
+  <link rel='canonical' href='https://mgei.github.io/post/mintos-stylized-facts/'>
+  
+  
+  <link rel='icon' href='/favicon.ico'>
+<link rel='stylesheet' href='/assets/css/main.fb20af92.css'><link rel='stylesheet' href='/css/custom.css'><style>
+:root{--color-accent:#ffb266;}
+</style>
+
+  
+
+</head>
+<body class='page type-post has-sidebar'>
+
+  <div class='site'><div id='sidebar' class='sidebar'>
+  <a class='screen-reader-text' href='#main-menu'>Skip to Main Menu</a>
+
+  <div class='container'><section class='widget widget-about sep-after'>
+  <header>
+    
+    <div class='logo'>
+      <a href='/'>
+        <img src='/images/logo.png'>
+      </a>
+    </div>
+    
+    <h2 class='title site-title '>
+      <a href='/'>
+      mgei.github.io
+      </a>
+    </h2>
+    <div class='desc'>
+    personal archive
+    </div>
+  </header>
+
+</section>
+<section class='widget widget-sidebar_menu sep-after'><nav id='sidebar-menu' class='menu sidebar-menu' aria-label='Sidebar Menu'>
+    <div class='container'>
+      <ul><li class='item'>
+  <a href='/'>Home</a></li><li class='item'>
+  <a href='/post/'>Archive</a></li><li class='item'>
+  <a href='/tags/'>Tags</a></li><li class='item'>
+  <a href='/search/'>Search</a></li><li class='item'>
+  <a href='/about/'>About</a></li></ul>
+    </div>
+  </nav>
+
+</section></div>
+
+  <div class='sidebar-overlay'></div>
+</div><div class='main'><a class='screen-reader-text' href='#content'>Skip to Content</a>
+
+<button id='sidebar-toggler' class='sidebar-toggler' aria-controls='sidebar'>
+  <span class='screen-reader-text'>Toggle Sidebar</span>
+  <span class='open'><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <line x1="3" y1="12" x2="21" y2="12" />
+  <line x1="3" y1="6" x2="21" y2="6" />
+  <line x1="3" y1="18" x2="21" y2="18" />
+  
+</svg>
+</span>
+  <span class='close'><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <line x1="18" y1="6" x2="6" y2="18" />
+  <line x1="6" y1="6" x2="18" y2="18" />
+  
+</svg>
+</span>
+</button><div class='header-widgets'>
+        <div class='container'>
+    
+    <style>.widget-breadcrumbs li:after{content:'\2f '}</style>
+  <section class='widget widget-breadcrumbs sep-after'>
+    <nav id='breadcrumbs'>
+      <ol><li><a href='/'>Home</a></li><li><span>A look at Mintos.com loan characteristics and default rates</span></li></ol>
+    </nav>
+  </section></div>
+      </div>
+
+      <header id='header' class='header site-header'>
+        <div class='container sep-after'>
+          <div class='header-info'><p class='site-title title'>mgei.github.io</p><p class='desc site-desc'>personal archive</p>
+          </div>
+        </div>
+      </header>
+
+      <main id='content'>
+
+
+<article lang='en' class='entry'>
+  <header class='header entry-header'>
+  <div class='container sep-after'>
+    <div class='header-info'>
+      <h1 class='title'>A look at Mintos.com loan characteristics and default rates</h1>
+      
+
+    </div>
+    <div class='entry-meta'>
+  <span class='posted-on'><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+  <line x1="16" y1="2" x2="16" y2="6"/>
+  <line x1="8" y1="2" x2="8" y2="6"/>
+  <line x1="3" y1="10" x2="21" y2="10"/>
+  
+</svg>
+<span class='screen-reader-text'>Posted on </span>
+  <time class='entry-date' datetime='2019-07-03T00:00:00Z'>03 Jul 2019</time>
+</span>
+
+  <span class='byline'><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <path d="M21,21V20c0-2.76-4-5-9-5s-9,2.24-9,5v1"/>
+  <path d="M16,6.37A4,4,0,1,1,12.63,3,4,4,0,0,1,16,6.37Z"/>
+  
+</svg>
+<span class='screen-reader-text'> by </span><a href='/authors/mgei'>Martin Geissmann</a></span>
+  
+
+</div>
+
+
+  </div>
+</header>
+
+  
+  
+
+  <div class='container entry-content'>
+  
+<script src="/rmarkdown-libs/kePrint/kePrint.js"></script>
+
+
+<div id="what-is-mintos" class="section level1">
+<h1>What is Mintos?</h1>
+<p><a href="https://www.mintos.com/en/">Mintos.com</a> is a <a href="https://en.wikipedia.org/wiki/Peer-to-peer_lending">P2P lending</a> platform. One can invest in loans offered by various <em>loan organizers</em> from various countries. Most loans are short-term and personal loans from <a href="https://en.wikipedia.org/wiki/Post-Soviet_states">FSU</a> countries such as Georgia, Armenia, Russia, but also Spain or Indonesia etc. Many loans are very short term (1 month) but there’s also some with longer terms (several years). The majority of loans are denominated in Euro but the share of loans in other currencies is increasing. Typical interest rates for Euro-loans is 11 to 13%.</p>
+<p>More than 13 million loans were issued on Mintos as of mid 2019. The loan amount offered is over 3 billion EUR (Euro loans only).</p>
+<p>Mintos grants access to the full loan book of all loans issued since inception. For this head to <a href="https://www.mintos.com/en/statistics/">Statistics</a> and look for the link <em>Download Loan Book</em> (might require having an account and being logged in). One gets a ZIP with (as of today) 27 individual Excel sheets. Unzipped it’s abozut 1 Gb.</p>
+<p>Let’s have a look.</p>
+</div>
+<div id="sidenote-on-data-analytics" class="section level1">
+<h1>Sidenote on data analytics</h1>
+<p>While Mintos hands out the data in several Excel sheets, Excel is not recommended for analysis. The <a href="https://support.office.com/en-ie/article/excel-specifications-and-limits-1672b34d-7043-467e-8e27-269d656771c3">maximum number of rows in Microsoft Excel</a> is 1 048 576.</p>
+<p>For using it in R, I recommend first converting and saving the sheets to csv’s. These csv’s can be loaded and row-bind. I use tidyR tibbles and dplyr but for performance reasons one could prefer to use data.table.</p>
+<pre class="r"><code>library(tidyverse)
+library(readxl)
+
+# converting xlsx to csv
+files &lt;- list.files(&quot;data/xlsx&quot;)
+
+for (i in 1:length(files)) {
+  print(i)
+  data &lt;- read_excel(paste0(&quot;data/&quot;, files[i]))
+  data %&gt;% write_csv(paste0(&quot;data/&quot;, str_replace(files[i], &quot;.xlsx&quot;, &quot;.csv&quot;)))
+  print(&quot;done&quot;)
+}
+rm(data)
+
+# read and bind together
+csvfiles &lt;- list.files(&quot;data/csv&quot;)
+
+data &lt;- tibble()
+for (i in 1:length(csvfiles)) {
+  print(i)
+  data &lt;- bind_rows(data, read_csv(paste0(&quot;data/csv/&quot;, csvfiles[i])))
+  print(&quot;done&quot;)
+}
+
+# check the size
+object.size(data) %&gt;% format(units = &quot;auto&quot;)
+
+# save for later use
+data %&gt;% saveRDS(&quot;data/data.RDS&quot;)
+
+# save in two RDS (both &lt;100Mb because of Github&#39;s restiction on file size)
+nrows &lt;- nrow(data)
+half  &lt;- round(nrows/2)
+
+data[1:half,]         %&gt;% saveRDS(&quot;data/data1.RDS&quot;)
+data[(half+1):nrows,] %&gt;% saveRDS(&quot;data/data2.RDS&quot;)</code></pre>
+<p>Yet better would be to use Apache Spark, e.g. with <a href="https://spark.rstudio.com/">sparklyr</a>. I tried it and it works fine, but at the end I chose to use my usual workflow with dplyr anyway (instead of dplyr commands with sparklyr).</p>
+<pre class="r"><code>library(sparklyr)
+
+sc &lt;- spark_connect(master = &quot;local&quot;)
+
+for (i in 1:length(csvfiles)) {
+  print(i)
+  sparklyr::spark_read_csv(sc, 
+                           name = paste0(&quot;data&quot;, i),
+                           path = paste0(&quot;data/csv/&quot;, csvfiles[i]))
+  assign(paste0(&quot;sparkdata&quot;, i), tbl(sc, paste0(&quot;data&quot;, i)))
+  print(&quot;done&quot;)
+}
+
+data &lt;- sdf_bind_rows(sparkdata1, sparkdata2, sparkdata3, sparkdata4, sparkdata5, sparkdata6, sparkdata7, sparkdata8, sparkdata9, sparkdata10,
+                      sparkdata11, sparkdata12, sparkdata13, sparkdata14, sparkdata15, sparkdata16, sparkdata17, sparkdata18, sparkdata19, sparkdata20,
+                      sparkdata21, sparkdata22, sparkdata23, sparkdata24, sparkdata25, sparkdata26, sparkdata27)
+
+object.size(data) # should be tiny</code></pre>
+<p>A medium spec workstation is recommended (used here 16 Gb RAM + 16 Gb Swap, i7-4790 CPU @ 3.60GHz × 4). My laptop was not suited for the job.</p>
+</div>
+<div id="stylized-facts" class="section level1">
+<h1>Stylized facts</h1>
+<p>First, let’s look at the available columns.</p>
+<pre class="r"><code>library(tidyverse)
+library(lubridate)
+library(magrittr)
+
+data &lt;- bind_rows(readRDS(&quot;postdata/mintos-stylized-facts/data1.RDS&quot;), readRDS(&quot;postdata/mintos-stylized-facts/data2.RDS&quot;))
+
+data %&gt;% glimpse()</code></pre>
+<pre><code>## Observations: 13,314,969
+## Variables: 19
+## $ Id                      &lt;chr&gt; &quot;8210540-02&quot;, &quot;9657926-03&quot;, &quot;13425646-01…
+## $ `Issue Date`            &lt;dttm&gt; 2019-04-14, 2019-04-04, 2019-04-10, 201…
+## $ `Closing Date`          &lt;dttm&gt; 2019-04-28, 2019-05-04, 2019-05-10, 201…
+## $ `Listing Date`          &lt;dttm&gt; 2019-04-14 19:26:03, 2019-04-14 19:26:0…
+## $ Country                 &lt;chr&gt; &quot;Ukraine&quot;, &quot;Russian Federation&quot;, &quot;Russia…
+## $ `Loan Originator`       &lt;chr&gt; &quot;Dinero&quot;, &quot;Dozarplati&quot;, &quot;Dozarplati&quot;, &quot;D…
+## $ `Mintos Rating`         &lt;chr&gt; &quot;C+&quot;, &quot;B-&quot;, &quot;B-&quot;, &quot;B-&quot;, &quot;B-&quot;, &quot;B-&quot;, &quot;B-&quot;…
+## $ `Loan Type`             &lt;chr&gt; &quot;Short-Term Loan&quot;, &quot;Short-Term Loan&quot;, &quot;S…
+## $ `Loan Rate Percent`     &lt;dbl&gt; 14.0, 17.5, 17.5, 17.5, 17.5, 17.5, 17.5…
+## $ Term                    &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1…
+## $ Collateral              &lt;chr&gt; &quot;No&quot;, &quot;No&quot;, &quot;No&quot;, &quot;No&quot;, &quot;No&quot;, &quot;No&quot;, &quot;No&quot;…
+## $ `Initial LTV`           &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
+## $ LTV                     &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
+## $ `Loan Status`           &lt;chr&gt; &quot;Finished prematurely&quot;, &quot;Finished premat…
+## $ `Buyback reason`        &lt;chr&gt; &quot;Agreement prolongation&quot;, &quot;Agreement pro…
+## $ `Initial Loan Amount`   &lt;dbl&gt; 77.58, 8000.00, 4000.00, 10000.00, 1000.…
+## $ `Remaining Loan Amount` &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
+## $ Currency                &lt;chr&gt; &quot;EUR&quot;, &quot;RUB&quot;, &quot;RUB&quot;, &quot;RUB&quot;, &quot;RUB&quot;, &quot;RUB&quot;…
+## $ Buyback                 &lt;chr&gt; &quot;Yes&quot;, &quot;Yes&quot;, &quot;Yes&quot;, &quot;Yes&quot;, &quot;Yes&quot;, &quot;Yes&quot;…</code></pre>
+<ul>
+<li><em>Id</em>: Loan ID, can be looked up in <code>https://www.mintos.com/en/&lt;Id&gt;</code> e.g. <a href="https://www.mintos.com/en/18218910-01" class="uri">https://www.mintos.com/en/18218910-01</a></li>
+<li><em>Listing Date</em>: in general loans are listed some time after issue</li>
+<li><em>Loan Originator</em>: company handling the loan</li>
+<li><em>Mintos Rating</em>: A, A-, B+, …, D. Can be changed, hence we do not like to include them in the analysis</li>
+<li><em>LTV</em>: loan to value, aka leverage (equity / (debt + equity))</li>
+<li><em>Buyback</em> (guarantee)</li>
+</ul>
+<p>One loan at random:</p>
+<pre class="r"><code>set.seed(2)
+
+data %&gt;% 
+  sample_n(1) %&gt;% 
+  glimpse()</code></pre>
+<pre><code>## Observations: 1
+## Variables: 19
+## $ Id                      &lt;chr&gt; &quot;2089899-06&quot;
+## $ `Issue Date`            &lt;dttm&gt; 2018-03-28
+## $ `Closing Date`          &lt;dttm&gt; 2018-04-27
+## $ `Listing Date`          &lt;dttm&gt; 2018-03-31 19:32:03
+## $ Country                 &lt;chr&gt; &quot;Latvia&quot;
+## $ `Loan Originator`       &lt;chr&gt; &quot;Bino&quot;
+## $ `Mintos Rating`         &lt;chr&gt; &quot;B-&quot;
+## $ `Loan Type`             &lt;chr&gt; &quot;Short-Term Loan&quot;
+## $ `Loan Rate Percent`     &lt;dbl&gt; 13.1
+## $ Term                    &lt;dbl&gt; 1
+## $ Collateral              &lt;chr&gt; &quot;No&quot;
+## $ `Initial LTV`           &lt;dbl&gt; 0
+## $ LTV                     &lt;dbl&gt; 0
+## $ `Loan Status`           &lt;chr&gt; &quot;Finished prematurely&quot;
+## $ `Buyback reason`        &lt;chr&gt; &quot;Agreement prolongation&quot;
+## $ `Initial Loan Amount`   &lt;dbl&gt; 420.86
+## $ `Remaining Loan Amount` &lt;dbl&gt; 0
+## $ Currency                &lt;chr&gt; &quot;EUR&quot;
+## $ Buyback                 &lt;chr&gt; &quot;Yes&quot;</code></pre>
+<p>Due to the number of observations we resort to samples of 1 000 to 10 000 for some calculations.</p>
+<div id="correlation-matrix" class="section level2">
+<h2>Correlation matrix</h2>
+<pre class="r"><code># library(ggcorrplot)
+library(GGally)
+
+topcountries &lt;- data %&gt;%
+  group_by(Country) %&gt;%
+  count() %&gt;%
+  ungroup() %&gt;%
+  arrange(-n) %&gt;%
+  top_n(3) %&gt;%
+  pull(Country)
+
+toporigin &lt;- data %&gt;%
+  group_by(`Loan Originator`) %&gt;%
+  count() %&gt;%
+  ungroup() %&gt;%
+  arrange(-n) %&gt;%
+  top_n(3) %&gt;%
+  pull(`Loan Originator`)
+
+set.seed(15)
+
+data %&gt;% 
+  select(Rate = `Loan Rate Percent`, Term, LTV0 = `Initial LTV`, Amount1000 =`Initial Loan Amount`, Currency, `Listing Date`, Buyback,
+         Country, Origin = `Loan Originator`, Collateral) %&gt;% 
+  mutate(Currency = recode_factor(Currency, &quot;EUR&quot; = &quot;EUR&quot;, .default = &quot;Other&quot;),
+         Buyback = as.factor(Buyback),
+         Collateral = as.factor(Collateral),
+         Country = fct_other(Country, keep = topcountries, other_level = &quot;Other&quot;),
+         Origin = fct_other(Origin, keep = toporigin, other_level = &quot;Other&quot;),
+         ListingYear = year(`Listing Date`)) %&gt;% 
+  select(-`Listing Date`) %&gt;% 
+  select(-Country, -Origin) %&gt;% 
+  sample_n(10000) %&gt;% 
+  filter(!is.na(ListingYear)) -&gt; quants_fct
+
+mintoscolor &lt;- &quot;#78c8c7&quot;
+
+quants_fct %&gt;% 
+  # drop_na() %&gt;% 
+  mutate(ListYr = as.factor(ListingYear),
+         Amount1000 = Amount1000/1000) %&gt;%
+  select(-ListingYear) %&gt;% 
+  ggpairs(
+    lower = list(
+      continuous = wrap(&quot;smooth_loess&quot;, alpha = 0.5, color = mintoscolor),
+      combo = wrap(&quot;box_no_facet&quot;, alpha = 0.5, fill = mintoscolor), #&quot;facetdensity&quot;,
+      discrete = wrap(&quot;ratio&quot;, alpha = 0.5, fill = mintoscolor)
+      # mapping = aes(color = ListYr)
+      ),
+    upper = list(
+      combo = wrap(&quot;facetdensity&quot;, color = mintoscolor),
+      discrete = wrap(&quot;ratio&quot;, alpha = 0.5, fill = mintoscolor)
+    ),
+    diag = list(
+      continuous = wrap(&quot;densityDiag&quot;, alpha = 0.5),
+      discrete = &quot;barDiag&quot;,
+      mapping = aes(color = ListYr)
+    ),
+  switch = &quot;y&quot;,
+  title = &quot;Correlation of Mintos.com loan characteristics&quot;) -&gt; cp
+
+cp</code></pre>
+<p><img src="/post/mintos-stylized-facts_files/figure-html/corrmat-1.png" width="1152" /></p>
+</div>
+<div id="loan-interest-rates" class="section level2">
+<h2>Loan interest rates</h2>
+<p>What we see is that rates have droped since 2015 but most recently in 2019 have risen again. This might be partially caused by a higher share of non-EUR loans which generally offer higher interest rates.</p>
+<pre class="r"><code># library(ggbeeswarm)
+
+set.seed(12)
+
+data %&gt;% 
+  filter(Currency == &quot;EUR&quot;, !is.na(`Listing Date`)) %&gt;% 
+  mutate(ListYr = factor(year(`Listing Date`))) -&gt; d
+
+d %&gt;% sample_n(30000) %&gt;% 
+  ggplot(aes(x = ListYr, y = `Loan Rate Percent`)) +
+  geom_boxplot() +
+  # geom_beeswarm(data = (d %&gt;% sample_n(1000)), alpha = 0.1, color = mintoscolor)
+  geom_jitter(data = (d %&gt;% sample_n(1000)), alpha = 0.2, color = mintoscolor) +
+  scale_y_continuous(breaks = seq(0,25,1)) +
+  labs(title = &quot;Distribution of interest rate of newly listed loans&quot;) +
+  theme_bw()</code></pre>
+<p><img src="/post/mintos-stylized-facts_files/figure-html/interest-1.png" width="768" /></p>
+<p>Let’s compare the interest rates over originator, country, and currency.</p>
+<pre class="r"><code>topn &lt;- 5
+
+topcurrencies &lt;- data %&gt;%
+  group_by(Currency) %&gt;%
+  count() %&gt;%
+  ungroup() %&gt;%
+  arrange(-n) %&gt;%
+  top_n(topn) %&gt;%
+  pull(Currency)
+
+topcountries &lt;- data %&gt;%
+  group_by(Country) %&gt;%
+  count() %&gt;%
+  ungroup() %&gt;%
+  arrange(-n) %&gt;%
+  top_n(topn) %&gt;%
+  pull(Country)
+
+toporigin &lt;- data %&gt;%
+  group_by(`Loan Originator`) %&gt;%
+  count() %&gt;%
+  ungroup() %&gt;%
+  arrange(-n) %&gt;%
+  top_n(topn) %&gt;%
+  pull(`Loan Originator`)
+
+data %&gt;% 
+   mutate(Currency = fct_other(Currency, keep = topcurrencies, other_level = &quot;Other&quot;),
+         # Buyback = as.factor(Buyback),
+         # Collateral = as.factor(Collateral),
+         Country = fct_other(Country, keep = topcountries, other_level = &quot;Other&quot;),
+         Origin = fct_other(`Loan Originator`, keep = toporigin, other_level = &quot;Other&quot;),
+         ListingYear = year(`Listing Date`)) %&gt;% 
+    select(Rate = `Loan Rate Percent`, Country, Origin, Currency) %&gt;% 
+  sample_n(3000) %&gt;% 
+  drop_na() %&gt;% 
+    ggpairs(
+    lower = list(
+      continuous = wrap(&quot;smooth_loess&quot;, alpha = 0.5, color = mintoscolor),
+      combo = wrap(&quot;box_no_facet&quot;, alpha = 0.5, fill = mintoscolor), #&quot;facetdensity&quot;,
+      discrete = wrap(&quot;ratio&quot;, alpha = 0.5, fill = mintoscolor)
+      # mapping = aes(color = ListYr)
+      ),
+    upper = list(
+      combo = wrap(&quot;facetdensity&quot;, color = mintoscolor),
+      discrete = wrap(&quot;ratio&quot;, alpha = 0.5, fill = mintoscolor)
+    ),
+    diag = list(
+      continuous = wrap(&quot;densityDiag&quot;, alpha = 0.5),
+      discrete = &quot;barDiag&quot;
+    ),
+  switch = &quot;y&quot;,
+  title = &quot;Interest rates vs. originator, country, and currenc on Mintos.com&quot;) -&gt; cp
+
+cp +
+  theme_bw()</code></pre>
+<p><img src="/post/mintos-stylized-facts_files/figure-html/comparei-1.png" width="1152" /></p>
+</div>
+<div id="default-rates" class="section level2">
+<h2>Default rates</h2>
+<p>Mintos’ default rating <em>D</em></p>
+<pre class="r"><code>library(kableExtra)
+
+data %&gt;% 
+  filter(`Closing Date` &lt; (Sys.Date() - days(60))) %&gt;% 
+  mutate(Default = recode(`Mintos Rating`, &quot;D&quot; = &quot;D&quot;, .default = &quot;notD&quot;)) %&gt;% 
+  group_by(Default, ClYr = year(`Closing Date`)) %&gt;% 
+  count() %&gt;% 
+  spread(Default, n) %&gt;% 
+  ungroup() %&gt;% 
+  mutate(ClYr = as.character(ClYr)) %&gt;%
+  knitr::kable(format = &quot;html&quot;, format.args = list(big.mark = &quot;&#39;&quot;)) %&gt;% 
+  kable_styling(bootstrap_options = c(&quot;striped&quot;, &quot;hover&quot;, &quot;condensed&quot;)) %&gt;% 
+  row_spec(0, bold = T)</code></pre>
+<table class="table table-striped table-hover table-condensed" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;font-weight: bold;">
+ClYr
+</th>
+<th style="text-align:right;font-weight: bold;">
+D
+</th>
+<th style="text-align:right;font-weight: bold;">
+notD
+</th>
+<th style="text-align:right;font-weight: bold;">
+&lt;NA&gt;
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+2015
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+10’589
+</td>
+<td style="text-align:right;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2016
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+300’037
+</td>
+<td style="text-align:right;">
+859
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2017
+</td>
+<td style="text-align:right;">
+380
+</td>
+<td style="text-align:right;">
+1’176’765
+</td>
+<td style="text-align:right;">
+24
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2018
+</td>
+<td style="text-align:right;">
+1’012
+</td>
+<td style="text-align:right;">
+3’800’260
+</td>
+<td style="text-align:right;">
+45
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+3’526’038
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>data %&gt;% 
+  filter(`Closing Date` &lt; (Sys.Date() - days(60))) %&gt;% 
+  # mutate(Default = recode(`Mintos Rating`, &quot;D&quot; = &quot;D&quot;, .default = &quot;notD&quot;)) %&gt;% 
+  group_by(`Loan Status`, ClYr = year(`Closing Date`)) %&gt;% 
+  count() %&gt;% 
+  spread(`Loan Status`, n) %&gt;% 
+  ungroup() %&gt;% 
+  mutate(ClYr = as.character(ClYr)) %&gt;% 
+  knitr::kable(format = &quot;html&quot;, format.args = list(big.mark = &quot;&#39;&quot;)) %&gt;% 
+  kable_styling(bootstrap_options = c(&quot;striped&quot;, &quot;hover&quot;, &quot;condensed&quot;)) %&gt;% 
+  row_spec(0, bold = T)</code></pre>
+<table class="table table-striped table-hover table-condensed" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;font-weight: bold;">
+ClYr
+</th>
+<th style="text-align:right;font-weight: bold;">
+Current
+</th>
+<th style="text-align:right;font-weight: bold;">
+Default
+</th>
+<th style="text-align:right;font-weight: bold;">
+Finished as scheduled
+</th>
+<th style="text-align:right;font-weight: bold;">
+Finished - Bad Debt
+</th>
+<th style="text-align:right;font-weight: bold;">
+Finished prematurely
+</th>
+<th style="text-align:right;font-weight: bold;">
+Late 16-30
+</th>
+<th style="text-align:right;font-weight: bold;">
+Late 31-60
+</th>
+<th style="text-align:right;font-weight: bold;">
+Late 60+
+</th>
+<th style="text-align:right;font-weight: bold;">
+&lt;NA&gt;
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+2015
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+6’968
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+3’621
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2016
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+97’935
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+202’950
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2017
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+22
+</td>
+<td style="text-align:right;">
+139’526
+</td>
+<td style="text-align:right;">
+15
+</td>
+<td style="text-align:right;">
+1’037’320
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+285
+</td>
+<td style="text-align:right;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2018
+</td>
+<td style="text-align:right;">
+174
+</td>
+<td style="text-align:right;">
+22
+</td>
+<td style="text-align:right;">
+433’766
+</td>
+<td style="text-align:right;">
+30
+</td>
+<td style="text-align:right;">
+3’366’739
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+581
+</td>
+<td style="text-align:right;">
+5
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019
+</td>
+<td style="text-align:right;">
+52
+</td>
+<td style="text-align:right;">
+9
+</td>
+<td style="text-align:right;">
+341’630
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:right;">
+3’150’406
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+33’892
+</td>
+<td style="text-align:right;">
+35
+</td>
+<td style="text-align:right;">
+6
+</td>
+</tr>
+</tbody>
+</table>
+<div id="euro-loans" class="section level3">
+<h3>Euro loans</h3>
+<p>Let’s define default as loans that have not repaid at least 95% and are already past at least 60 days after their closing date.</p>
+<pre class="r"><code>data %&gt;% 
+  filter(Currency == &quot;EUR&quot;,
+         `Closing Date` &lt; (Sys.Date() - days(60))) %&gt;% 
+  # sample_n(1) %&gt;% glimpse()
+  mutate(Lost95 = (`Remaining Loan Amount`/`Initial Loan Amount`)&gt;=0.05) %&gt;% 
+  group_by(ClYr = year(`Closing Date`)) %&gt;%
+  summarise(Count = n(), CountLoss = sum(Lost95), 
+            Amount = sum(`Initial Loan Amount`), 
+            AmountLost = sum(`Remaining Loan Amount`)) %&gt;% 
+  mutate(lostPerc = (AmountLost/Amount)*100,
+         lossPercCount = (CountLoss/Count)*100) %&gt;% 
+  ungroup() %&gt;% 
+  mutate(ClYr = as.character(ClYr)) %&gt;%
+  knitr::kable(format = &quot;html&quot;, format.args = list(big.mark = &quot;&#39;&quot;), digits = 2) %&gt;% 
+  kable_styling(bootstrap_options = c(&quot;striped&quot;, &quot;hover&quot;, &quot;condensed&quot;)) %&gt;% 
+  row_spec(0, bold = T)</code></pre>
+<table class="table table-striped table-hover table-condensed" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;font-weight: bold;">
+ClYr
+</th>
+<th style="text-align:right;font-weight: bold;">
+Count
+</th>
+<th style="text-align:right;font-weight: bold;">
+CountLoss
+</th>
+<th style="text-align:right;font-weight: bold;">
+Amount
+</th>
+<th style="text-align:right;font-weight: bold;">
+AmountLost
+</th>
+<th style="text-align:right;font-weight: bold;">
+lostPerc
+</th>
+<th style="text-align:right;font-weight: bold;">
+lossPercCount
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+2015
+</td>
+<td style="text-align:right;">
+10’589
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+2’588’797
+</td>
+<td style="text-align:right;">
+692.30
+</td>
+<td style="text-align:right;">
+0.03
+</td>
+<td style="text-align:right;">
+0.02
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2016
+</td>
+<td style="text-align:right;">
+300’896
+</td>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:right;">
+60’779’178
+</td>
+<td style="text-align:right;">
+45’057.93
+</td>
+<td style="text-align:right;">
+0.07
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2017
+</td>
+<td style="text-align:right;">
+1’086’214
+</td>
+<td style="text-align:right;">
+296
+</td>
+<td style="text-align:right;">
+198’827’294
+</td>
+<td style="text-align:right;">
+237’980.96
+</td>
+<td style="text-align:right;">
+0.12
+</td>
+<td style="text-align:right;">
+0.03
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2018
+</td>
+<td style="text-align:right;">
+3’482’709
+</td>
+<td style="text-align:right;">
+599
+</td>
+<td style="text-align:right;">
+768’336’118
+</td>
+<td style="text-align:right;">
+317’565.96
+</td>
+<td style="text-align:right;">
+0.04
+</td>
+<td style="text-align:right;">
+0.02
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019
+</td>
+<td style="text-align:right;">
+3’321’869
+</td>
+<td style="text-align:right;">
+26’311
+</td>
+<td style="text-align:right;">
+679’377’978
+</td>
+<td style="text-align:right;">
+3’894’735.41
+</td>
+<td style="text-align:right;">
+0.57
+</td>
+<td style="text-align:right;">
+0.79
+</td>
+</tr>
+</tbody>
+</table>
+<p>By originator (2019):</p>
+<pre class="r"><code>data %&gt;% 
+  filter(Currency == &quot;EUR&quot;,
+         `Closing Date` &lt; (Sys.Date() - days(60)),
+         year(`Closing Date`) == 2019) %&gt;% 
+  # sample_n(1) %&gt;% glimpse()
+  mutate(Lost95 = (`Remaining Loan Amount`/`Initial Loan Amount`)&gt;=0.05) %&gt;% 
+  group_by(`Loan Originator`) %&gt;%
+  summarise(Count = n(), CountLoss = sum(Lost95), 
+            Amount = sum(`Initial Loan Amount`), 
+            AmountLost = sum(`Remaining Loan Amount`)) %&gt;% 
+  mutate(lostPerc = (AmountLost/Amount)*100,
+         lossPercCount = (CountLoss/Count)*100) %&gt;% 
+  ungroup() %&gt;% 
+  # mutate(ClYr = as.character(ClYr)) %&gt;%
+  
+  knitr::kable(format = &quot;html&quot;, format.args = list(big.mark = &quot;&#39;&quot;), digits = 2) %&gt;% 
+  kable_styling(bootstrap_options = c(&quot;striped&quot;, &quot;hover&quot;, &quot;condensed&quot;)) %&gt;% 
+  row_spec(0, bold = T)</code></pre>
+<table class="table table-striped table-hover table-condensed" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;font-weight: bold;">
+Loan Originator
+</th>
+<th style="text-align:right;font-weight: bold;">
+Count
+</th>
+<th style="text-align:right;font-weight: bold;">
+CountLoss
+</th>
+<th style="text-align:right;font-weight: bold;">
+Amount
+</th>
+<th style="text-align:right;font-weight: bold;">
+AmountLost
+</th>
+<th style="text-align:right;font-weight: bold;">
+lostPerc
+</th>
+<th style="text-align:right;font-weight: bold;">
+lossPercCount
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Aasa
+</td>
+<td style="text-align:right;">
+1’650
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1’292’636.93
+</td>
+<td style="text-align:right;">
+0.30
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Aforti
+</td>
+<td style="text-align:right;">
+115
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+2’132’483.51
+</td>
+<td style="text-align:right;">
+130.03
+</td>
+<td style="text-align:right;">
+0.01
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Akulaku
+</td>
+<td style="text-align:right;">
+72’812
+</td>
+<td style="text-align:right;">
+53
+</td>
+<td style="text-align:right;">
+4’738’875.70
+</td>
+<td style="text-align:right;">
+3’637.95
+</td>
+<td style="text-align:right;">
+0.08
+</td>
+<td style="text-align:right;">
+0.07
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Alfakredyt
+</td>
+<td style="text-align:right;">
+4’542
+</td>
+<td style="text-align:right;">
+20
+</td>
+<td style="text-align:right;">
+2’598’914.57
+</td>
+<td style="text-align:right;">
+14’043.87
+</td>
+<td style="text-align:right;">
+0.54
+</td>
+<td style="text-align:right;">
+0.44
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Banknote
+</td>
+<td style="text-align:right;">
+89’906
+</td>
+<td style="text-align:right;">
+428
+</td>
+<td style="text-align:right;">
+20’011’769.29
+</td>
+<td style="text-align:right;">
+41’411.24
+</td>
+<td style="text-align:right;">
+0.21
+</td>
+<td style="text-align:right;">
+0.48
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+BB Finance Group
+</td>
+<td style="text-align:right;">
+8’134
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+2’241’850.00
+</td>
+<td style="text-align:right;">
+392.86
+</td>
+<td style="text-align:right;">
+0.02
+</td>
+<td style="text-align:right;">
+0.05
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Bino
+</td>
+<td style="text-align:right;">
+133’369
+</td>
+<td style="text-align:right;">
+319
+</td>
+<td style="text-align:right;">
+41’433’267.24
+</td>
+<td style="text-align:right;">
+93’066.72
+</td>
+<td style="text-align:right;">
+0.22
+</td>
+<td style="text-align:right;">
+0.24
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Capitalia
+</td>
+<td style="text-align:right;">
+378
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+3’262’270.34
+</td>
+<td style="text-align:right;">
+20’666.21
+</td>
+<td style="text-align:right;">
+0.63
+</td>
+<td style="text-align:right;">
+1.85
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Capital Service
+</td>
+<td style="text-align:right;">
+7’747
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+3’450’530.31
+</td>
+<td style="text-align:right;">
+240.20
+</td>
+<td style="text-align:right;">
+0.01
+</td>
+<td style="text-align:right;">
+0.05
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+CashCredit
+</td>
+<td style="text-align:right;">
+7’045
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+2’533’764.41
+</td>
+<td style="text-align:right;">
+201.92
+</td>
+<td style="text-align:right;">
+0.01
+</td>
+<td style="text-align:right;">
+0.04
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cashwagon
+</td>
+<td style="text-align:right;">
+165’398
+</td>
+<td style="text-align:right;">
+3’338
+</td>
+<td style="text-align:right;">
+15’819’175.90
+</td>
+<td style="text-align:right;">
+303’436.42
+</td>
+<td style="text-align:right;">
+1.92
+</td>
+<td style="text-align:right;">
+2.02
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Creamfinance
+</td>
+<td style="text-align:right;">
+7’835
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+4’879’834.66
+</td>
+<td style="text-align:right;">
+3’459.62
+</td>
+<td style="text-align:right;">
+0.07
+</td>
+<td style="text-align:right;">
+0.08
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Credissimo
+</td>
+<td style="text-align:right;">
+1’681
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+602’599.57
+</td>
+<td style="text-align:right;">
+148.04
+</td>
+<td style="text-align:right;">
+0.02
+</td>
+<td style="text-align:right;">
+0.18
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Creditstar
+</td>
+<td style="text-align:right;">
+28’300
+</td>
+<td style="text-align:right;">
+107
+</td>
+<td style="text-align:right;">
+12’171’291.06
+</td>
+<td style="text-align:right;">
+38’236.58
+</td>
+<td style="text-align:right;">
+0.31
+</td>
+<td style="text-align:right;">
+0.38
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Credius
+</td>
+<td style="text-align:right;">
+1’288
+</td>
+<td style="text-align:right;">
+36
+</td>
+<td style="text-align:right;">
+687’961.46
+</td>
+<td style="text-align:right;">
+2’343.08
+</td>
+<td style="text-align:right;">
+0.34
+</td>
+<td style="text-align:right;">
+2.80
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Debifo
+</td>
+<td style="text-align:right;">
+316
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+2’219’242.00
+</td>
+<td style="text-align:right;">
+10’613.18
+</td>
+<td style="text-align:right;">
+0.48
+</td>
+<td style="text-align:right;">
+1.90
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Dindin
+</td>
+<td style="text-align:right;">
+73
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+26’218.39
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Dineo Credito
+</td>
+<td style="text-align:right;">
+5’913
+</td>
+<td style="text-align:right;">
+122
+</td>
+<td style="text-align:right;">
+1’620’380.00
+</td>
+<td style="text-align:right;">
+36’440.00
+</td>
+<td style="text-align:right;">
+2.25
+</td>
+<td style="text-align:right;">
+2.06
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Dinero
+</td>
+<td style="text-align:right;">
+405’664
+</td>
+<td style="text-align:right;">
+2’430
+</td>
+<td style="text-align:right;">
+52’225’033.01
+</td>
+<td style="text-align:right;">
+362’876.16
+</td>
+<td style="text-align:right;">
+0.69
+</td>
+<td style="text-align:right;">
+0.60
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Dozarplati
+</td>
+<td style="text-align:right;">
+136’898
+</td>
+<td style="text-align:right;">
+1’751
+</td>
+<td style="text-align:right;">
+9’710’667.78
+</td>
+<td style="text-align:right;">
+121’620.83
+</td>
+<td style="text-align:right;">
+1.25
+</td>
+<td style="text-align:right;">
+1.28
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+EBV Finance
+</td>
+<td style="text-align:right;">
+25’018
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+30’985’218.45
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+EcoFinance
+</td>
+<td style="text-align:right;">
+15’830
+</td>
+<td style="text-align:right;">
+62
+</td>
+<td style="text-align:right;">
+2’732’277.12
+</td>
+<td style="text-align:right;">
+13’655.76
+</td>
+<td style="text-align:right;">
+0.50
+</td>
+<td style="text-align:right;">
+0.39
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ExpressCredit
+</td>
+<td style="text-align:right;">
+112
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+53’686.02
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ExpressCredit Zambia
+</td>
+<td style="text-align:right;">
+44’327
+</td>
+<td style="text-align:right;">
+960
+</td>
+<td style="text-align:right;">
+8’386’069.35
+</td>
+<td style="text-align:right;">
+176’887.72
+</td>
+<td style="text-align:right;">
+2.11
+</td>
+<td style="text-align:right;">
+2.17
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Extra Finance
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+71’238.91
+</td>
+<td style="text-align:right;">
+0.02
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Fireof
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+100’200.00
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Getbucks
+</td>
+<td style="text-align:right;">
+1’182
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+352’503.04
+</td>
+<td style="text-align:right;">
+4.07
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+GetBucks
+</td>
+<td style="text-align:right;">
+12’489
+</td>
+<td style="text-align:right;">
+65
+</td>
+<td style="text-align:right;">
+3’504’240.46
+</td>
+<td style="text-align:right;">
+11’295.42
+</td>
+<td style="text-align:right;">
+0.32
+</td>
+<td style="text-align:right;">
+0.52
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Hipocredit
+</td>
+<td style="text-align:right;">
+27
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+321’483.57
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ID Finance
+</td>
+<td style="text-align:right;">
+76’792
+</td>
+<td style="text-align:right;">
+967
+</td>
+<td style="text-align:right;">
+30’581’409.20
+</td>
+<td style="text-align:right;">
+242’181.27
+</td>
+<td style="text-align:right;">
+0.79
+</td>
+<td style="text-align:right;">
+1.26
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ITF Group
+</td>
+<td style="text-align:right;">
+7’810
+</td>
+<td style="text-align:right;">
+45
+</td>
+<td style="text-align:right;">
+1’818’455.20
+</td>
+<td style="text-align:right;">
+7’322.22
+</td>
+<td style="text-align:right;">
+0.40
+</td>
+<td style="text-align:right;">
+0.58
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+IuteCredit
+</td>
+<td style="text-align:right;">
+20’390
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+5’645’257.36
+</td>
+<td style="text-align:right;">
+747.10
+</td>
+<td style="text-align:right;">
+0.01
+</td>
+<td style="text-align:right;">
+0.05
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Kredit24
+</td>
+<td style="text-align:right;">
+2’864
+</td>
+<td style="text-align:right;">
+31
+</td>
+<td style="text-align:right;">
+450’171.92
+</td>
+<td style="text-align:right;">
+7’400.38
+</td>
+<td style="text-align:right;">
+1.64
+</td>
+<td style="text-align:right;">
+1.08
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Kredito garantas
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+2’260.38
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Kredit Pintar
+</td>
+<td style="text-align:right;">
+12’431
+</td>
+<td style="text-align:right;">
+1’029
+</td>
+<td style="text-align:right;">
+780’792.30
+</td>
+<td style="text-align:right;">
+57’065.39
+</td>
+<td style="text-align:right;">
+7.31
+</td>
+<td style="text-align:right;">
+8.28
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Kredo
+</td>
+<td style="text-align:right;">
+54’568
+</td>
+<td style="text-align:right;">
+149
+</td>
+<td style="text-align:right;">
+6’802’618.19
+</td>
+<td style="text-align:right;">
+20’041.26
+</td>
+<td style="text-align:right;">
+0.29
+</td>
+<td style="text-align:right;">
+0.27
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Kuki
+</td>
+<td style="text-align:right;">
+113’187
+</td>
+<td style="text-align:right;">
+1’836
+</td>
+<td style="text-align:right;">
+49’198’282.86
+</td>
+<td style="text-align:right;">
+821’745.25
+</td>
+<td style="text-align:right;">
+1.67
+</td>
+<td style="text-align:right;">
+1.62
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Kviku
+</td>
+<td style="text-align:right;">
+84’842
+</td>
+<td style="text-align:right;">
+11
+</td>
+<td style="text-align:right;">
+1’561’973.96
+</td>
+<td style="text-align:right;">
+138.24
+</td>
+<td style="text-align:right;">
+0.01
+</td>
+<td style="text-align:right;">
+0.01
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Leaselink
+</td>
+<td style="text-align:right;">
+137
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+230’353.62
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Lendo
+</td>
+<td style="text-align:right;">
+250’963
+</td>
+<td style="text-align:right;">
+235
+</td>
+<td style="text-align:right;">
+42’113’626.90
+</td>
+<td style="text-align:right;">
+34’503.31
+</td>
+<td style="text-align:right;">
+0.08
+</td>
+<td style="text-align:right;">
+0.09
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+LF TECH
+</td>
+<td style="text-align:right;">
+6’936
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+853’001.40
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Lime Zaim
+</td>
+<td style="text-align:right;">
+55’125
+</td>
+<td style="text-align:right;">
+2’042
+</td>
+<td style="text-align:right;">
+6’334’809.48
+</td>
+<td style="text-align:right;">
+106’073.85
+</td>
+<td style="text-align:right;">
+1.67
+</td>
+<td style="text-align:right;">
+3.70
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Metrokredit
+</td>
+<td style="text-align:right;">
+217’556
+</td>
+<td style="text-align:right;">
+2’155
+</td>
+<td style="text-align:right;">
+25’942’811.35
+</td>
+<td style="text-align:right;">
+283’811.29
+</td>
+<td style="text-align:right;">
+1.09
+</td>
+<td style="text-align:right;">
+0.99
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Mogo
+</td>
+<td style="text-align:right;">
+15’522
+</td>
+<td style="text-align:right;">
+19
+</td>
+<td style="text-align:right;">
+27’126’223.54
+</td>
+<td style="text-align:right;">
+16’735.71
+</td>
+<td style="text-align:right;">
+0.06
+</td>
+<td style="text-align:right;">
+0.12
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Monego
+</td>
+<td style="text-align:right;">
+18’125
+</td>
+<td style="text-align:right;">
+122
+</td>
+<td style="text-align:right;">
+2’415’047.23
+</td>
+<td style="text-align:right;">
+18’853.85
+</td>
+<td style="text-align:right;">
+0.78
+</td>
+<td style="text-align:right;">
+0.67
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Moneyman
+</td>
+<td style="text-align:right;">
+1’900
+</td>
+<td style="text-align:right;">
+286
+</td>
+<td style="text-align:right;">
+444’411.70
+</td>
+<td style="text-align:right;">
+63’226.81
+</td>
+<td style="text-align:right;">
+14.23
+</td>
+<td style="text-align:right;">
+15.05
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Mozipo Group
+</td>
+<td style="text-align:right;">
+5’628
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+2’614’658.14
+</td>
+<td style="text-align:right;">
+0.06
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Peachy
+</td>
+<td style="text-align:right;">
+12’137
+</td>
+<td style="text-align:right;">
+47
+</td>
+<td style="text-align:right;">
+3’295’439.67
+</td>
+<td style="text-align:right;">
+6’437.90
+</td>
+<td style="text-align:right;">
+0.20
+</td>
+<td style="text-align:right;">
+0.39
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Placet
+</td>
+<td style="text-align:right;">
+2’404
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1’064’337.16
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Rapicredit
+</td>
+<td style="text-align:right;">
+29’640
+</td>
+<td style="text-align:right;">
+982
+</td>
+<td style="text-align:right;">
+1’988’400.00
+</td>
+<td style="text-align:right;">
+66’175.88
+</td>
+<td style="text-align:right;">
+3.33
+</td>
+<td style="text-align:right;">
+3.31
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Rapido Finance
+</td>
+<td style="text-align:right;">
+19’506
+</td>
+<td style="text-align:right;">
+213
+</td>
+<td style="text-align:right;">
+9’561’971.63
+</td>
+<td style="text-align:right;">
+102’959.75
+</td>
+<td style="text-align:right;">
+1.08
+</td>
+<td style="text-align:right;">
+1.09
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Sebo
+</td>
+<td style="text-align:right;">
+128’940
+</td>
+<td style="text-align:right;">
+240
+</td>
+<td style="text-align:right;">
+19’429’508.58
+</td>
+<td style="text-align:right;">
+31’502.65
+</td>
+<td style="text-align:right;">
+0.16
+</td>
+<td style="text-align:right;">
+0.19
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Simbo
+</td>
+<td style="text-align:right;">
+68’636
+</td>
+<td style="text-align:right;">
+9
+</td>
+<td style="text-align:right;">
+40’494’950.06
+</td>
+<td style="text-align:right;">
+5’180.22
+</td>
+<td style="text-align:right;">
+0.01
+</td>
+<td style="text-align:right;">
+0.01
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Tengo
+</td>
+<td style="text-align:right;">
+332’512
+</td>
+<td style="text-align:right;">
+4’928
+</td>
+<td style="text-align:right;">
+38’997’671.69
+</td>
+<td style="text-align:right;">
+440’220.38
+</td>
+<td style="text-align:right;">
+1.13
+</td>
+<td style="text-align:right;">
+1.48
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Tigo
+</td>
+<td style="text-align:right;">
+32’436
+</td>
+<td style="text-align:right;">
+104
+</td>
+<td style="text-align:right;">
+4’494’373.66
+</td>
+<td style="text-align:right;">
+12’308.61
+</td>
+<td style="text-align:right;">
+0.27
+</td>
+<td style="text-align:right;">
+0.32
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Varks
+</td>
+<td style="text-align:right;">
+570’299
+</td>
+<td style="text-align:right;">
+1’124
+</td>
+<td style="text-align:right;">
+123’484’185.92
+</td>
+<td style="text-align:right;">
+295’080.11
+</td>
+<td style="text-align:right;">
+0.24
+</td>
+<td style="text-align:right;">
+0.20
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+VIZIA
+</td>
+<td style="text-align:right;">
+1’480
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+620’589.00
+</td>
+<td style="text-align:right;">
+175.99
+</td>
+<td style="text-align:right;">
+0.03
+</td>
+<td style="text-align:right;">
+0.20
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Watu Credit
+</td>
+<td style="text-align:right;">
+1’046
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+864’702.35
+</td>
+<td style="text-align:right;">
+39.73
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+</tr>
+</tbody>
+</table>
+<p>By country (2019):</p>
+<pre class="r"><code>data %&gt;% 
+  filter(Currency == &quot;EUR&quot;,
+         `Closing Date` &lt; (Sys.Date() - days(60)),
+         year(`Closing Date`) == 2019) %&gt;% 
+  # sample_n(1) %&gt;% glimpse()
+  mutate(Lost95 = (`Remaining Loan Amount`/`Initial Loan Amount`)&gt;=0.05) %&gt;% 
+  group_by(Country) %&gt;%
+  summarise(Count = n(), CountLoss = sum(Lost95), 
+            Amount = sum(`Initial Loan Amount`), 
+            AmountLost = sum(`Remaining Loan Amount`)) %&gt;% 
+  mutate(lostPerc = (AmountLost/Amount)*100,
+         lossPercCount = (CountLoss/Count)*100) %&gt;% 
+  ungroup() %&gt;% 
+  # mutate(ClYr = as.character(ClYr)) %&gt;%
+  
+  knitr::kable(format = &quot;html&quot;, format.args = list(big.mark = &quot;&#39;&quot;), digits = 2) %&gt;% 
+  kable_styling(bootstrap_options = c(&quot;striped&quot;, &quot;hover&quot;, &quot;condensed&quot;)) %&gt;% 
+  row_spec(0, bold = T)</code></pre>
+<table class="table table-striped table-hover table-condensed" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;font-weight: bold;">
+Country
+</th>
+<th style="text-align:right;font-weight: bold;">
+Count
+</th>
+<th style="text-align:right;font-weight: bold;">
+CountLoss
+</th>
+<th style="text-align:right;font-weight: bold;">
+Amount
+</th>
+<th style="text-align:right;font-weight: bold;">
+AmountLost
+</th>
+<th style="text-align:right;font-weight: bold;">
+lostPerc
+</th>
+<th style="text-align:right;font-weight: bold;">
+lossPercCount
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Albania
+</td>
+<td style="text-align:right;">
+67’362
+</td>
+<td style="text-align:right;">
+152
+</td>
+<td style="text-align:right;">
+10’763’618.04
+</td>
+<td style="text-align:right;">
+20’352.39
+</td>
+<td style="text-align:right;">
+0.19
+</td>
+<td style="text-align:right;">
+0.23
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Armenia
+</td>
+<td style="text-align:right;">
+570’299
+</td>
+<td style="text-align:right;">
+1’124
+</td>
+<td style="text-align:right;">
+123’484’185.92
+</td>
+<td style="text-align:right;">
+295’080.11
+</td>
+<td style="text-align:right;">
+0.24
+</td>
+<td style="text-align:right;">
+0.20
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Botswana
+</td>
+<td style="text-align:right;">
+7’363
+</td>
+<td style="text-align:right;">
+48
+</td>
+<td style="text-align:right;">
+1’502’845.05
+</td>
+<td style="text-align:right;">
+7’706.55
+</td>
+<td style="text-align:right;">
+0.51
+</td>
+<td style="text-align:right;">
+0.65
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Bulgaria
+</td>
+<td style="text-align:right;">
+16’868
+</td>
+<td style="text-align:right;">
+51
+</td>
+<td style="text-align:right;">
+5’852’580.61
+</td>
+<td style="text-align:right;">
+7’708.58
+</td>
+<td style="text-align:right;">
+0.13
+</td>
+<td style="text-align:right;">
+0.30
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Colombia
+</td>
+<td style="text-align:right;">
+29’640
+</td>
+<td style="text-align:right;">
+982
+</td>
+<td style="text-align:right;">
+1’988’400.00
+</td>
+<td style="text-align:right;">
+66’175.88
+</td>
+<td style="text-align:right;">
+3.33
+</td>
+<td style="text-align:right;">
+3.31
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Denmark
+</td>
+<td style="text-align:right;">
+74’947
+</td>
+<td style="text-align:right;">
+15
+</td>
+<td style="text-align:right;">
+43’975’252.41
+</td>
+<td style="text-align:right;">
+8’634.54
+</td>
+<td style="text-align:right;">
+0.02
+</td>
+<td style="text-align:right;">
+0.02
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Estonia
+</td>
+<td style="text-align:right;">
+1’941
+</td>
+<td style="text-align:right;">
+9
+</td>
+<td style="text-align:right;">
+6’813’949.87
+</td>
+<td style="text-align:right;">
+12’194.65
+</td>
+<td style="text-align:right;">
+0.18
+</td>
+<td style="text-align:right;">
+0.46
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Finland
+</td>
+<td style="text-align:right;">
+10’173
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+5’185’580.73
+</td>
+<td style="text-align:right;">
+2’230.58
+</td>
+<td style="text-align:right;">
+0.04
+</td>
+<td style="text-align:right;">
+0.05
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Georgia
+</td>
+<td style="text-align:right;">
+262’754
+</td>
+<td style="text-align:right;">
+235
+</td>
+<td style="text-align:right;">
+50’357’533.98
+</td>
+<td style="text-align:right;">
+34’508.61
+</td>
+<td style="text-align:right;">
+0.07
+</td>
+<td style="text-align:right;">
+0.09
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Indonesia
+</td>
+<td style="text-align:right;">
+135’442
+</td>
+<td style="text-align:right;">
+2’445
+</td>
+<td style="text-align:right;">
+10’245’255.18
+</td>
+<td style="text-align:right;">
+175’278.09
+</td>
+<td style="text-align:right;">
+1.71
+</td>
+<td style="text-align:right;">
+1.81
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Kazakhstan
+</td>
+<td style="text-align:right;">
+343’278
+</td>
+<td style="text-align:right;">
+4’959
+</td>
+<td style="text-align:right;">
+40’931’399.01
+</td>
+<td style="text-align:right;">
+447’620.76
+</td>
+<td style="text-align:right;">
+1.09
+</td>
+<td style="text-align:right;">
+1.44
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Kenya
+</td>
+<td style="text-align:right;">
+2’628
+</td>
+<td style="text-align:right;">
+14
+</td>
+<td style="text-align:right;">
+1’328’825.08
+</td>
+<td style="text-align:right;">
+3’354.99
+</td>
+<td style="text-align:right;">
+0.25
+</td>
+<td style="text-align:right;">
+0.53
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Kosovo
+</td>
+<td style="text-align:right;">
+19’629
+</td>
+<td style="text-align:right;">
+128
+</td>
+<td style="text-align:right;">
+2’677’680.73
+</td>
+<td style="text-align:right;">
+19’253.85
+</td>
+<td style="text-align:right;">
+0.72
+</td>
+<td style="text-align:right;">
+0.65
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Latvia
+</td>
+<td style="text-align:right;">
+233’075
+</td>
+<td style="text-align:right;">
+759
+</td>
+<td style="text-align:right;">
+74’484’436.85
+</td>
+<td style="text-align:right;">
+149’356.40
+</td>
+<td style="text-align:right;">
+0.20
+</td>
+<td style="text-align:right;">
+0.33
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Lithuania
+</td>
+<td style="text-align:right;">
+34’513
+</td>
+<td style="text-align:right;">
+14
+</td>
+<td style="text-align:right;">
+44’142’228.80
+</td>
+<td style="text-align:right;">
+21’081.66
+</td>
+<td style="text-align:right;">
+0.05
+</td>
+<td style="text-align:right;">
+0.04
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Mexico
+</td>
+<td style="text-align:right;">
+1’900
+</td>
+<td style="text-align:right;">
+286
+</td>
+<td style="text-align:right;">
+444’411.70
+</td>
+<td style="text-align:right;">
+63’226.81
+</td>
+<td style="text-align:right;">
+14.23
+</td>
+<td style="text-align:right;">
+15.05
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Moldova
+</td>
+<td style="text-align:right;">
+134’663
+</td>
+<td style="text-align:right;">
+241
+</td>
+<td style="text-align:right;">
+20’910’295.57
+</td>
+<td style="text-align:right;">
+31’538.57
+</td>
+<td style="text-align:right;">
+0.15
+</td>
+<td style="text-align:right;">
+0.18
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+North Macedonia
+</td>
+<td style="text-align:right;">
+32’845
+</td>
+<td style="text-align:right;">
+104
+</td>
+<td style="text-align:right;">
+4’553’558.14
+</td>
+<td style="text-align:right;">
+12’308.66
+</td>
+<td style="text-align:right;">
+0.27
+</td>
+<td style="text-align:right;">
+0.32
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Philippines
+</td>
+<td style="text-align:right;">
+115’199
+</td>
+<td style="text-align:right;">
+1’975
+</td>
+<td style="text-align:right;">
+11’093’588.72
+</td>
+<td style="text-align:right;">
+188’861.67
+</td>
+<td style="text-align:right;">
+1.70
+</td>
+<td style="text-align:right;">
+1.71
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Poland
+</td>
+<td style="text-align:right;">
+140’699
+</td>
+<td style="text-align:right;">
+1’905
+</td>
+<td style="text-align:right;">
+63’745’326.96
+</td>
+<td style="text-align:right;">
+852’222.26
+</td>
+<td style="text-align:right;">
+1.34
+</td>
+<td style="text-align:right;">
+1.35
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Romania
+</td>
+<td style="text-align:right;">
+2’479
+</td>
+<td style="text-align:right;">
+36
+</td>
+<td style="text-align:right;">
+1’426’945.63
+</td>
+<td style="text-align:right;">
+2’343.10
+</td>
+<td style="text-align:right;">
+0.16
+</td>
+<td style="text-align:right;">
+1.45
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Russian Federation
+</td>
+<td style="text-align:right;">
+510’251
+</td>
+<td style="text-align:right;">
+6’021
+</td>
+<td style="text-align:right;">
+46’282’539.69
+</td>
+<td style="text-align:right;">
+525’299.97
+</td>
+<td style="text-align:right;">
+1.13
+</td>
+<td style="text-align:right;">
+1.18
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+South Africa
+</td>
+<td style="text-align:right;">
+820
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+133’764.12
+</td>
+<td style="text-align:right;">
+4.07
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Spain
+</td>
+<td style="text-align:right;">
+107’090
+</td>
+<td style="text-align:right;">
+1’363
+</td>
+<td style="text-align:right;">
+41’363’182.79
+</td>
+<td style="text-align:right;">
+401’917.27
+</td>
+<td style="text-align:right;">
+0.97
+</td>
+<td style="text-align:right;">
+1.27
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Sweden
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+4’688.99
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ukraine
+</td>
+<td style="text-align:right;">
+405’664
+</td>
+<td style="text-align:right;">
+2’430
+</td>
+<td style="text-align:right;">
+52’225’033.01
+</td>
+<td style="text-align:right;">
+362’876.16
+</td>
+<td style="text-align:right;">
+0.69
+</td>
+<td style="text-align:right;">
+0.60
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+United Kingdom
+</td>
+<td style="text-align:right;">
+12’137
+</td>
+<td style="text-align:right;">
+47
+</td>
+<td style="text-align:right;">
+3’295’439.67
+</td>
+<td style="text-align:right;">
+6’437.90
+</td>
+<td style="text-align:right;">
+0.20
+</td>
+<td style="text-align:right;">
+0.39
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Zambia
+</td>
+<td style="text-align:right;">
+48’208
+</td>
+<td style="text-align:right;">
+963
+</td>
+<td style="text-align:right;">
+10’165’430.26
+</td>
+<td style="text-align:right;">
+177’161.33
+</td>
+<td style="text-align:right;">
+1.74
+</td>
+<td style="text-align:right;">
+2.00
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="non-eur-loans" class="section level3">
+<h3>Non-EUR loans</h3>
+<pre class="r"><code>data %&gt;% 
+  filter(Currency != &quot;EUR&quot;,
+         `Closing Date` &lt; (Sys.Date() - days(60))) %&gt;% 
+  # sample_n(1) %&gt;% glimpse()
+  mutate(Lost95 = (`Remaining Loan Amount`/`Initial Loan Amount`)&gt;=0.05) %&gt;% 
+  group_by(ClYr = year(`Closing Date`)) %&gt;%
+  summarise(Count = n(), CountLoss = sum(Lost95), 
+            Amount = sum(`Initial Loan Amount`), 
+            AmountLost = sum(`Remaining Loan Amount`)) %&gt;% 
+  mutate(lostPerc = (AmountLost/Amount)*100,
+         lossPercCount = (CountLoss/Count)*100) %&gt;% 
+  ungroup() %&gt;% 
+  mutate(ClYr = as.character(ClYr)) %&gt;%
+  knitr::kable(format = &quot;html&quot;, format.args = list(big.mark = &quot;&#39;&quot;), digits = 2) %&gt;% 
+  kable_styling(bootstrap_options = c(&quot;striped&quot;, &quot;hover&quot;, &quot;condensed&quot;)) %&gt;% 
+  row_spec(0, bold = T)</code></pre>
+<table class="table table-striped table-hover table-condensed" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;font-weight: bold;">
+ClYr
+</th>
+<th style="text-align:right;font-weight: bold;">
+Count
+</th>
+<th style="text-align:right;font-weight: bold;">
+CountLoss
+</th>
+<th style="text-align:right;font-weight: bold;">
+Amount
+</th>
+<th style="text-align:right;font-weight: bold;">
+AmountLost
+</th>
+<th style="text-align:right;font-weight: bold;">
+lostPerc
+</th>
+<th style="text-align:right;font-weight: bold;">
+lossPercCount
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+2017
+</td>
+<td style="text-align:right;">
+90’955
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+76’672’462
+</td>
+<td style="text-align:right;">
+12.32
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2018
+</td>
+<td style="text-align:right;">
+318’608
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2’265’239’076
+</td>
+<td style="text-align:right;">
+722.37
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019
+</td>
+<td style="text-align:right;">
+204’170
+</td>
+<td style="text-align:right;">
+2’097
+</td>
+<td style="text-align:right;">
+3’706’148’038
+</td>
+<td style="text-align:right;">
+34’409’861.17
+</td>
+<td style="text-align:right;">
+0.93
+</td>
+<td style="text-align:right;">
+1.03
+</td>
+</tr>
+</tbody>
+</table>
+<p>Seems like here we have slightly higher defaults in 2019. Let’s examine:</p>
+<pre class="r"><code>data %&gt;% 
+  filter(Currency != &quot;EUR&quot;,
+         `Closing Date` &lt; (Sys.Date() - days(60)),
+         year(`Closing Date`) == 2019) %&gt;% 
+  # sample_n(1) %&gt;% glimpse()
+  mutate(Lost95 = (`Remaining Loan Amount`/`Initial Loan Amount`)&gt;=0.05) %&gt;% 
+  group_by(Currency) %&gt;%
+  summarise(Count = n(), CountLoss = sum(Lost95), 
+            Amount = sum(`Initial Loan Amount`), 
+            AmountLost = sum(`Remaining Loan Amount`)) %&gt;% 
+  mutate(lostPerc = (AmountLost/Amount)*100,
+         lossPercCount = (CountLoss/Count)*100) %&gt;% 
+  ungroup() %&gt;% 
+  # mutate(ClYr = as.character(ClYr)) %&gt;%
+  knitr::kable(format = &quot;html&quot;, format.args = list(big.mark = &quot;&#39;&quot;), digits = 2) %&gt;% 
+  kable_styling(bootstrap_options = c(&quot;striped&quot;, &quot;hover&quot;, &quot;condensed&quot;)) %&gt;% 
+  row_spec(0, bold = T)</code></pre>
+<table class="table table-striped table-hover table-condensed" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;font-weight: bold;">
+Currency
+</th>
+<th style="text-align:right;font-weight: bold;">
+Count
+</th>
+<th style="text-align:right;font-weight: bold;">
+CountLoss
+</th>
+<th style="text-align:right;font-weight: bold;">
+Amount
+</th>
+<th style="text-align:right;font-weight: bold;">
+AmountLost
+</th>
+<th style="text-align:right;font-weight: bold;">
+lostPerc
+</th>
+<th style="text-align:right;font-weight: bold;">
+lossPercCount
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+CZK
+</td>
+<td style="text-align:right;">
+7’591
+</td>
+<td style="text-align:right;">
+49
+</td>
+<td style="text-align:right;">
+45’811’562.0
+</td>
+<td style="text-align:right;">
+380’173.18
+</td>
+<td style="text-align:right;">
+0.83
+</td>
+<td style="text-align:right;">
+0.65
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+DKK
+</td>
+<td style="text-align:right;">
+2’336
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+10’418’500.0
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+GBP
+</td>
+<td style="text-align:right;">
+121
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+263’361.5
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+GEL
+</td>
+<td style="text-align:right;">
+8’662
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+7’132’936.5
+</td>
+<td style="text-align:right;">
+202.62
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+0.01
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+KZT
+</td>
+<td style="text-align:right;">
+51’641
+</td>
+<td style="text-align:right;">
+585
+</td>
+<td style="text-align:right;">
+2’918’810’929.6
+</td>
+<td style="text-align:right;">
+28’369’426.07
+</td>
+<td style="text-align:right;">
+0.97
+</td>
+<td style="text-align:right;">
+1.13
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+MXN
+</td>
+<td style="text-align:right;">
+1’623
+</td>
+<td style="text-align:right;">
+107
+</td>
+<td style="text-align:right;">
+7’138’687.7
+</td>
+<td style="text-align:right;">
+473’155.37
+</td>
+<td style="text-align:right;">
+6.63
+</td>
+<td style="text-align:right;">
+6.59
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+PLN
+</td>
+<td style="text-align:right;">
+42’857
+</td>
+<td style="text-align:right;">
+772
+</td>
+<td style="text-align:right;">
+81’332’022.2
+</td>
+<td style="text-align:right;">
+1’570’436.01
+</td>
+<td style="text-align:right;">
+1.93
+</td>
+<td style="text-align:right;">
+1.80
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+RUB
+</td>
+<td style="text-align:right;">
+89’277
+</td>
+<td style="text-align:right;">
+583
+</td>
+<td style="text-align:right;">
+635’204’316.1
+</td>
+<td style="text-align:right;">
+3’616’467.92
+</td>
+<td style="text-align:right;">
+0.57
+</td>
+<td style="text-align:right;">
+0.65
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+USD
+</td>
+<td style="text-align:right;">
+62
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+35’722.5
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>data %&gt;% 
+  filter(Currency != &quot;EUR&quot;,
+         `Closing Date` &lt; (Sys.Date() - days(60)),
+         year(`Closing Date`) == 2019) %&gt;% 
+  # sample_n(1) %&gt;% glimpse()
+  mutate(Lost95 = (`Remaining Loan Amount`/`Initial Loan Amount`)&gt;=0.05) %&gt;% 
+  group_by(`Loan Originator`, Currency) %&gt;%
+  summarise(Count = n(), CountLoss = sum(Lost95), 
+            Amount = sum(`Initial Loan Amount`), 
+            AmountLost = sum(`Remaining Loan Amount`)) %&gt;% 
+  mutate(lostPerc = (AmountLost/Amount)*100,
+         lossPercCount = (CountLoss/Count)*100) %&gt;% 
+  ungroup() %&gt;% 
+  # mutate(ClYr = as.character(ClYr)) %&gt;%
+  knitr::kable(format = &quot;html&quot;, format.args = list(big.mark = &quot;&#39;&quot;), digits = 2) %&gt;% 
+  kable_styling(bootstrap_options = c(&quot;striped&quot;, &quot;hover&quot;, &quot;condensed&quot;)) %&gt;% 
+  row_spec(0, bold = T)</code></pre>
+<table class="table table-striped table-hover table-condensed" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;font-weight: bold;">
+Loan Originator
+</th>
+<th style="text-align:left;font-weight: bold;">
+Currency
+</th>
+<th style="text-align:right;font-weight: bold;">
+Count
+</th>
+<th style="text-align:right;font-weight: bold;">
+CountLoss
+</th>
+<th style="text-align:right;font-weight: bold;">
+Amount
+</th>
+<th style="text-align:right;font-weight: bold;">
+AmountLost
+</th>
+<th style="text-align:right;font-weight: bold;">
+lostPerc
+</th>
+<th style="text-align:right;font-weight: bold;">
+lossPercCount
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+1pm
+</td>
+<td style="text-align:left;">
+GBP
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1.758450e+05
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Aasa
+</td>
+<td style="text-align:left;">
+PLN
+</td>
+<td style="text-align:right;">
+151
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+5.489000e+05
+</td>
+<td style="text-align:right;">
+1.89
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Aforti
+</td>
+<td style="text-align:left;">
+PLN
+</td>
+<td style="text-align:right;">
+34
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1.125233e+06
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Alfakredyt
+</td>
+<td style="text-align:left;">
+PLN
+</td>
+<td style="text-align:right;">
+2’396
+</td>
+<td style="text-align:right;">
+13
+</td>
+<td style="text-align:right;">
+4.632150e+06
+</td>
+<td style="text-align:right;">
+26’500.00
+</td>
+<td style="text-align:right;">
+0.57
+</td>
+<td style="text-align:right;">
+0.54
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+BIG
+</td>
+<td style="text-align:left;">
+GEL
+</td>
+<td style="text-align:right;">
+387
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+8.625554e+05
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Capital Service
+</td>
+<td style="text-align:left;">
+PLN
+</td>
+<td style="text-align:right;">
+1’395
+</td>
+<td style="text-align:right;">
+11
+</td>
+<td style="text-align:right;">
+2.269750e+06
+</td>
+<td style="text-align:right;">
+6’033.35
+</td>
+<td style="text-align:right;">
+0.27
+</td>
+<td style="text-align:right;">
+0.79
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Creamfinance
+</td>
+<td style="text-align:left;">
+CZK
+</td>
+<td style="text-align:right;">
+5’161
+</td>
+<td style="text-align:right;">
+18
+</td>
+<td style="text-align:right;">
+2.782831e+07
+</td>
+<td style="text-align:right;">
+178’404.43
+</td>
+<td style="text-align:right;">
+0.64
+</td>
+<td style="text-align:right;">
+0.35
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Creamfinance
+</td>
+<td style="text-align:left;">
+GEL
+</td>
+<td style="text-align:right;">
+648
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+8.012000e+05
+</td>
+<td style="text-align:right;">
+197.58
+</td>
+<td style="text-align:right;">
+0.02
+</td>
+<td style="text-align:right;">
+0.15
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Credilikeme
+</td>
+<td style="text-align:left;">
+MXN
+</td>
+<td style="text-align:right;">
+313
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1.396688e+06
+</td>
+<td style="text-align:right;">
+6’192.71
+</td>
+<td style="text-align:right;">
+0.44
+</td>
+<td style="text-align:right;">
+0.32
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Creditstar
+</td>
+<td style="text-align:left;">
+CZK
+</td>
+<td style="text-align:right;">
+2’430
+</td>
+<td style="text-align:right;">
+31
+</td>
+<td style="text-align:right;">
+1.798325e+07
+</td>
+<td style="text-align:right;">
+201’768.75
+</td>
+<td style="text-align:right;">
+1.12
+</td>
+<td style="text-align:right;">
+1.28
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Creditstar
+</td>
+<td style="text-align:left;">
+PLN
+</td>
+<td style="text-align:right;">
+3’080
+</td>
+<td style="text-align:right;">
+26
+</td>
+<td style="text-align:right;">
+5.318030e+06
+</td>
+<td style="text-align:right;">
+46’189.64
+</td>
+<td style="text-align:right;">
+0.87
+</td>
+<td style="text-align:right;">
+0.84
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Dozarplati
+</td>
+<td style="text-align:left;">
+RUB
+</td>
+<td style="text-align:right;">
+46’881
+</td>
+<td style="text-align:right;">
+492
+</td>
+<td style="text-align:right;">
+2.504827e+08
+</td>
+<td style="text-align:right;">
+2’365’967.92
+</td>
+<td style="text-align:right;">
+0.94
+</td>
+<td style="text-align:right;">
+1.05
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+EcoFinance
+</td>
+<td style="text-align:left;">
+RUB
+</td>
+<td style="text-align:right;">
+20’309
+</td>
+<td style="text-align:right;">
+91
+</td>
+<td style="text-align:right;">
+2.451075e+08
+</td>
+<td style="text-align:right;">
+1’250’500.00
+</td>
+<td style="text-align:right;">
+0.51
+</td>
+<td style="text-align:right;">
+0.45
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Efaktor
+</td>
+<td style="text-align:left;">
+PLN
+</td>
+<td style="text-align:right;">
+46
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+5.594339e+05
+</td>
+<td style="text-align:right;">
+3’585.46
+</td>
+<td style="text-align:right;">
+0.64
+</td>
+<td style="text-align:right;">
+2.17
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+GetBucks
+</td>
+<td style="text-align:left;">
+USD
+</td>
+<td style="text-align:right;">
+62
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+3.572250e+04
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ID Finance
+</td>
+<td style="text-align:left;">
+GEL
+</td>
+<td style="text-align:right;">
+1’991
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+3.391050e+06
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ID Finance
+</td>
+<td style="text-align:left;">
+KZT
+</td>
+<td style="text-align:right;">
+220
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+6.121542e+07
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Kredit24
+</td>
+<td style="text-align:left;">
+KZT
+</td>
+<td style="text-align:right;">
+21’167
+</td>
+<td style="text-align:right;">
+124
+</td>
+<td style="text-align:right;">
+1.259374e+09
+</td>
+<td style="text-align:right;">
+8’737’684.18
+</td>
+<td style="text-align:right;">
+0.69
+</td>
+<td style="text-align:right;">
+0.59
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Kuki
+</td>
+<td style="text-align:left;">
+PLN
+</td>
+<td style="text-align:right;">
+35’653
+</td>
+<td style="text-align:right;">
+721
+</td>
+<td style="text-align:right;">
+6.613712e+07
+</td>
+<td style="text-align:right;">
+1’488’125.67
+</td>
+<td style="text-align:right;">
+2.25
+</td>
+<td style="text-align:right;">
+2.02
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Kviku
+</td>
+<td style="text-align:left;">
+RUB
+</td>
+<td style="text-align:right;">
+20’879
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+9.494811e+07
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Leaselink
+</td>
+<td style="text-align:left;">
+PLN
+</td>
+<td style="text-align:right;">
+67
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+4.747804e+05
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Lendo
+</td>
+<td style="text-align:left;">
+GEL
+</td>
+<td style="text-align:right;">
+5’507
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1.759044e+06
+</td>
+<td style="text-align:right;">
+5.04
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+LF TECH
+</td>
+<td style="text-align:left;">
+KZT
+</td>
+<td style="text-align:right;">
+8’673
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+4.675385e+08
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Metrokredit
+</td>
+<td style="text-align:left;">
+RUB
+</td>
+<td style="text-align:right;">
+1’134
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+8.416375e+06
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Mikro Kapital
+</td>
+<td style="text-align:left;">
+RUB
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+5.000000e+05
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Mogo
+</td>
+<td style="text-align:left;">
+GBP
+</td>
+<td style="text-align:right;">
+116
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+8.751649e+04
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Mogo
+</td>
+<td style="text-align:left;">
+GEL
+</td>
+<td style="text-align:right;">
+129
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+3.190874e+05
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Mogo
+</td>
+<td style="text-align:left;">
+PLN
+</td>
+<td style="text-align:right;">
+35
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+2.666257e+05
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Moneyman
+</td>
+<td style="text-align:left;">
+MXN
+</td>
+<td style="text-align:right;">
+1’310
+</td>
+<td style="text-align:right;">
+106
+</td>
+<td style="text-align:right;">
+5.742000e+06
+</td>
+<td style="text-align:right;">
+466’962.66
+</td>
+<td style="text-align:right;">
+8.13
+</td>
+<td style="text-align:right;">
+8.09
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+PimPay
+</td>
+<td style="text-align:left;">
+RUB
+</td>
+<td style="text-align:right;">
+73
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+3.574958e+07
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Simbo
+</td>
+<td style="text-align:left;">
+DKK
+</td>
+<td style="text-align:right;">
+2’336
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1.041850e+07
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Tengo
+</td>
+<td style="text-align:left;">
+KZT
+</td>
+<td style="text-align:right;">
+21’581
+</td>
+<td style="text-align:right;">
+461
+</td>
+<td style="text-align:right;">
+1.130683e+09
+</td>
+<td style="text-align:right;">
+19’631’741.89
+</td>
+<td style="text-align:right;">
+1.74
+</td>
+<td style="text-align:right;">
+2.14
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+</div>
+
+  
+<footer class='entry-footer'>
+  <div class='container sep-before'><div class='tags'><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <path d="M20.59,13.41l-7.17,7.17a2,2,0,0,1-2.83,0L2,12V2H12l8.59,8.59A2,2,0,0,1,20.59,13.41Z"/>
+  <line x1="7" y1="7" x2="7" y2="7"/>
+  
+</svg>
+<span class='screen-reader-text'>Tags: </span><a class='tag' href='/tags/r/'>R</a>, <a class='tag' href='/tags/mintos.com/'>mintos.com</a>, <a class='tag' href='/tags/dplyr/'>dplyr</a>, <a class='tag' href='/tags/big-data/'>big data</a>, <a class='tag' href='/tags/correlation/'>correlation</a>, <a class='tag' href='/tags/plotting/'>plotting</a></div>
+
+  </div>
+</footer>
+
+
+</article>
+
+<nav class='entry-nav'>
+  <div class='container'><div class='prev-entry sep-before'>
+      <a href='/post/rangeslider-plotly/'>
+        <span aria-hidden='true'><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <line x1="20" y1="12" x2="4" y2="12"/>
+  <polyline points="10 18 4 12 10 6"/>
+  
+</svg>
+ Previous</span>
+        <span class='screen-reader-text'>Previous post: </span>Plotting stock relative performance with R Plotly&#39;s rangeslider</a>
+    </div></div>
+</nav>
+
+
+
+
+      </main>
+
+      <footer id='footer' class='footer'>
+        <div class='container sep-before'><section class='widget widget-social_menu sep-after'><nav aria-label='Social Menu'>
+    <ul><li>
+        <a href='mailto:mg@econovo.ch' target='_blank' rel='noopener'>
+          <span class='screen-reader-text'>Contact via Email</span><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+  <polyline points="22,6 12,13 2,6"/>
+  
+</svg>
+</a>
+      </li><li>
+        <a href='https://github.com/mgei' target='_blank' rel='noopener'>
+          <span class='screen-reader-text'>Open Github account in new tab</span><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+  
+</svg>
+</a>
+      </li><li>
+        <a href='https://twitter.com//' target='_blank' rel='noopener'>
+          <span class='screen-reader-text'>Open Twitter account in new tab</span><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/>
+  
+</svg>
+</a>
+      </li><li>
+        <a href='https://linkedin.com/in/martin-geissmann-59034a10b' target='_blank' rel='noopener'>
+          <span class='screen-reader-text'>Open Linkedin account in new tab</span><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+  <rect x="2" y="9" width="4" height="12"/>
+  <circle cx="4" cy="4" r="2"/>
+  
+</svg>
+</a>
+      </li><li>
+        <a href='https://www.youtube.com/channel/UCUYqJUnI_P0XYk6_FRyvb2w' target='_blank' rel='noopener'>
+          <span class='screen-reader-text'>Open Youtube account in new tab</span><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z" />
+  <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02" />
+  
+</svg>
+</a>
+      </li></ul>
+  </nav>
+</section><div class='copyright'>
+  <p> &copy; 2019 Martin Geissmann </p>
+</div>
+
+        </div>
+      </footer>
+
+    </div>
+  </div><script>window.__assets_js_src="/assets/js/"</script>
+
+<script src='/assets/js/main.9e5c4cf4.js'></script><script src='/js/custom.js'></script>
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+</body>
+
+</html>
+
