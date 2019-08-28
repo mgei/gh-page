@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>gender on mgei.github.io</title>
+    <link>https://mgei.github.io/tags/gender/</link>
+    <description>Recent content in gender on mgei.github.io</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Fri, 16 Aug 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://mgei.github.io/tags/gender/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Web scraping deaths from gedenkzeit.ch</title>
+      <link>https://mgei.github.io/post/webscraping-gedenkzeitch/</link>
+      <pubDate>Fri, 16 Aug 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgei.github.io/post/webscraping-gedenkzeitch/</guid>
+      <description>Web scraping with rvest https://www.gedenkzeit.ch/ is a Swiss obituary platform. The goal is to get the dates of birth and dates of death.
+rvest relies on xml2 package.
+# getting data from gedenkzeit.ch library(tidyverse) library(lubridate) library(rvest) library(gender) base &amp;lt;- &amp;quot;https://www.gedenkzeit.ch/Todesanzeigen/_/_/_/0/0/&amp;quot; from &amp;lt;- 1 to &amp;lt;- 3 data &amp;lt;- tibble() for (i in from:to) { link &amp;lt;- paste0(base, from) #&amp;gt; Loading required package: xml2 html &amp;lt;- read_html(link) rawnames &amp;lt;- html_nodes(html, &amp;quot;.</description>
+    </item>
+    
+  </channel>
+</rss>

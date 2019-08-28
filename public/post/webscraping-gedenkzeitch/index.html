@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang='en'><head>
+  <meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'>
+<meta name='description' content='Web scraping with rvest https://www.gedenkzeit.ch/ is a Swiss obituary platform. The goal is to get the dates of birth and dates of death.
+rvest relies on xml2 package.
+# getting data from gedenkzeit.ch library(tidyverse) library(lubridate) library(rvest) library(gender) base &lt;- &quot;https://www.gedenkzeit.ch/Todesanzeigen/_/_/_/0/0/&quot; from &lt;- 1 to &lt;- 3 data &lt;- tibble() for (i in from:to) { link &lt;- paste0(base, from) #&gt; Loading required package: xml2 html &lt;- read_html(link) rawnames &lt;- html_nodes(html, &quot;.'>
+<meta name='theme-color' content='#ffb266'>
+
+<meta property='og:title' content='Web scraping deaths from gedenkzeit.ch • Martin Geissmann'>
+<meta property='og:description' content='Web scraping with rvest https://www.gedenkzeit.ch/ is a Swiss obituary platform. The goal is to get the dates of birth and dates of death.
+rvest relies on xml2 package.
+# getting data from gedenkzeit.ch library(tidyverse) library(lubridate) library(rvest) library(gender) base &lt;- &quot;https://www.gedenkzeit.ch/Todesanzeigen/_/_/_/0/0/&quot; from &lt;- 1 to &lt;- 3 data &lt;- tibble() for (i in from:to) { link &lt;- paste0(base, from) #&gt; Loading required package: xml2 html &lt;- read_html(link) rawnames &lt;- html_nodes(html, &quot;.'>
+<meta property='og:url' content='https://mgei.github.io/post/webscraping-gedenkzeitch/'>
+<meta property='og:site_name' content='mgei.github.io'>
+<meta property='og:type' content='article'><meta property='og:image' content='https://www.gravatar.com/avatar/a525a84fae399669fa8861e2661df00b?s=256'><meta property='article:section' content='post'><meta property='article:tag' content='R'><meta property='article:tag' content='webscraping'><meta property='article:tag' content='gender'><meta property='article:published_time' content='2019-08-16T00:00:00Z'/><meta property='article:modified_time' content='2019-08-16T00:00:00Z'/><meta name='twitter:card' content='summary'>
+
+<meta name="generator" content="Hugo 0.55.5" />
+
+  <title>Web scraping deaths from gedenkzeit.ch • Martin Geissmann</title>
+  <link rel='canonical' href='https://mgei.github.io/post/webscraping-gedenkzeitch/'>
+  
+  
+  <link rel='icon' href='/favicon.ico'>
+<link rel='stylesheet' href='/assets/css/main.fb20af92.css'><link rel='stylesheet' href='/css/custom.css'><style>
+:root{--color-accent:#ffb266;}
+</style>
+
+  
+
+</head>
+<body class='page type-post has-sidebar'>
+
+  <div class='site'><div id='sidebar' class='sidebar'>
+  <a class='screen-reader-text' href='#main-menu'>Skip to Main Menu</a>
+
+  <div class='container'><section class='widget widget-about sep-after'>
+  <header>
+    
+    <div class='logo'>
+      <a href='/'>
+        <img src='/images/logo.png'>
+      </a>
+    </div>
+    
+    <h2 class='title site-title '>
+      <a href='/'>
+      mgei.github.io
+      </a>
+    </h2>
+    <div class='desc'>
+    personal archive
+    </div>
+  </header>
+
+</section>
+<section class='widget widget-sidebar_menu sep-after'><nav id='sidebar-menu' class='menu sidebar-menu' aria-label='Sidebar Menu'>
+    <div class='container'>
+      <ul><li class='item'>
+  <a href='/'>Home</a></li><li class='item'>
+  <a href='/post/'>Archive</a></li><li class='item'>
+  <a href='/tags/'>Tags</a></li><li class='item'>
+  <a href='/search/'>Search</a></li><li class='item'>
+  <a href='/about/'>About</a></li></ul>
+    </div>
+  </nav>
+
+</section></div>
+
+  <div class='sidebar-overlay'></div>
+</div><div class='main'><a class='screen-reader-text' href='#content'>Skip to Content</a>
+
+<button id='sidebar-toggler' class='sidebar-toggler' aria-controls='sidebar'>
+  <span class='screen-reader-text'>Toggle Sidebar</span>
+  <span class='open'><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <line x1="3" y1="12" x2="21" y2="12" />
+  <line x1="3" y1="6" x2="21" y2="6" />
+  <line x1="3" y1="18" x2="21" y2="18" />
+  
+</svg>
+</span>
+  <span class='close'><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <line x1="18" y1="6" x2="6" y2="18" />
+  <line x1="6" y1="6" x2="18" y2="18" />
+  
+</svg>
+</span>
+</button><div class='header-widgets'>
+        <div class='container'>
+    
+    <style>.widget-breadcrumbs li:after{content:'\2f '}</style>
+  <section class='widget widget-breadcrumbs sep-after'>
+    <nav id='breadcrumbs'>
+      <ol><li><a href='/'>Home</a></li><li><span>Web scraping deaths from gedenkzeit.ch</span></li></ol>
+    </nav>
+  </section></div>
+      </div>
+
+      <header id='header' class='header site-header'>
+        <div class='container sep-after'>
+          <div class='header-info'><p class='site-title title'>mgei.github.io</p><p class='desc site-desc'>personal archive</p>
+          </div>
+        </div>
+      </header>
+
+      <main id='content'>
+
+
+<article lang='en' class='entry'>
+  <header class='header entry-header'>
+  <div class='container sep-after'>
+    <div class='header-info'>
+      <h1 class='title'>Web scraping deaths from gedenkzeit.ch</h1>
+      
+
+    </div>
+    <div class='entry-meta'>
+  <span class='posted-on'><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+  <line x1="16" y1="2" x2="16" y2="6"/>
+  <line x1="8" y1="2" x2="8" y2="6"/>
+  <line x1="3" y1="10" x2="21" y2="10"/>
+  
+</svg>
+<span class='screen-reader-text'>Posted on </span>
+  <time class='entry-date' datetime='2019-08-16T00:00:00Z'>16 Aug 2019</time>
+</span>
+
+  <span class='byline'><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <path d="M21,21V20c0-2.76-4-5-9-5s-9,2.24-9,5v1"/>
+  <path d="M16,6.37A4,4,0,1,1,12.63,3,4,4,0,0,1,16,6.37Z"/>
+  
+</svg>
+<span class='screen-reader-text'> by </span><a href='/authors/mgei'>Martin Geissmann</a></span>
+  
+
+</div>
+
+
+  </div>
+</header>
+
+  
+  
+
+  <div class='container entry-content'>
+  
+
+
+<div id="web-scraping-with-rvest" class="section level2">
+<h2>Web scraping with rvest</h2>
+<p><a href="https://www.gedenkzeit.ch/" class="uri">https://www.gedenkzeit.ch/</a> is a Swiss obituary platform. The goal is to get the dates of birth and dates of death.</p>
+<p><em>rvest</em> relies on <em>xml2</em> package.</p>
+<pre class="r"><code># getting data from gedenkzeit.ch
+
+library(tidyverse)
+library(lubridate)
+library(rvest)
+library(gender)</code></pre>
+<pre class="r"><code>base &lt;- &quot;https://www.gedenkzeit.ch/Todesanzeigen/_/_/_/0/0/&quot;
+
+from &lt;- 1
+to   &lt;- 3
+
+data &lt;- tibble()
+
+for (i in from:to) {
+  link &lt;- paste0(base, from)
+
+  #&gt; Loading required package: xml2
+  html &lt;- read_html(link)
+
+  rawnames &lt;- html_nodes(html, &quot;.searchTitle&quot;)
+  rawdates &lt;- html_nodes(html, &quot;.labelSearchItem&quot;)
+  
+  names &lt;- rawnames %&gt;% html_text()
+  dates &lt;- rawdates %&gt;% html_text()
+
+  data &lt;- bind_rows(data,
+                    tibble(name = names, date = dates))
+  }
+
+
+clean &lt;- data %&gt;% 
+  mutate(date = str_remove_all(date, &quot;\\*|\\†&quot;)) %&gt;% 
+  separate(date, into = c(&quot;Geb&quot;, &quot;Gest&quot;), sep = &quot; - &quot;) %&gt;% 
+  mutate(Typ = str_extract(name, &quot;Traueranzeige&quot;),
+         Name = str_remove(name, &quot;Traueranzeige&quot;) %&gt;% str_trim(),
+         Geb = Geb %&gt;% str_trim() %&gt;% dmy(),
+         Gest = Gest %&gt;% str_trim() %&gt;% dmy()) %&gt;% 
+  select(Typ, Name, Geb, Gest) %&gt;% 
+  mutate(Alter = interval(Geb, Gest) / years(1)) %&gt;% 
+  # für Geschlechtsbestimmung mit gender::gender()
+  mutate(Vorname_gender = str_extract(Name, &quot;^([\\w\\-]+)&quot;),
+         Geburtsjahr_gender = year(Geb))
+
+
+genders &lt;- gender_df(data = clean, name_col = &quot;Vorname_gender&quot;, year_col = &quot;Geburtsjahr_gender&quot;)
+
+finish &lt;- clean %&gt;% 
+  left_join(genders %&gt;% select(name, gender, year_min), by = c(&quot;Vorname_gender&quot; = &quot;name&quot;, &quot;Geburtsjahr_gender&quot; = &quot;year_min&quot;)) %&gt;% 
+  select(-Vorname_gender, -Geburtsjahr_gender) %&gt;% 
+  rename(Geschl = gender) %&gt;% 
+  mutate(Geschl = str_sub(Geschl, 1, 1),
+         Initial = abbreviate(Name, use.classes = T, dot = F, minlength = 2, named = F)) %&gt;% 
+  select(Typ, Name, Initial, everything())</code></pre>
+<pre class="r"><code>finish %&gt;% 
+  select(-Name) %&gt;% 
+  head(n = 10)</code></pre>
+<pre><code>## # A tibble: 10 x 6
+##    Typ           Initial Geb        Gest       Alter Geschl
+##    &lt;chr&gt;         &lt;chr&gt;   &lt;date&gt;     &lt;date&gt;     &lt;dbl&gt; &lt;chr&gt; 
+##  1 Traueranzeige JJ      1947-01-07 2019-08-28  72.6 &lt;NA&gt;  
+##  2 Traueranzeige ThH     2019-08-27 NA          NA   &lt;NA&gt;  
+##  3 Traueranzeige TH-     1952-12-24 2019-08-26  66.7 f     
+##  4 Traueranzeige KS      1939-05-16 2019-08-26  80.3 m     
+##  5 Traueranzeige KM      1948-04-11 2019-08-25  71.4 m     
+##  6 Traueranzeige JJ      1947-01-07 2019-08-28  72.6 &lt;NA&gt;  
+##  7 Traueranzeige ThH     2019-08-27 NA          NA   &lt;NA&gt;  
+##  8 Traueranzeige TH-     1952-12-24 2019-08-26  66.7 f     
+##  9 Traueranzeige KS      1939-05-16 2019-08-26  80.3 m     
+## 10 Traueranzeige KM      1948-04-11 2019-08-25  71.4 m</code></pre>
+</div>
+
+</div>
+
+  
+<footer class='entry-footer'>
+  <div class='container sep-before'><div class='tags'><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <path d="M20.59,13.41l-7.17,7.17a2,2,0,0,1-2.83,0L2,12V2H12l8.59,8.59A2,2,0,0,1,20.59,13.41Z"/>
+  <line x1="7" y1="7" x2="7" y2="7"/>
+  
+</svg>
+<span class='screen-reader-text'>Tags: </span><a class='tag' href='/tags/r/'>R</a>, <a class='tag' href='/tags/webscraping/'>webscraping</a>, <a class='tag' href='/tags/gender/'>gender</a></div>
+
+  </div>
+</footer>
+
+
+</article>
+
+<nav class='entry-nav'>
+  <div class='container'><div class='prev-entry sep-before'>
+      <a href='/post/mintos-stylized-facts/'>
+        <span aria-hidden='true'><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <line x1="20" y1="12" x2="4" y2="12"/>
+  <polyline points="10 18 4 12 10 6"/>
+  
+</svg>
+ Previous</span>
+        <span class='screen-reader-text'>Previous post: </span>A look at Mintos.com loan characteristics and default rates</a>
+    </div></div>
+</nav>
+
+
+
+
+      </main>
+
+      <footer id='footer' class='footer'>
+        <div class='container sep-before'><section class='widget widget-social_menu sep-after'><nav aria-label='Social Menu'>
+    <ul><li>
+        <a href='mailto:mg@econovo.ch' target='_blank' rel='noopener'>
+          <span class='screen-reader-text'>Contact via Email</span><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+  <polyline points="22,6 12,13 2,6"/>
+  
+</svg>
+</a>
+      </li><li>
+        <a href='https://github.com/mgei' target='_blank' rel='noopener'>
+          <span class='screen-reader-text'>Open Github account in new tab</span><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+  
+</svg>
+</a>
+      </li><li>
+        <a href='https://twitter.com//' target='_blank' rel='noopener'>
+          <span class='screen-reader-text'>Open Twitter account in new tab</span><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/>
+  
+</svg>
+</a>
+      </li><li>
+        <a href='https://linkedin.com/in/martin-geissmann-59034a10b' target='_blank' rel='noopener'>
+          <span class='screen-reader-text'>Open Linkedin account in new tab</span><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+  <rect x="2" y="9" width="4" height="12"/>
+  <circle cx="4" cy="4" r="2"/>
+  
+</svg>
+</a>
+      </li><li>
+        <a href='https://www.youtube.com/channel/UCUYqJUnI_P0XYk6_FRyvb2w' target='_blank' rel='noopener'>
+          <span class='screen-reader-text'>Open Youtube account in new tab</span><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z" />
+  <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02" />
+  
+</svg>
+</a>
+      </li></ul>
+  </nav>
+</section><div class='copyright'>
+  <p> &copy; 2019 Martin Geissmann </p>
+</div>
+
+        </div>
+      </footer>
+
+    </div>
+  </div><script>window.__assets_js_src="/assets/js/"</script>
+
+<script src='/assets/js/main.9e5c4cf4.js'></script><script src='/js/custom.js'></script>
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+</body>
+
+</html>
+

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>graphics on mgei.github.io</title>
+    <link>https://mgei.github.io/tags/graphics/</link>
+    <description>Recent content in graphics on mgei.github.io</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Thu, 27 Jun 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://mgei.github.io/tags/graphics/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Timeline graph for assignment term of Swiss Bundesraete</title>
+      <link>https://mgei.github.io/post/timeline-bundesraete/</link>
+      <pubDate>Thu, 27 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgei.github.io/post/timeline-bundesraete/</guid>
+      <description>Timeline plot Should be:
+ clean well sorted and arranged give the viewer the important information immediately  Data is from the official portal of the Swiss government
+plot Here’s the R code:
+library(tidyverse) library(readxl) library(lubridate) library(scales) bundesraete &amp;lt;- read_delim(&amp;quot;postdata/timeline-bundesraete/br.csv&amp;quot;, delim = &amp;quot;;&amp;quot;) %&amp;gt;% rowwise() %&amp;gt;% mutate(Wahl = dmy(Wahl), Rücktritt = min(dmy(Rücktritt), Sys.Date(), na.rm = T)) %&amp;gt;% ungroup() %&amp;gt;% mutate(Amtsdauer = paste(round((interval(Wahl, Rücktritt) / years(1)), digits = 1), &amp;quot;J.&amp;quot;)) nr &amp;lt;- read_excel(&amp;quot;postdata/timeline-bundesraete/nr.</description>
+    </item>
+    
+  </channel>
+</rss>

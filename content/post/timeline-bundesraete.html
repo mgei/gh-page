@@ -1,0 +1,58 @@
+---
+slug: "timeline-bundesraete"
+date: "2019-06-27"
+title: "Timeline graph for assignment term of Swiss Bundesraete"
+tags: ["R", "ggplot2", "timeline", "graphics"]
+authors: [mgei]
+---
+
+
+
+<div id="timeline-plot" class="section level2">
+<h2>Timeline plot</h2>
+<p>Should be:</p>
+<ul>
+<li>clean</li>
+<li>well sorted and arranged</li>
+<li>give the viewer the important information immediately</li>
+</ul>
+<p>Data is from <a href="https://www.admin.ch/gov/de/start/bundesrat/geschichte-des-bundesrats/schweizer-regierung-zusammensetzung-seit-1848/departementsvorsteher-liste.html">the official portal of the Swiss government</a></p>
+<pre class="r"><code>plot</code></pre>
+<p><img src="/post/timeline-bundesraete_files/figure-html/plot-1.png" width="672" /></p>
+<p>Here’s the R code:</p>
+<pre class="r"><code>library(tidyverse)
+library(readxl)
+library(lubridate)
+library(scales)
+
+bundesraete &lt;- read_delim(&quot;postdata/timeline-bundesraete/br.csv&quot;, delim = &quot;;&quot;) %&gt;%
+  rowwise() %&gt;% 
+  mutate(Wahl = dmy(Wahl),
+         Rücktritt = min(dmy(Rücktritt), Sys.Date(), na.rm = T)) %&gt;% 
+  ungroup() %&gt;%
+  mutate(Amtsdauer = paste(round((interval(Wahl, Rücktritt) / years(1)), digits = 1), &quot;J.&quot;))
+
+nr &lt;- read_excel(&quot;postdata/timeline-bundesraete/nr.xlsx&quot;, col_names = F) %&gt;% 
+  mutate(date = dmy(paste(...2, ...1, sep = &quot;.&quot;)))
+
+
+bundesraete %&gt;% 
+  # filter(Wahl &gt; ymd(&quot;2000-01-01&quot;)) %&gt;% 
+  mutate(Name = as.factor(Name) %&gt;% fct_reorder(Wahl)) %&gt;%
+  # filter(!is.na(Datum)) %&gt;%
+  ggplot(aes(y = Name, yend = Name, x = Wahl, xend = Rücktritt)) +
+  geom_vline(data = nr, aes(xintercept = date), alpha = 0.1, color = &quot;red&quot;) +
+  geom_segment() +
+  geom_point(color = &quot;red&quot;) +
+  geom_text(aes(label = Name, color = Partei), size = 3, hjust = 1.1, vjust = 0.5) +
+  geom_text(aes(label = Amtsdauer, x = Rücktritt), size = 2, hjust = 0, vjust = 0.5) +
+  geom_blank(aes(x = ymd(&quot;1810-01-01&quot;))) +
+  scale_y_discrete(labels = NULL) +
+  scale_x_date(labels = date_format(&quot;%Y&quot;),
+               breaks = seq(ymd(&quot;1848-01-01&quot;), ymd(&quot;2020-01-01&quot;), by = &quot;12 years&quot;)) +
+  scale_color_manual(values = c(&quot;black&quot;, &quot;#e77c15&quot;, &quot;#0e52a0&quot;, &quot;black&quot;, &quot;#008733&quot;, &quot;#f60002&quot; )) +
+  labs(title = &quot;Amsdauer von Bundesräten&quot;,
+       x = &quot;&quot;, y = &quot;&quot;) +
+  theme_classic() +
+  theme(legend.position = &quot;none&quot;) -&gt; plot</code></pre>
+</div>

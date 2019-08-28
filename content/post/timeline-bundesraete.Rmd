@@ -1,0 +1,101 @@
+---
+slug: "timeline-bundesraete"
+date: "2019-06-27"
+title: "Timeline graph for assignment term of Swiss Bundesraete"
+tags: ["R", "ggplot2", "timeline", "graphics"]
+authors: [mgei]
+---
+
+## Timeline plot
+
+Should be:
+
+* clean
+* well sorted and arranged
+* give the viewer the important information immediately
+
+Data is from [the official portal of the Swiss government](https://www.admin.ch/gov/de/start/bundesrat/geschichte-des-bundesrats/schweizer-regierung-zusammensetzung-seit-1848/departementsvorsteher-liste.html)
+
+```{r bundesrat, message=F, warning=F, echo=F}
+library(tidyverse)
+library(readxl)
+library(lubridate)
+library(scales)
+
+bundesraete <- read_delim("postdata/timeline-bundesraete/br.csv", delim = ";") %>%
+  rowwise() %>% 
+  mutate(Wahl = dmy(Wahl),
+         Rücktritt = min(dmy(Rücktritt), Sys.Date(), na.rm = T)) %>% 
+  ungroup() %>%
+  mutate(Amtsdauer = paste(round((interval(Wahl, Rücktritt) / years(1)), digits = 1), "J."))
+
+nr <- read_excel("postdata/timeline-bundesraete/nr.xlsx", col_names = F) %>% 
+  mutate(date = dmy(paste(...2, ...1, sep = ".")))
+
+
+bundesraete %>% 
+  # filter(Wahl > ymd("2000-01-01")) %>% 
+  mutate(Name = as.factor(Name) %>% fct_reorder(Wahl)) %>%
+  # filter(!is.na(Datum)) %>%
+  ggplot(aes(y = Name, yend = Name, x = Wahl, xend = Rücktritt)) +
+  geom_vline(data = nr, aes(xintercept = date), alpha = 0.1, color = "red") +
+  geom_segment() +
+  geom_point(color = "red") +
+  geom_text(aes(label = Name, color = Partei), size = 3, hjust = 1.1, vjust = 0.5) +
+  geom_text(aes(label = Amtsdauer, x = Rücktritt), size = 2, hjust = 0, vjust = 0.5) +
+  geom_blank(aes(x = ymd("1810-01-01"))) +
+  scale_y_discrete(labels = NULL) +
+  scale_x_date(labels = date_format("%Y"),
+               breaks = seq(ymd("1848-01-01"), ymd("2020-01-01"), by = "12 years")) +
+  scale_color_manual(values = c("black", "#e77c15", "#0e52a0", "black", "#008733", "#f60002" )) +
+  labs(title = "Amsdauer von Bundesräten",
+       x = "", y = "") +
+  theme_classic() +
+  theme(legend.position = "none") -> plot
+
+```
+
+```{r plot, fig.height=12}
+plot
+```
+
+Here's the R code:
+
+```{r bundesrat1, message=F, warning=F, echo=T, eval=F}
+library(tidyverse)
+library(readxl)
+library(lubridate)
+library(scales)
+
+bundesraete <- read_delim("postdata/timeline-bundesraete/br.csv", delim = ";") %>%
+  rowwise() %>% 
+  mutate(Wahl = dmy(Wahl),
+         Rücktritt = min(dmy(Rücktritt), Sys.Date(), na.rm = T)) %>% 
+  ungroup() %>%
+  mutate(Amtsdauer = paste(round((interval(Wahl, Rücktritt) / years(1)), digits = 1), "J."))
+
+nr <- read_excel("postdata/timeline-bundesraete/nr.xlsx", col_names = F) %>% 
+  mutate(date = dmy(paste(...2, ...1, sep = ".")))
+
+
+bundesraete %>% 
+  # filter(Wahl > ymd("2000-01-01")) %>% 
+  mutate(Name = as.factor(Name) %>% fct_reorder(Wahl)) %>%
+  # filter(!is.na(Datum)) %>%
+  ggplot(aes(y = Name, yend = Name, x = Wahl, xend = Rücktritt)) +
+  geom_vline(data = nr, aes(xintercept = date), alpha = 0.1, color = "red") +
+  geom_segment() +
+  geom_point(color = "red") +
+  geom_text(aes(label = Name, color = Partei), size = 3, hjust = 1.1, vjust = 0.5) +
+  geom_text(aes(label = Amtsdauer, x = Rücktritt), size = 2, hjust = 0, vjust = 0.5) +
+  geom_blank(aes(x = ymd("1810-01-01"))) +
+  scale_y_discrete(labels = NULL) +
+  scale_x_date(labels = date_format("%Y"),
+               breaks = seq(ymd("1848-01-01"), ymd("2020-01-01"), by = "12 years")) +
+  scale_color_manual(values = c("black", "#e77c15", "#0e52a0", "black", "#008733", "#f60002" )) +
+  labs(title = "Amsdauer von Bundesräten",
+       x = "", y = "") +
+  theme_classic() +
+  theme(legend.position = "none") -> plot
+
+```

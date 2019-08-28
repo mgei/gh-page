@@ -1,0 +1,84 @@
+---
+slug: "webscraping-gedenkzeitch"
+date: "2019-08-16"
+title: "Web scraping deaths from gedenkzeit.ch"
+tags: ["R", "webscraping", "gender"]
+authors: [mgei]
+---
+
+
+
+<div id="web-scraping-with-rvest" class="section level2">
+<h2>Web scraping with rvest</h2>
+<p><a href="https://www.gedenkzeit.ch/" class="uri">https://www.gedenkzeit.ch/</a> is a Swiss obituary platform. The goal is to get the dates of birth and dates of death.</p>
+<p><em>rvest</em> relies on <em>xml2</em> package.</p>
+<pre class="r"><code># getting data from gedenkzeit.ch
+
+library(tidyverse)
+library(lubridate)
+library(rvest)
+library(gender)</code></pre>
+<pre class="r"><code>base &lt;- &quot;https://www.gedenkzeit.ch/Todesanzeigen/_/_/_/0/0/&quot;
+
+from &lt;- 1
+to   &lt;- 3
+
+data &lt;- tibble()
+
+for (i in from:to) {
+  link &lt;- paste0(base, from)
+
+  #&gt; Loading required package: xml2
+  html &lt;- read_html(link)
+
+  rawnames &lt;- html_nodes(html, &quot;.searchTitle&quot;)
+  rawdates &lt;- html_nodes(html, &quot;.labelSearchItem&quot;)
+  
+  names &lt;- rawnames %&gt;% html_text()
+  dates &lt;- rawdates %&gt;% html_text()
+
+  data &lt;- bind_rows(data,
+                    tibble(name = names, date = dates))
+  }
+
+
+clean &lt;- data %&gt;% 
+  mutate(date = str_remove_all(date, &quot;\\*|\\†&quot;)) %&gt;% 
+  separate(date, into = c(&quot;Geb&quot;, &quot;Gest&quot;), sep = &quot; - &quot;) %&gt;% 
+  mutate(Typ = str_extract(name, &quot;Traueranzeige&quot;),
+         Name = str_remove(name, &quot;Traueranzeige&quot;) %&gt;% str_trim(),
+         Geb = Geb %&gt;% str_trim() %&gt;% dmy(),
+         Gest = Gest %&gt;% str_trim() %&gt;% dmy()) %&gt;% 
+  select(Typ, Name, Geb, Gest) %&gt;% 
+  mutate(Alter = interval(Geb, Gest) / years(1)) %&gt;% 
+  # für Geschlechtsbestimmung mit gender::gender()
+  mutate(Vorname_gender = str_extract(Name, &quot;^([\\w\\-]+)&quot;),
+         Geburtsjahr_gender = year(Geb))
+
+
+genders &lt;- gender_df(data = clean, name_col = &quot;Vorname_gender&quot;, year_col = &quot;Geburtsjahr_gender&quot;)
+
+finish &lt;- clean %&gt;% 
+  left_join(genders %&gt;% select(name, gender, year_min), by = c(&quot;Vorname_gender&quot; = &quot;name&quot;, &quot;Geburtsjahr_gender&quot; = &quot;year_min&quot;)) %&gt;% 
+  select(-Vorname_gender, -Geburtsjahr_gender) %&gt;% 
+  rename(Geschl = gender) %&gt;% 
+  mutate(Geschl = str_sub(Geschl, 1, 1),
+         Initial = abbreviate(Name, use.classes = T, dot = F, minlength = 2, named = F)) %&gt;% 
+  select(Typ, Name, Initial, everything())</code></pre>
+<pre class="r"><code>finish %&gt;% 
+  select(-Name) %&gt;% 
+  head(n = 10)</code></pre>
+<pre><code>## # A tibble: 10 x 6
+##    Typ           Initial Geb        Gest       Alter Geschl
+##    &lt;chr&gt;         &lt;chr&gt;   &lt;date&gt;     &lt;date&gt;     &lt;dbl&gt; &lt;chr&gt; 
+##  1 Traueranzeige JJ      1947-01-07 2019-08-28  72.6 &lt;NA&gt;  
+##  2 Traueranzeige ThH     2019-08-27 NA          NA   &lt;NA&gt;  
+##  3 Traueranzeige TH-     1952-12-24 2019-08-26  66.7 f     
+##  4 Traueranzeige KS      1939-05-16 2019-08-26  80.3 m     
+##  5 Traueranzeige KM      1948-04-11 2019-08-25  71.4 m     
+##  6 Traueranzeige JJ      1947-01-07 2019-08-28  72.6 &lt;NA&gt;  
+##  7 Traueranzeige ThH     2019-08-27 NA          NA   &lt;NA&gt;  
+##  8 Traueranzeige TH-     1952-12-24 2019-08-26  66.7 f     
+##  9 Traueranzeige KS      1939-05-16 2019-08-26  80.3 m     
+## 10 Traueranzeige KM      1948-04-11 2019-08-25  71.4 m</code></pre>
+</div>

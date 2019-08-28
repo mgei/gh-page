@@ -5,10 +5,21 @@
     <link>https://mgei.github.io/post/</link>
     <description>Recent content in Archive on mgei.github.io</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Wed, 03 Jul 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 16 Aug 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://mgei.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Web scraping deaths from gedenkzeit.ch</title>
+      <link>https://mgei.github.io/post/webscraping-gedenkzeitch/</link>
+      <pubDate>Fri, 16 Aug 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgei.github.io/post/webscraping-gedenkzeitch/</guid>
+      <description>Web scraping with rvest https://www.gedenkzeit.ch/ is a Swiss obituary platform. The goal is to get the dates of birth and dates of death.
+rvest relies on xml2 package.
+# getting data from gedenkzeit.ch library(tidyverse) library(lubridate) library(rvest) library(gender) base &amp;lt;- &amp;quot;https://www.gedenkzeit.ch/Todesanzeigen/_/_/_/0/0/&amp;quot; from &amp;lt;- 1 to &amp;lt;- 3 data &amp;lt;- tibble() for (i in from:to) { link &amp;lt;- paste0(base, from) #&amp;gt; Loading required package: xml2 html &amp;lt;- read_html(link) rawnames &amp;lt;- html_nodes(html, &amp;quot;.</description>
+    </item>
     
     <item>
       <title>A look at Mintos.com loan characteristics and default rates</title>
@@ -17,6 +28,18 @@
       
       <guid>https://mgei.github.io/post/mintos-stylized-facts/</guid>
       <description>What is Mintos? Mintos.com is a P2P lending platform. One can invest in loans offered by various loan organizers from various countries. Most loans are short-term and personal loans from FSU countries such as Georgia, Armenia, Russia, but also Spain or Indonesia etc. Many loans are very short term (1 month) but there’s also some with longer terms (several years). The majority of loans are denominated in Euro but the share of loans in other currencies is increasing.</description>
+    </item>
+    
+    <item>
+      <title>Timeline graph for assignment term of Swiss Bundesraete</title>
+      <link>https://mgei.github.io/post/timeline-bundesraete/</link>
+      <pubDate>Thu, 27 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgei.github.io/post/timeline-bundesraete/</guid>
+      <description>Timeline plot Should be:
+ clean well sorted and arranged give the viewer the important information immediately  Data is from the official portal of the Swiss government
+plot Here’s the R code:
+library(tidyverse) library(readxl) library(lubridate) library(scales) bundesraete &amp;lt;- read_delim(&amp;quot;postdata/timeline-bundesraete/br.csv&amp;quot;, delim = &amp;quot;;&amp;quot;) %&amp;gt;% rowwise() %&amp;gt;% mutate(Wahl = dmy(Wahl), Rücktritt = min(dmy(Rücktritt), Sys.Date(), na.rm = T)) %&amp;gt;% ungroup() %&amp;gt;% mutate(Amtsdauer = paste(round((interval(Wahl, Rücktritt) / years(1)), digits = 1), &amp;quot;J.&amp;quot;)) nr &amp;lt;- read_excel(&amp;quot;postdata/timeline-bundesraete/nr.</description>
     </item>
     
     <item>

@@ -1,0 +1,86 @@
+---
+slug: "webscraping-gedenkzeitch"
+date: "2019-08-16"
+title: "Web scraping deaths from gedenkzeit.ch"
+tags: ["R", "webscraping", "gender"]
+authors: [mgei]
+---
+
+## Web scraping with rvest
+
+https://www.gedenkzeit.ch/ is a Swiss obituary platform. The goal is to get the dates of birth and dates of death.
+
+*rvest* relies on *xml2* package.
+
+```{r init, message=F, warning=F}
+# getting data from gedenkzeit.ch
+
+library(tidyverse)
+library(lubridate)
+library(rvest)
+library(gender)
+
+```
+
+```{r scrapeit, message=F, warning=F, eval=F}
+
+base <- "https://www.gedenkzeit.ch/Todesanzeigen/_/_/_/0/0/"
+
+from <- 1
+to   <- 3
+
+data <- tibble()
+
+for (i in from:to) {
+  link <- paste0(base, from)
+
+  #> Loading required package: xml2
+  html <- read_html(link)
+
+  rawnames <- html_nodes(html, ".searchTitle")
+  rawdates <- html_nodes(html, ".labelSearchItem")
+  
+  names <- rawnames %>% html_text()
+  dates <- rawdates %>% html_text()
+
+  data <- bind_rows(data,
+                    tibble(name = names, date = dates))
+  }
+
+
+clean <- data %>% 
+  mutate(date = str_remove_all(date, "\\*|\\†")) %>% 
+  separate(date, into = c("Geb", "Gest"), sep = " - ") %>% 
+  mutate(Typ = str_extract(name, "Traueranzeige"),
+         Name = str_remove(name, "Traueranzeige") %>% str_trim(),
+         Geb = Geb %>% str_trim() %>% dmy(),
+         Gest = Gest %>% str_trim() %>% dmy()) %>% 
+  select(Typ, Name, Geb, Gest) %>% 
+  mutate(Alter = interval(Geb, Gest) / years(1)) %>% 
+  # für Geschlechtsbestimmung mit gender::gender()
+  mutate(Vorname_gender = str_extract(Name, "^([\\w\\-]+)"),
+         Geburtsjahr_gender = year(Geb))
+
+
+genders <- gender_df(data = clean, name_col = "Vorname_gender", year_col = "Geburtsjahr_gender")
+
+finish <- clean %>% 
+  left_join(genders %>% select(name, gender, year_min), by = c("Vorname_gender" = "name", "Geburtsjahr_gender" = "year_min")) %>% 
+  select(-Vorname_gender, -Geburtsjahr_gender) %>% 
+  rename(Geschl = gender) %>% 
+  mutate(Geschl = str_sub(Geschl, 1, 1),
+         Initial = abbreviate(Name, use.classes = T, dot = F, minlength = 2, named = F)) %>% 
+  select(Typ, Name, Initial, everything())
+```
+
+```{r load, echo=F, message=F, warning=F}
+# finish %>% saveRDS("postdata/webscraping-gedenkzeit/finish.RDS")
+
+finish <- readRDS("postdata/webscraping-gedenkzeit/finish.RDS")
+```
+
+```{r seeit}
+finish %>% 
+  select(-Name) %>% 
+  head(n = 10)
+```
