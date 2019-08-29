@@ -20,6 +20,17 @@
     </item>
     
     <item>
+      <title>Fuel consumption by model and manufacturer</title>
+      <link>https://mgei.github.io/post/fuel-consumption/</link>
+      <pubDate>Wed, 12 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgei.github.io/post/fuel-consumption/</guid>
+      <description>European car fuel consumption data We found data from the Swiss automobile association TCS. While they provide a simple online tool Verbrauchskatelog, the data as a whole is downloadable only in PDF format here.
+One can read tables from PDF documents in R using the tabulizer package. A great example for it’s use was published last year on R Views Player Data for the 2018 FIFA World Cup.
+In my case, I struggled to even install tabulizer on Ubuntu, so I had revert to Windows.</description>
+    </item>
+    
+    <item>
       <title>R function for accessing the tel.search.ch API</title>
       <link>https://mgei.github.io/post/tel-search-api/</link>
       <pubDate>Thu, 21 Mar 2019 00:00:00 +0000</pubDate>

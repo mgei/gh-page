@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang='en'><head>
+  <meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'>
+<meta name='description' content='European car fuel consumption data We found data from the Swiss automobile association TCS. While they provide a simple online tool Verbrauchskatelog, the data as a whole is downloadable only in PDF format here.
+One can read tables from PDF documents in R using the tabulizer package. A great example for it’s use was published last year on R Views Player Data for the 2018 FIFA World Cup.
+In my case, I struggled to even install tabulizer on Ubuntu, so I had revert to Windows.'>
+<meta name='theme-color' content='#ffb266'>
+
+<meta property='og:title' content='Fuel consumption by model and manufacturer • Martin Geissmann'>
+<meta property='og:description' content='European car fuel consumption data We found data from the Swiss automobile association TCS. While they provide a simple online tool Verbrauchskatelog, the data as a whole is downloadable only in PDF format here.
+One can read tables from PDF documents in R using the tabulizer package. A great example for it’s use was published last year on R Views Player Data for the 2018 FIFA World Cup.
+In my case, I struggled to even install tabulizer on Ubuntu, so I had revert to Windows.'>
+<meta property='og:url' content='https://mgei.github.io/post/fuel-consumption/'>
+<meta property='og:site_name' content='mgei.github.io'>
+<meta property='og:type' content='article'><meta property='og:image' content='https://www.gravatar.com/avatar/a525a84fae399669fa8861e2661df00b?s=256'><meta property='article:section' content='post'><meta property='article:tag' content='R'><meta property='article:tag' content='dplyr'><meta property='article:tag' content='tabulizer'><meta property='article:tag' content='plotting'><meta property='article:published_time' content='2019-06-12T00:00:00Z'/><meta property='article:modified_time' content='2019-06-12T00:00:00Z'/><meta name='twitter:card' content='summary'>
+
+<meta name="generator" content="Hugo 0.55.5" />
+
+  <title>Fuel consumption by model and manufacturer • Martin Geissmann</title>
+  <link rel='canonical' href='https://mgei.github.io/post/fuel-consumption/'>
+  
+  
+  <link rel='icon' href='/favicon.ico'>
+<link rel='stylesheet' href='/assets/css/main.fb20af92.css'><link rel='stylesheet' href='/css/custom.css'><style>
+:root{--color-accent:#ffb266;}
+</style>
+
+  
+
+</head>
+<body class='page type-post has-sidebar'>
+
+  <div class='site'><div id='sidebar' class='sidebar'>
+  <a class='screen-reader-text' href='#main-menu'>Skip to Main Menu</a>
+
+  <div class='container'><section class='widget widget-about sep-after'>
+  <header>
+    
+    <div class='logo'>
+      <a href='/'>
+        <img src='/images/logo.png'>
+      </a>
+    </div>
+    
+    <h2 class='title site-title '>
+      <a href='/'>
+      mgei.github.io
+      </a>
+    </h2>
+    <div class='desc'>
+    personal archive
+    </div>
+  </header>
+
+</section>
+<section class='widget widget-sidebar_menu sep-after'><nav id='sidebar-menu' class='menu sidebar-menu' aria-label='Sidebar Menu'>
+    <div class='container'>
+      <ul><li class='item'>
+  <a href='/'>Home</a></li><li class='item'>
+  <a href='/post/'>Archive</a></li><li class='item'>
+  <a href='/tags/'>Tags</a></li><li class='item'>
+  <a href='/search/'>Search</a></li><li class='item'>
+  <a href='/about/'>About</a></li></ul>
+    </div>
+  </nav>
+
+</section></div>
+
+  <div class='sidebar-overlay'></div>
+</div><div class='main'><a class='screen-reader-text' href='#content'>Skip to Content</a>
+
+<button id='sidebar-toggler' class='sidebar-toggler' aria-controls='sidebar'>
+  <span class='screen-reader-text'>Toggle Sidebar</span>
+  <span class='open'><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <line x1="3" y1="12" x2="21" y2="12" />
+  <line x1="3" y1="6" x2="21" y2="6" />
+  <line x1="3" y1="18" x2="21" y2="18" />
+  
+</svg>
+</span>
+  <span class='close'><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <line x1="18" y1="6" x2="6" y2="18" />
+  <line x1="6" y1="6" x2="18" y2="18" />
+  
+</svg>
+</span>
+</button><div class='header-widgets'>
+        <div class='container'>
+    
+    <style>.widget-breadcrumbs li:after{content:'\2f '}</style>
+  <section class='widget widget-breadcrumbs sep-after'>
+    <nav id='breadcrumbs'>
+      <ol><li><a href='/'>Home</a></li><li><span>Fuel consumption by model and manufacturer</span></li></ol>
+    </nav>
+  </section></div>
+      </div>
+
+      <header id='header' class='header site-header'>
+        <div class='container sep-after'>
+          <div class='header-info'><p class='site-title title'>mgei.github.io</p><p class='desc site-desc'>personal archive</p>
+          </div>
+        </div>
+      </header>
+
+      <main id='content'>
+
+
+<article lang='en' class='entry'>
+  <header class='header entry-header'>
+  <div class='container sep-after'>
+    <div class='header-info'>
+      <h1 class='title'>Fuel consumption by model and manufacturer</h1>
+      
+
+    </div>
+    <div class='entry-meta'>
+  <span class='posted-on'><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+  <line x1="16" y1="2" x2="16" y2="6"/>
+  <line x1="8" y1="2" x2="8" y2="6"/>
+  <line x1="3" y1="10" x2="21" y2="10"/>
+  
+</svg>
+<span class='screen-reader-text'>Posted on </span>
+  <time class='entry-date' datetime='2019-06-12T00:00:00Z'>12 Jun 2019</time>
+</span>
+
+  <span class='byline'><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <path d="M21,21V20c0-2.76-4-5-9-5s-9,2.24-9,5v1"/>
+  <path d="M16,6.37A4,4,0,1,1,12.63,3,4,4,0,0,1,16,6.37Z"/>
+  
+</svg>
+<span class='screen-reader-text'> by </span><a href='/authors/mgei'>Martin Geissmann</a></span>
+  
+
+</div>
+
+
+  </div>
+</header>
+
+  
+  
+
+  <div class='container entry-content'>
+  
+
+
+<div id="european-car-fuel-consumption-data" class="section level1">
+<h1>European car fuel consumption data</h1>
+<p>We found data from the Swiss automobile association <em>TCS</em>. While they provide a simple online tool <a href="http://www.verbrauchskatalog.ch/de/">Verbrauchskatelog</a>, the data as a whole is downloadable only in PDF format <a href="http://www.verbrauchskatalog.ch/?async=1&amp;merge=1">here</a>.</p>
+<p>One can read tables from PDF documents in R using the <a href="https://cran.r-project.org/web/packages/tabulizer/vignettes/tabulizer.html">tabulizer</a> package. A great example for it’s use was published last year on R Views <a href="https://rviews.rstudio.com/2018/06/14/player-data-for-the-2018-fifa-world-cup/">Player Data for the 2018 FIFA World Cup</a>.</p>
+<p>In my case, I struggled to even install <em>tabulizer</em> on Ubuntu, so I had revert to Windows.</p>
+<p>For reading table <code>extract_tables</code> is used. Note we set the output to <em>matrix</em> as it will be easier to turn it into a tibble or data-frame later.</p>
+<pre class="r"><code>library(tabulizer)
+library(tidyverse)
+
+out1 &lt;- extract_tables(&quot;vkatalog.pdf&quot;, output = &quot;matrix&quot;, encoding = &quot;UTF-8&quot;)</code></pre>
+<p>Clean the matrix…</p>
+<pre class="r"><code>m &lt;- matrix(ncol = 12)
+for (i in 1:(length(out1)-1)) {
+  print(i)
+  m &lt;- rbind(m, out1[[i]][,1:12])
+}</code></pre>
+<p>…and turn it into a tibble:</p>
+<pre class="r"><code>carst &lt;- m %&gt;% as_tibble()
+
+colnames(carst) &lt;- c(&quot;Modell&quot;, &quot;Neupreis&quot;, &quot;TreibstoffCode&quot;, &quot;Antrieb&quot;, &quot;Getriebe&quot;, &quot;Hubraum&quot;, 
+                     &quot;PS&quot;, &quot;Normverbrauch&quot;, &quot;Benzinaeq&quot;, &quot;CO2&quot;, &quot;CO2 Energieerz&quot;, &quot;Effizientkat&quot;)
+
+# carst %&gt;% saveRDS(&quot;data/carst.RDS&quot;)</code></pre>
+<p>From here on it’s a data handling task. We shall clean it and make it tidy.</p>
+<pre class="r"><code># carst &lt;- carst %&gt;% 
+#   filter(!is.na(Modell), Modell != &quot;&quot;) %&gt;% 
+#   mutate(Hersteller = if_else(Neupreis == &quot;&quot;, Modell, NA_character_)) %&gt;% 
+#   select(Hersteller, everything()) %&gt;% 
+#   fill(Hersteller) %&gt;% 
+#   filter(Neupreis != &quot;&quot;)
+
+carst_clean &lt;- carst %&gt;% 
+  separate(Normverbrauch, into = c(&quot;Normverbrauch&quot;, &quot;Normverbrauch E&quot;), sep = &quot; \\+ &quot;,
+           fill = &quot;right&quot;) %&gt;% 
+  mutate(Neupreis = str_remove(Neupreis, &quot;&#39;&quot;) %&gt;% as.integer(),
+         Hubraum = str_remove(Hubraum, &quot;&#39;&quot;) %&gt;% as.integer(),
+         Normverbrauch = str_remove(Normverbrauch, &quot; l&quot;) %&gt;% as.double(),
+         `Normverbrauch E` = str_remove(`Normverbrauch E`, &quot; kWh&quot;) %&gt;% as.double(),
+         PS = as.integer(PS),
+         Benzinaeq = str_remove(Benzinaeq, &quot;-&quot;) %&gt;% str_trim()) %&gt;%
+  rename(`Normverbrauch (l)` = Normverbrauch,
+         `Normverbrauch E (kWh)` = `Normverbrauch E`) %&gt;% 
+  mutate(Treibstoff = recode(TreibstoffCode, &quot;B&quot; = &quot;Benzin&quot;, &quot;D&quot; = &quot;Diesel&quot;, &quot;C&quot; = &quot;Hybrid Benzin&quot;,
+                             &quot;Y&quot; = &quot;Wasserstoff / Elektro&quot;, &quot;F&quot; = &quot;Hybrid Diesel&quot;, &quot;N&quot; = &quot;Erdgas (CNG)&quot;,
+                             &quot;E&quot; = &quot;Elektro&quot;, R = &quot;Elektro mit Range Extender&quot;, &quot;X&quot; = &quot;Wasserstoff / Elektro&quot;),
+         Antrieb = recode(AntriebCode, &quot;V&quot; = &quot;Frontantrieb&quot;, &quot;H&quot; = &quot;Heckantrieb&quot;, &quot;A&quot; = &quot;Allrad&quot;),
+         CO2 = if_else(str_detect(Benzinaeq, &quot; &quot;) &amp; CO2 == &quot;&quot;, str_sub(Benzinaeq, 4, -1), CO2),
+         Benzinaeq = if_else(str_detect(Benzinaeq, &quot; &quot;), str_sub(Benzinaeq, 1, 3), Benzinaeq) %&gt;% as.double(),
+         `CO2 klimarel` = if_else(str_detect(CO2, &quot;\\(&quot;), str_extract_all(CO2, &quot;\\([^()]+\\)&quot;, &quot;&quot;) %&gt;% 
+                                    str_remove_all(&quot;\\(|\\)&quot;), &quot;&quot;) %&gt;% as.integer(),
+         `CO2 Energieerz` = as.integer(`CO2 Energieerz`),
+         CO2 = str_sub(CO2, 1, 3) %&gt;% as.integer()) %&gt;% 
+  # rowwise() %&gt;% 
+  # mutate(CO2 = str_sub(CO2, 1, 3) %&gt;% as.integer()) %&gt;% 
+  # ungroup() %&gt;% 
+  select(Hersteller, Modell, Neupreis, TreibstoffCode, Treibstoff, AntriebCode, Antrieb, Getriebe, Hubraum, 
+         PS, `Normverbrauch (l)`, `Normverbrauch E (kWh)`, Benzinaeq, CO2, `CO2 klimarel`, `CO2 Energieerz`, Effizientkat)
+
+
+carst_clean %&gt;% summary()</code></pre>
+<pre><code>##   Hersteller           Modell             Neupreis      TreibstoffCode    
+##  Length:4258        Length:4258        Min.   :  8490   Length:4258       
+##  Class :character   Class :character   1st Qu.: 29900   Class :character  
+##  Mode  :character   Mode  :character   Median : 41504   Mode  :character  
+##                                        Mean   : 57699                     
+##                                        3rd Qu.: 61025                     
+##                                        Max.   :585500                     
+##                                                                           
+##   Treibstoff        AntriebCode          Antrieb         
+##  Length:4258        Length:4258        Length:4258       
+##  Class :character   Class :character   Class :character  
+##  Mode  :character   Mode  :character   Mode  :character  
+##                                                          
+##                                                          
+##                                                          
+##                                                          
+##    Getriebe            Hubraum           PS         Normverbrauch (l)
+##  Length:4258        Min.   :   0   Min.   :  60.0   Min.   : 0.60    
+##  Class :character   1st Qu.:1498   1st Qu.: 122.0   1st Qu.: 4.90    
+##  Mode  :character   Median :1968   Median : 163.0   Median : 5.70    
+##                     Mean   :2035   Mean   : 210.7   Mean   : 6.33    
+##                     3rd Qu.:1998   3rd Qu.: 245.0   3rd Qu.: 6.90    
+##                     Max.   :6752   Max.   :1905.0   Max.   :20.10    
+##                                                     NA&#39;s   :119      
+##  Normverbrauch E (kWh)   Benzinaeq          CO2         CO2 klimarel   
+##  Min.   : 0.00         Min.   :  1.3   Min.   :  0.0   Min.   : 73.00  
+##  1st Qu.:13.25         1st Qu.:  5.0   1st Qu.:117.0   1st Qu.: 75.50  
+##  Median :14.50         Median :  5.7   Median :136.0   Median : 86.00  
+##  Mean   :14.97         Mean   : 13.2   Mean   :146.1   Mean   : 90.16  
+##  3rd Qu.:16.35         3rd Qu.:  6.7   3rd Qu.:164.0   3rd Qu.:100.75  
+##  Max.   :21.70         Max.   :184.0   Max.   :464.0   Max.   :148.00  
+##  NA&#39;s   :4199          NA&#39;s   :2343    NA&#39;s   :114     NA&#39;s   :4196    
+##  CO2 Energieerz   Effizientkat      
+##  Min.   :  7.00   Length:4258       
+##  1st Qu.: 23.00   Class :character  
+##  Median : 28.00   Mode  :character  
+##  Mean   : 31.58                     
+##  3rd Qu.: 36.00                     
+##  Max.   :106.00                     
+## </code></pre>
+</div>
+<div id="graphs" class="section level1">
+<h1>Graphs</h1>
+<pre class="r"><code>carst_clean %&gt;% 
+  filter(Hersteller %in% c(&quot;Mercedes-Benz&quot;, &quot;Audi&quot;, &quot;BMW&quot;, &quot;Opel&quot;, &quot;VW&quot;, &quot;Porsche&quot;, &quot;Smart&quot;), PS &lt; 500, Treibstoff == &quot;Benzin&quot;) %&gt;% 
+  ggplot(aes(x = PS, y = `Normverbrauch (l)`)) + 
+  geom_point(alpha = 0.3, aes(color = Hersteller)) +
+  geom_smooth(method = &quot;loess&quot;, formula = y ~ x + x^2, se = F, fullrange = T) +
+  theme(legend.position = &quot;bottom&quot;) +
+  labs(title = &quot;Fahrzeuge deutscher Hersteller&quot;,
+       subtitle = &quot;Treibstoff: Benzin&quot;) +
+  scale_x_continuous(limits = c(50, 500)) +
+  scale_y_continuous(limits = c(3, 15))</code></pre>
+<p><img src="/post/fuel-consumption_files/figure-html/graphs1-1.png" width="672" /></p>
+<pre class="r"><code>carst_clean %&gt;% 
+  filter(Hersteller %in% c(&quot;Peugeot&quot;, &quot;DS Automobiles&quot;, &quot;Renault&quot;, &quot;Alpine&quot;, &quot;Citroen&quot;), PS &lt; 500, Treibstoff == &quot;Benzin&quot;) %&gt;% 
+  ggplot(aes(x = PS, y = `Normverbrauch (l)`)) + 
+  geom_point(alpha = 0.3, aes(color = Hersteller)) +
+  geom_smooth(method = &quot;loess&quot;, formula = y ~ x + x^2, se = F, fullrange = T) +
+  theme(legend.position = &quot;bottom&quot;) +
+  labs(title = &quot;Fahrzeuge französischer Hersteller&quot;,
+       subtitle = &quot;Treibstoff: Benzin&quot;) +
+  scale_x_continuous(limits = c(50, 500)) +
+  scale_y_continuous(limits = c(3, 15))</code></pre>
+<p><img src="/post/fuel-consumption_files/figure-html/graphs2-1.png" width="672" /></p>
+<pre class="r"><code>carst_clean %&gt;% 
+  filter(Treibstoff %in% c(&quot;Benzin&quot;, &quot;Diesel&quot;)) %&gt;%
+  ggplot(aes(x = PS, y = `Normverbrauch (l)`, color = Treibstoff)) + 
+  geom_point(alpha = 0.3) +
+  geom_smooth(method = &quot;loess&quot;, formula = y ~ x + x^2, se = F, fullrange = T) +
+  theme(legend.position = &quot;bottom&quot;) +
+  labs(title = &quot;Verbrauch nach Leistung, Diesel und Benzin&quot;) +
+  scale_x_continuous(limits = c(50, 500)) +
+  scale_y_continuous(limits = c(3, 15))</code></pre>
+<p><img src="/post/fuel-consumption_files/figure-html/graphs3-1.png" width="672" /></p>
+<pre class="r"><code>carst_clean %&gt;%
+  filter(!is.na(CO2)) %&gt;% 
+  group_by(Hersteller) %&gt;% 
+  filter(n() &gt; 10) %&gt;%
+  mutate(meanCO2 = mean(CO2)) %&gt;% 
+  ungroup() %&gt;%
+  ggplot(aes(x = reorder(Hersteller, desc(meanCO2)), y = CO2)) +
+  geom_point(aes(color = Hersteller), alpha = 0.3) +
+  geom_boxplot(alpha = 0.1, outlier.alpha = 0) +
+  coord_flip() +
+  labs(title = &quot;CO2 Emission nach Hersteller/Modelle&quot;, x = &quot;&quot;) +
+  theme(legend.position = &quot;none&quot;)</code></pre>
+<p><img src="/post/fuel-consumption_files/figure-html/graphs4-1.png" width="672" /></p>
+</div>
+
+</div>
+
+  
+<footer class='entry-footer'>
+  <div class='container sep-before'><div class='tags'><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <path d="M20.59,13.41l-7.17,7.17a2,2,0,0,1-2.83,0L2,12V2H12l8.59,8.59A2,2,0,0,1,20.59,13.41Z"/>
+  <line x1="7" y1="7" x2="7" y2="7"/>
+  
+</svg>
+<span class='screen-reader-text'>Tags: </span><a class='tag' href='/tags/r/'>R</a>, <a class='tag' href='/tags/dplyr/'>dplyr</a>, <a class='tag' href='/tags/tabulizer/'>tabulizer</a>, <a class='tag' href='/tags/plotting/'>plotting</a></div>
+
+  </div>
+</footer>
+
+
+</article>
+
+<nav class='entry-nav'>
+  <div class='container'><div class='prev-entry sep-before'>
+      <a href='/post/performance-eval/'>
+        <span aria-hidden='true'><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <line x1="20" y1="12" x2="4" y2="12"/>
+  <polyline points="10 18 4 12 10 6"/>
+  
+</svg>
+ Previous</span>
+        <span class='screen-reader-text'>Previous post: </span>Portfolio performance evaluation</a>
+    </div><div class='next-entry sep-before'>
+      <a href='/post/rangeslider-plotly/'>
+        <span class='screen-reader-text'>Next post: </span>Plotting stock relative performance with R Plotly&#39;s rangeslider<span aria-hidden='true'>Next <svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <line x1="4" y1="12" x2="20" y2="12"/>
+  <polyline points="14 6 20 12 14 18"/>
+  
+</svg>
+</span>
+      </a>
+    </div></div>
+</nav>
+
+
+
+
+      </main>
+
+      <footer id='footer' class='footer'>
+        <div class='container sep-before'><section class='widget widget-social_menu sep-after'><nav aria-label='Social Menu'>
+    <ul><li>
+        <a href='mailto:mg@econovo.ch' target='_blank' rel='noopener'>
+          <span class='screen-reader-text'>Contact via Email</span><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+  <polyline points="22,6 12,13 2,6"/>
+  
+</svg>
+</a>
+      </li><li>
+        <a href='https://github.com/mgei' target='_blank' rel='noopener'>
+          <span class='screen-reader-text'>Open Github account in new tab</span><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+  
+</svg>
+</a>
+      </li><li>
+        <a href='https://twitter.com//' target='_blank' rel='noopener'>
+          <span class='screen-reader-text'>Open Twitter account in new tab</span><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/>
+  
+</svg>
+</a>
+      </li><li>
+        <a href='https://linkedin.com/in/martin-geissmann-59034a10b' target='_blank' rel='noopener'>
+          <span class='screen-reader-text'>Open Linkedin account in new tab</span><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+  <rect x="2" y="9" width="4" height="12"/>
+  <circle cx="4" cy="4" r="2"/>
+  
+</svg>
+</a>
+      </li><li>
+        <a href='https://www.youtube.com/channel/UCUYqJUnI_P0XYk6_FRyvb2w' target='_blank' rel='noopener'>
+          <span class='screen-reader-text'>Open Youtube account in new tab</span><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z" />
+  <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02" />
+  
+</svg>
+</a>
+      </li></ul>
+  </nav>
+</section><div class='copyright'>
+  <p> &copy; 2019 Martin Geissmann </p>
+</div>
+
+        </div>
+      </footer>
+
+    </div>
+  </div><script>window.__assets_js_src="/assets/js/"</script>
+
+<script src='/assets/js/main.9e5c4cf4.js'></script><script src='/js/custom.js'></script>
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+</body>
+
+</html>
+

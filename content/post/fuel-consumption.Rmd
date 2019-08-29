@@ -1,0 +1,152 @@
+---
+slug: "fuel-consumption"
+date: "2019-06-12"
+title: "Fuel consumption by model and manufacturer"
+tags: ["R", "dplyr", "tabulizer", "plotting"]
+authors: [mgei]
+---
+
+# European car fuel consumption data
+
+We found data from the Swiss automobile association *TCS*. While they provide a simple online tool [Verbrauchskatelog](http://www.verbrauchskatalog.ch/de/), the data as a whole is downloadable only in PDF format [here](http://www.verbrauchskatalog.ch/?async=1&merge=1).
+
+One can read tables from PDF documents in R using the [tabulizer](https://cran.r-project.org/web/packages/tabulizer/vignettes/tabulizer.html) package. A great example for it's use was published last year on R Views [Player Data for the 2018 FIFA World Cup](https://rviews.rstudio.com/2018/06/14/player-data-for-the-2018-fifa-world-cup/).
+
+In my case, I struggled to even install *tabulizer* on Ubuntu, so I had revert to Windows.
+
+For reading table `extract_tables` is used. Note we set the output to *matrix* as it will be easier to turn it into a tibble or data-frame later.
+
+```{r tabu, eval=F}
+library(tabulizer)
+library(tidyverse)
+
+out1 <- extract_tables("vkatalog.pdf", output = "matrix", encoding = "UTF-8")
+```
+
+Clean the matrix...
+
+```{r process, eval = F}
+m <- matrix(ncol = 12)
+for (i in 1:(length(out1)-1)) {
+  print(i)
+  m <- rbind(m, out1[[i]][,1:12])
+}
+```
+
+...and turn it into a tibble:
+
+```{r tibblemaking, eval = F}
+carst <- m %>% as_tibble()
+
+colnames(carst) <- c("Modell", "Neupreis", "TreibstoffCode", "Antrieb", "Getriebe", "Hubraum", 
+                     "PS", "Normverbrauch", "Benzinaeq", "CO2", "CO2 Energieerz", "Effizientkat")
+
+# carst %>% saveRDS("data/carst.RDS")
+```
+
+From here on it's a data handling task. We shall clean it and make it tidy.
+
+```{r read, echo=F, warning=F, message=F}
+library(tidyverse)
+
+carst <- readRDS("postdata/fuel-consumption/carst.RDS")
+
+```
+
+
+```{r cars, warning=F}
+# carst <- carst %>% 
+#   filter(!is.na(Modell), Modell != "") %>% 
+#   mutate(Hersteller = if_else(Neupreis == "", Modell, NA_character_)) %>% 
+#   select(Hersteller, everything()) %>% 
+#   fill(Hersteller) %>% 
+#   filter(Neupreis != "")
+
+carst_clean <- carst %>% 
+  separate(Normverbrauch, into = c("Normverbrauch", "Normverbrauch E"), sep = " \\+ ",
+           fill = "right") %>% 
+  mutate(Neupreis = str_remove(Neupreis, "'") %>% as.integer(),
+         Hubraum = str_remove(Hubraum, "'") %>% as.integer(),
+         Normverbrauch = str_remove(Normverbrauch, " l") %>% as.double(),
+         `Normverbrauch E` = str_remove(`Normverbrauch E`, " kWh") %>% as.double(),
+         PS = as.integer(PS),
+         Benzinaeq = str_remove(Benzinaeq, "-") %>% str_trim()) %>%
+  rename(`Normverbrauch (l)` = Normverbrauch,
+         `Normverbrauch E (kWh)` = `Normverbrauch E`) %>% 
+  mutate(Treibstoff = recode(TreibstoffCode, "B" = "Benzin", "D" = "Diesel", "C" = "Hybrid Benzin",
+                             "Y" = "Wasserstoff / Elektro", "F" = "Hybrid Diesel", "N" = "Erdgas (CNG)",
+                             "E" = "Elektro", R = "Elektro mit Range Extender", "X" = "Wasserstoff / Elektro"),
+         Antrieb = recode(AntriebCode, "V" = "Frontantrieb", "H" = "Heckantrieb", "A" = "Allrad"),
+         CO2 = if_else(str_detect(Benzinaeq, " ") & CO2 == "", str_sub(Benzinaeq, 4, -1), CO2),
+         Benzinaeq = if_else(str_detect(Benzinaeq, " "), str_sub(Benzinaeq, 1, 3), Benzinaeq) %>% as.double(),
+         `CO2 klimarel` = if_else(str_detect(CO2, "\\("), str_extract_all(CO2, "\\([^()]+\\)", "") %>% 
+                                    str_remove_all("\\(|\\)"), "") %>% as.integer(),
+         `CO2 Energieerz` = as.integer(`CO2 Energieerz`),
+         CO2 = str_sub(CO2, 1, 3) %>% as.integer()) %>% 
+  # rowwise() %>% 
+  # mutate(CO2 = str_sub(CO2, 1, 3) %>% as.integer()) %>% 
+  # ungroup() %>% 
+  select(Hersteller, Modell, Neupreis, TreibstoffCode, Treibstoff, AntriebCode, Antrieb, Getriebe, Hubraum, 
+         PS, `Normverbrauch (l)`, `Normverbrauch E (kWh)`, Benzinaeq, CO2, `CO2 klimarel`, `CO2 Energieerz`, Effizientkat)
+
+
+carst_clean %>% summary()
+```
+
+
+# Graphs
+
+```{r graphs1, warning=F}
+carst_clean %>% 
+  filter(Hersteller %in% c("Mercedes-Benz", "Audi", "BMW", "Opel", "VW", "Porsche", "Smart"), PS < 500, Treibstoff == "Benzin") %>% 
+  ggplot(aes(x = PS, y = `Normverbrauch (l)`)) + 
+  geom_point(alpha = 0.3, aes(color = Hersteller)) +
+  geom_smooth(method = "loess", formula = y ~ x + x^2, se = F, fullrange = T) +
+  theme(legend.position = "bottom") +
+  labs(title = "Fahrzeuge deutscher Hersteller",
+       subtitle = "Treibstoff: Benzin") +
+  scale_x_continuous(limits = c(50, 500)) +
+  scale_y_continuous(limits = c(3, 15))
+```
+
+```{r graphs2, warning=F}
+carst_clean %>% 
+  filter(Hersteller %in% c("Peugeot", "DS Automobiles", "Renault", "Alpine", "Citroen"), PS < 500, Treibstoff == "Benzin") %>% 
+  ggplot(aes(x = PS, y = `Normverbrauch (l)`)) + 
+  geom_point(alpha = 0.3, aes(color = Hersteller)) +
+  geom_smooth(method = "loess", formula = y ~ x + x^2, se = F, fullrange = T) +
+  theme(legend.position = "bottom") +
+  labs(title = "Fahrzeuge französischer Hersteller",
+       subtitle = "Treibstoff: Benzin") +
+  scale_x_continuous(limits = c(50, 500)) +
+  scale_y_continuous(limits = c(3, 15))
+```
+
+```{r graphs3, warning=F}
+carst_clean %>% 
+  filter(Treibstoff %in% c("Benzin", "Diesel")) %>%
+  ggplot(aes(x = PS, y = `Normverbrauch (l)`, color = Treibstoff)) + 
+  geom_point(alpha = 0.3) +
+  geom_smooth(method = "loess", formula = y ~ x + x^2, se = F, fullrange = T) +
+  theme(legend.position = "bottom") +
+  labs(title = "Verbrauch nach Leistung, Diesel und Benzin") +
+  scale_x_continuous(limits = c(50, 500)) +
+  scale_y_continuous(limits = c(3, 15))
+```
+
+```{r graphs4, warning=F, fig.height=10}
+carst_clean %>%
+  filter(!is.na(CO2)) %>% 
+  group_by(Hersteller) %>% 
+  filter(n() > 10) %>%
+  mutate(meanCO2 = mean(CO2)) %>% 
+  ungroup() %>%
+  ggplot(aes(x = reorder(Hersteller, desc(meanCO2)), y = CO2)) +
+  geom_point(aes(color = Hersteller), alpha = 0.3) +
+  geom_boxplot(alpha = 0.1, outlier.alpha = 0) +
+  coord_flip() +
+  labs(title = "CO2 Emission nach Hersteller/Modelle", x = "") +
+  theme(legend.position = "none")
+  
+```
+

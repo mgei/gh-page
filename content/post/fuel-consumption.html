@@ -1,0 +1,159 @@
+---
+slug: "fuel-consumption"
+date: "2019-06-12"
+title: "Fuel consumption by model and manufacturer"
+tags: ["R", "dplyr", "tabulizer", "plotting"]
+authors: [mgei]
+---
+
+
+
+<div id="european-car-fuel-consumption-data" class="section level1">
+<h1>European car fuel consumption data</h1>
+<p>We found data from the Swiss automobile association <em>TCS</em>. While they provide a simple online tool <a href="http://www.verbrauchskatalog.ch/de/">Verbrauchskatelog</a>, the data as a whole is downloadable only in PDF format <a href="http://www.verbrauchskatalog.ch/?async=1&amp;merge=1">here</a>.</p>
+<p>One can read tables from PDF documents in R using the <a href="https://cran.r-project.org/web/packages/tabulizer/vignettes/tabulizer.html">tabulizer</a> package. A great example for it’s use was published last year on R Views <a href="https://rviews.rstudio.com/2018/06/14/player-data-for-the-2018-fifa-world-cup/">Player Data for the 2018 FIFA World Cup</a>.</p>
+<p>In my case, I struggled to even install <em>tabulizer</em> on Ubuntu, so I had revert to Windows.</p>
+<p>For reading table <code>extract_tables</code> is used. Note we set the output to <em>matrix</em> as it will be easier to turn it into a tibble or data-frame later.</p>
+<pre class="r"><code>library(tabulizer)
+library(tidyverse)
+
+out1 &lt;- extract_tables(&quot;vkatalog.pdf&quot;, output = &quot;matrix&quot;, encoding = &quot;UTF-8&quot;)</code></pre>
+<p>Clean the matrix…</p>
+<pre class="r"><code>m &lt;- matrix(ncol = 12)
+for (i in 1:(length(out1)-1)) {
+  print(i)
+  m &lt;- rbind(m, out1[[i]][,1:12])
+}</code></pre>
+<p>…and turn it into a tibble:</p>
+<pre class="r"><code>carst &lt;- m %&gt;% as_tibble()
+
+colnames(carst) &lt;- c(&quot;Modell&quot;, &quot;Neupreis&quot;, &quot;TreibstoffCode&quot;, &quot;Antrieb&quot;, &quot;Getriebe&quot;, &quot;Hubraum&quot;, 
+                     &quot;PS&quot;, &quot;Normverbrauch&quot;, &quot;Benzinaeq&quot;, &quot;CO2&quot;, &quot;CO2 Energieerz&quot;, &quot;Effizientkat&quot;)
+
+# carst %&gt;% saveRDS(&quot;data/carst.RDS&quot;)</code></pre>
+<p>From here on it’s a data handling task. We shall clean it and make it tidy.</p>
+<pre class="r"><code># carst &lt;- carst %&gt;% 
+#   filter(!is.na(Modell), Modell != &quot;&quot;) %&gt;% 
+#   mutate(Hersteller = if_else(Neupreis == &quot;&quot;, Modell, NA_character_)) %&gt;% 
+#   select(Hersteller, everything()) %&gt;% 
+#   fill(Hersteller) %&gt;% 
+#   filter(Neupreis != &quot;&quot;)
+
+carst_clean &lt;- carst %&gt;% 
+  separate(Normverbrauch, into = c(&quot;Normverbrauch&quot;, &quot;Normverbrauch E&quot;), sep = &quot; \\+ &quot;,
+           fill = &quot;right&quot;) %&gt;% 
+  mutate(Neupreis = str_remove(Neupreis, &quot;&#39;&quot;) %&gt;% as.integer(),
+         Hubraum = str_remove(Hubraum, &quot;&#39;&quot;) %&gt;% as.integer(),
+         Normverbrauch = str_remove(Normverbrauch, &quot; l&quot;) %&gt;% as.double(),
+         `Normverbrauch E` = str_remove(`Normverbrauch E`, &quot; kWh&quot;) %&gt;% as.double(),
+         PS = as.integer(PS),
+         Benzinaeq = str_remove(Benzinaeq, &quot;-&quot;) %&gt;% str_trim()) %&gt;%
+  rename(`Normverbrauch (l)` = Normverbrauch,
+         `Normverbrauch E (kWh)` = `Normverbrauch E`) %&gt;% 
+  mutate(Treibstoff = recode(TreibstoffCode, &quot;B&quot; = &quot;Benzin&quot;, &quot;D&quot; = &quot;Diesel&quot;, &quot;C&quot; = &quot;Hybrid Benzin&quot;,
+                             &quot;Y&quot; = &quot;Wasserstoff / Elektro&quot;, &quot;F&quot; = &quot;Hybrid Diesel&quot;, &quot;N&quot; = &quot;Erdgas (CNG)&quot;,
+                             &quot;E&quot; = &quot;Elektro&quot;, R = &quot;Elektro mit Range Extender&quot;, &quot;X&quot; = &quot;Wasserstoff / Elektro&quot;),
+         Antrieb = recode(AntriebCode, &quot;V&quot; = &quot;Frontantrieb&quot;, &quot;H&quot; = &quot;Heckantrieb&quot;, &quot;A&quot; = &quot;Allrad&quot;),
+         CO2 = if_else(str_detect(Benzinaeq, &quot; &quot;) &amp; CO2 == &quot;&quot;, str_sub(Benzinaeq, 4, -1), CO2),
+         Benzinaeq = if_else(str_detect(Benzinaeq, &quot; &quot;), str_sub(Benzinaeq, 1, 3), Benzinaeq) %&gt;% as.double(),
+         `CO2 klimarel` = if_else(str_detect(CO2, &quot;\\(&quot;), str_extract_all(CO2, &quot;\\([^()]+\\)&quot;, &quot;&quot;) %&gt;% 
+                                    str_remove_all(&quot;\\(|\\)&quot;), &quot;&quot;) %&gt;% as.integer(),
+         `CO2 Energieerz` = as.integer(`CO2 Energieerz`),
+         CO2 = str_sub(CO2, 1, 3) %&gt;% as.integer()) %&gt;% 
+  # rowwise() %&gt;% 
+  # mutate(CO2 = str_sub(CO2, 1, 3) %&gt;% as.integer()) %&gt;% 
+  # ungroup() %&gt;% 
+  select(Hersteller, Modell, Neupreis, TreibstoffCode, Treibstoff, AntriebCode, Antrieb, Getriebe, Hubraum, 
+         PS, `Normverbrauch (l)`, `Normverbrauch E (kWh)`, Benzinaeq, CO2, `CO2 klimarel`, `CO2 Energieerz`, Effizientkat)
+
+
+carst_clean %&gt;% summary()</code></pre>
+<pre><code>##   Hersteller           Modell             Neupreis      TreibstoffCode    
+##  Length:4258        Length:4258        Min.   :  8490   Length:4258       
+##  Class :character   Class :character   1st Qu.: 29900   Class :character  
+##  Mode  :character   Mode  :character   Median : 41504   Mode  :character  
+##                                        Mean   : 57699                     
+##                                        3rd Qu.: 61025                     
+##                                        Max.   :585500                     
+##                                                                           
+##   Treibstoff        AntriebCode          Antrieb         
+##  Length:4258        Length:4258        Length:4258       
+##  Class :character   Class :character   Class :character  
+##  Mode  :character   Mode  :character   Mode  :character  
+##                                                          
+##                                                          
+##                                                          
+##                                                          
+##    Getriebe            Hubraum           PS         Normverbrauch (l)
+##  Length:4258        Min.   :   0   Min.   :  60.0   Min.   : 0.60    
+##  Class :character   1st Qu.:1498   1st Qu.: 122.0   1st Qu.: 4.90    
+##  Mode  :character   Median :1968   Median : 163.0   Median : 5.70    
+##                     Mean   :2035   Mean   : 210.7   Mean   : 6.33    
+##                     3rd Qu.:1998   3rd Qu.: 245.0   3rd Qu.: 6.90    
+##                     Max.   :6752   Max.   :1905.0   Max.   :20.10    
+##                                                     NA&#39;s   :119      
+##  Normverbrauch E (kWh)   Benzinaeq          CO2         CO2 klimarel   
+##  Min.   : 0.00         Min.   :  1.3   Min.   :  0.0   Min.   : 73.00  
+##  1st Qu.:13.25         1st Qu.:  5.0   1st Qu.:117.0   1st Qu.: 75.50  
+##  Median :14.50         Median :  5.7   Median :136.0   Median : 86.00  
+##  Mean   :14.97         Mean   : 13.2   Mean   :146.1   Mean   : 90.16  
+##  3rd Qu.:16.35         3rd Qu.:  6.7   3rd Qu.:164.0   3rd Qu.:100.75  
+##  Max.   :21.70         Max.   :184.0   Max.   :464.0   Max.   :148.00  
+##  NA&#39;s   :4199          NA&#39;s   :2343    NA&#39;s   :114     NA&#39;s   :4196    
+##  CO2 Energieerz   Effizientkat      
+##  Min.   :  7.00   Length:4258       
+##  1st Qu.: 23.00   Class :character  
+##  Median : 28.00   Mode  :character  
+##  Mean   : 31.58                     
+##  3rd Qu.: 36.00                     
+##  Max.   :106.00                     
+## </code></pre>
+</div>
+<div id="graphs" class="section level1">
+<h1>Graphs</h1>
+<pre class="r"><code>carst_clean %&gt;% 
+  filter(Hersteller %in% c(&quot;Mercedes-Benz&quot;, &quot;Audi&quot;, &quot;BMW&quot;, &quot;Opel&quot;, &quot;VW&quot;, &quot;Porsche&quot;, &quot;Smart&quot;), PS &lt; 500, Treibstoff == &quot;Benzin&quot;) %&gt;% 
+  ggplot(aes(x = PS, y = `Normverbrauch (l)`)) + 
+  geom_point(alpha = 0.3, aes(color = Hersteller)) +
+  geom_smooth(method = &quot;loess&quot;, formula = y ~ x + x^2, se = F, fullrange = T) +
+  theme(legend.position = &quot;bottom&quot;) +
+  labs(title = &quot;Fahrzeuge deutscher Hersteller&quot;,
+       subtitle = &quot;Treibstoff: Benzin&quot;) +
+  scale_x_continuous(limits = c(50, 500)) +
+  scale_y_continuous(limits = c(3, 15))</code></pre>
+<p><img src="/post/fuel-consumption_files/figure-html/graphs1-1.png" width="672" /></p>
+<pre class="r"><code>carst_clean %&gt;% 
+  filter(Hersteller %in% c(&quot;Peugeot&quot;, &quot;DS Automobiles&quot;, &quot;Renault&quot;, &quot;Alpine&quot;, &quot;Citroen&quot;), PS &lt; 500, Treibstoff == &quot;Benzin&quot;) %&gt;% 
+  ggplot(aes(x = PS, y = `Normverbrauch (l)`)) + 
+  geom_point(alpha = 0.3, aes(color = Hersteller)) +
+  geom_smooth(method = &quot;loess&quot;, formula = y ~ x + x^2, se = F, fullrange = T) +
+  theme(legend.position = &quot;bottom&quot;) +
+  labs(title = &quot;Fahrzeuge französischer Hersteller&quot;,
+       subtitle = &quot;Treibstoff: Benzin&quot;) +
+  scale_x_continuous(limits = c(50, 500)) +
+  scale_y_continuous(limits = c(3, 15))</code></pre>
+<p><img src="/post/fuel-consumption_files/figure-html/graphs2-1.png" width="672" /></p>
+<pre class="r"><code>carst_clean %&gt;% 
+  filter(Treibstoff %in% c(&quot;Benzin&quot;, &quot;Diesel&quot;)) %&gt;%
+  ggplot(aes(x = PS, y = `Normverbrauch (l)`, color = Treibstoff)) + 
+  geom_point(alpha = 0.3) +
+  geom_smooth(method = &quot;loess&quot;, formula = y ~ x + x^2, se = F, fullrange = T) +
+  theme(legend.position = &quot;bottom&quot;) +
+  labs(title = &quot;Verbrauch nach Leistung, Diesel und Benzin&quot;) +
+  scale_x_continuous(limits = c(50, 500)) +
+  scale_y_continuous(limits = c(3, 15))</code></pre>
+<p><img src="/post/fuel-consumption_files/figure-html/graphs3-1.png" width="672" /></p>
+<pre class="r"><code>carst_clean %&gt;%
+  filter(!is.na(CO2)) %&gt;% 
+  group_by(Hersteller) %&gt;% 
+  filter(n() &gt; 10) %&gt;%
+  mutate(meanCO2 = mean(CO2)) %&gt;% 
+  ungroup() %&gt;%
+  ggplot(aes(x = reorder(Hersteller, desc(meanCO2)), y = CO2)) +
+  geom_point(aes(color = Hersteller), alpha = 0.3) +
+  geom_boxplot(alpha = 0.1, outlier.alpha = 0) +
+  coord_flip() +
+  labs(title = &quot;CO2 Emission nach Hersteller/Modelle&quot;, x = &quot;&quot;) +
+  theme(legend.position = &quot;none&quot;)</code></pre>
+<p><img src="/post/fuel-consumption_files/figure-html/graphs4-1.png" width="672" /></p>
+</div>

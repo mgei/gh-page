@@ -156,6 +156,17 @@
   </url>
   
   <url>
+    <loc>https://mgei.github.io/post/fuel-consumption/</loc>
+    <lastmod>2019-06-12T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://mgei.github.io/tags/tabulizer/</loc>
+    <lastmod>2019-06-12T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://mgei.github.io/post/performance-eval/</loc>
     <lastmod>2019-06-06T00:00:00+00:00</lastmod>
   </url>
