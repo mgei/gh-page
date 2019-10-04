@@ -1,0 +1,86 @@
+---
+slug: "r-problems"
+date: "2019-10-04"
+title: "Top annoying R problems and how to overcome them"
+tags: ["R"]
+draft: true
+authors: [mgei]
+---
+
+
+
+<p>This is to be extended each time I shall get accross one of my common issues.</p>
+<div id="german-windows-encoding-and-formatting-trouble-when-reading-data-and-sourcing-other-files" class="section level1">
+<h1>German Windows encoding and formatting trouble when reading data and sourcing other files</h1>
+<p>Problems:</p>
+<ul>
+<li>files are not compatible between my (german) Windows machine and my Ubuntu system</li>
+<li>special cases like German Umlaute (ä-ö-ü) are not displayed properly on Windows</li>
+<li>reading in data with packages <code>readr</code> or <code>readxl</code> is troublesome</li>
+</ul>
+<p>Solutions:</p>
+<ul>
+<li>save R or Rmd files in RStudio with encoding (<em>File &gt; Save with Encoding…</em>)
+<ul>
+<li>use UTF-8</li>
+</ul></li>
+<li>read in data with encodinding
+<ul>
+<li><code>readr::read_csv(&quot;character_list5.csv&quot;, locale = locale(encoding = 'latin1'))</code></li>
+<li>UTF-8</li>
+</ul></li>
+<li>if using MS Excel, save data CSV UTF-8</li>
+<li><code>source()</code> other files with encoding: <code>source(&quot;file.R&quot; encoding = &quot;utf-8)</code>
+<ul>
+<li>This is especially crucial with Shiny where it’s common to outsource functions or data reading to other files.</li>
+</ul></li>
+</ul>
+</div>
+<div id="debugging-a-shiny-app" class="section level1">
+<h1>Debugging a Shiny app</h1>
+<p>Problem:</p>
+<p>You don’t know what’s happening in the background. Why is there no output? Has the data even be read in correctly?</p>
+<p>Solution:</p>
+<ul>
+<li>use <code>print(data)</code>’s (or anything else that’s stationary) and follow the output in the console</li>
+<li>use <code>reactive({ print(whatever())})</code> for Shiny reactive variables</li>
+</ul>
+</div>
+<div id="early-stopping-and-the-use-of-return-in-r-functions" class="section level1">
+<h1>Early stopping and the use of return in R functions</h1>
+<p>Stop R session:</p>
+<ul>
+<li><code>quit()</code>: terminates the R Session, RStudio will ask you to reboot after</li>
+</ul>
+<p>Stop with warning:</p>
+<ul>
+<li><code>stop(&quot;your warning message)</code>: end the script</li>
+</ul>
+<p>Used to early terminate loops:</p>
+<ul>
+<li><code>next()</code>: halts the current iteration and goes to the next</li>
+<li><code>break()</code>: breaks out of a loop</li>
+</ul>
+<p>Not used in R or other purpose:</p>
+<ul>
+<li><code>exit()</code></li>
+<li><code>end()</code>: extracts observations of vectors or time series</li>
+</ul>
+<p>Stop executing a function:</p>
+<ul>
+<li><code>return(whatever)</code></li>
+</ul>
+<p>I learned that in R you do not need to specify <code>return()</code> in functions. It will throw out what’s computed anyway. However, <code>return()</code> is great to stop the function from continuing to execute. For example, the following will not run if a non-NA input is given.</p>
+<pre class="r"><code>yolo &lt;- function(x) {
+  if (!is.na(x)) {
+    return(x)
+  }
+  
+  Sys.sleep(10)
+  
+  return(&quot;thanks for waiting, it&#39;s because you have not provided a non-NA input&quot;)
+}
+
+yolo(&quot;hello&quot;)</code></pre>
+<pre><code>## [1] &quot;hello&quot;</code></pre>
+</div>

@@ -1,0 +1,86 @@
+---
+slug: "r-problems"
+date: "2019-10-04"
+title: "Top annoying R problems and how to overcome them"
+tags: ["R"]
+draft: true
+authors: [mgei]
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = T, warning = F, message = F)
+```
+
+This is to be extended each time I shall get accross one of my common issues.
+
+# German Windows encoding and formatting trouble when reading data and sourcing other files
+
+Problems: 
+
+* files are not compatible between my (german) Windows machine and my Ubuntu system
+* special cases like German Umlaute (ä-ö-ü) are not displayed properly on Windows
+* reading in data with packages `readr` or `readxl` is troublesome
+
+Solutions:
+
+* save R or Rmd files in RStudio with encoding (*File > Save with Encoding...*)
+    * use UTF-8
+* read in data with encodinding
+    * `readr::read_csv("character_list5.csv", locale = locale(encoding = 'latin1'))`
+    * UTF-8
+* if using MS Excel, save data CSV UTF-8
+* `source()` other files with encoding: `source("file.R" encoding = "utf-8)`
+    * This is especially crucial with Shiny where it's common to outsource functions or data reading to other files.
+    
+# Debugging a Shiny app
+
+Problem:
+
+You don't know what's happening in the background. Why is there no output? Has the data even be read in correctly?
+
+Solution:
+
+* use `print(data)`'s (or anything else that's stationary) and follow the output in the console
+* use `reactive({ print(whatever())})` for Shiny reactive variables
+
+# Early stopping and the use of return in R functions
+
+Stop R session:
+
+* `quit()`: terminates the R Session, RStudio will ask you to reboot after
+
+Stop with warning:
+
+* `stop("your warning message)`: end the script
+
+Used to early terminate loops:
+
+* `next()`: halts the current iteration and goes to the next
+* `break()`: breaks out of a loop
+
+Not used in R or other purpose:
+
+* `exit()`
+* `end()`: extracts observations of vectors or time series
+
+Stop executing a function:
+
+* `return(whatever)`
+
+I learned that in R you do not need to specify `return()` in functions. It will throw out what's computed anyway. However, `return()` is great to stop the function from continuing to execute. For example, the following will not run if a non-NA input is given.
+
+```{r returnfunction}
+
+yolo <- function(x) {
+  if (!is.na(x)) {
+    return(x)
+  }
+  
+  Sys.sleep(10)
+  
+  return("thanks for waiting, it's because you have not provided a non-NA input")
+}
+
+yolo("hello")
+
+```
