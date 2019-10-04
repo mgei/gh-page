@@ -172,6 +172,17 @@ The latter does not work very well. Instead use ImageMagick in Ubuntu to resize:
 convert -resize 32x32 logo.png favicon.png
 ```
 
+### Caching and knitr's opts_chunk
+
+To avoid building each page and each post from scratch each time `build_site()` is called, one can use `knitr::opts_chunk$set(cache = T)`. This is to be set at the beginning, e.g. in a setup code block.
+
+Other opts_chunk I commonly use are message, warning, or echo.
+
+* `knitr::opts_chunk$set(message = F, warning = F)`: will avoid getting messages (for example the message upon loading the tidyverse library) or warnings.
+* `echo = F`: avoids the code chunks to be shown
+* `eval = F`: the code will not run, but still shown (unless it's also `echo = F`)
+
+
 ### Other interesting observations
 
 * If the date of a post is in the future, it will not be included when building the site with `site_build()`. It was however included when previewing locally with `serve_site()`.

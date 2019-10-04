@@ -277,6 +277,16 @@ dev.off()</code></pre>
 <p>The latter does not work very well. Instead use ImageMagick in Ubuntu to resize:</p>
 <pre><code>convert -resize 32x32 logo.png favicon.png</code></pre>
 </div>
+<div id="caching-and-knitrs-opts_chunk" class="section level3">
+<h3>Caching and knitr’s opts_chunk</h3>
+<p>To avoid building each page and each post from scratch each time <code>build_site()</code> is called, one can use <code>knitr::opts_chunk$set(cache = T)</code>. This is to be set at the beginning, e.g. in a setup code block.</p>
+<p>Other opts_chunk I commonly use are message, warning, or echo.</p>
+<ul>
+<li><code>knitr::opts_chunk$set(message = F, warning = F)</code>: will avoid getting messages (for example the message upon loading the tidyverse library) or warnings.</li>
+<li><code>echo = F</code>: avoids the code chunks to be shown</li>
+<li><code>eval = F</code>: the code will not run, but still shown (unless it’s also <code>echo = F</code>)</li>
+</ul>
+</div>
 <div id="other-interesting-observations" class="section level3">
 <h3>Other interesting observations</h3>
 <ul>
