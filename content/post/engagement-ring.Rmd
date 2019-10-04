@@ -10,6 +10,10 @@ authors: [mgei]
 
 This is an R Shiny application for finding out about your girlfriend's engagement ring preferences. The idea behind is to vote for one ring out of of two (see [Ranked Pairs](https://en.wikipedia.org/wiki/Ranked_pairs)). 
 
+```{r setupcache, include=FALSE}
+knitr::opts_chunk$set(cache = T)
+```
+
 ![*Screenshot*](/images/post/ring-screenshot.png)
 
 At the end of this post is the full code, which is also available on [Github](https://github.com/mgei/engagement-ring).

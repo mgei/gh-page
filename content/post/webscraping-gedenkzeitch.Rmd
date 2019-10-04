@@ -12,6 +12,10 @@ https://www.gedenkzeit.ch/ is a Swiss obituary platform. The goal is to get the 
 
 *rvest* relies on *xml2* package.
 
+```{r setupcache, include=FALSE}
+knitr::opts_chunk$set(cache = T)
+```
+
 ```{r init, message=F, warning=F}
 # getting data from gedenkzeit.ch
 

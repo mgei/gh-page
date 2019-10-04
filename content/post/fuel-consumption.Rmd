@@ -16,6 +16,10 @@ In my case, I struggled to even install *tabulizer* on Ubuntu, so I had revert t
 
 For reading table `extract_tables` is used. Note we set the output to *matrix* as it will be easier to turn it into a tibble or data-frame later.
 
+```{r setupcache, include=FALSE}
+knitr::opts_chunk$set(cache = T)
+```
+
 ```{r tabu, eval=F}
 library(tabulizer)
 library(tidyverse)

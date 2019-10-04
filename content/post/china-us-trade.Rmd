@@ -16,6 +16,10 @@ authors: [mgei]
 * A look at the GDP growth
 * What type of goods are traded?
 
+```{r setupcache, include=FALSE}
+knitr::opts_chunk$set(cache = T)
+```
+
 # UN Comtrade
 
 [UN Comtrade](https://comtrade.un.org/) is a repository of official international trade statistics and relevant analytical tables. It allows to view and download detailed global trade data, i.e. imports and exports of all goods or even of specific services or goods (say tomatoes).

@@ -23,6 +23,10 @@ knitr::opts_chunk$set(fig.width=12, fig.height=12,
                       echo=T, warning=FALSE, message=FALSE)
 ```
 
+```{r setupcache, include=FALSE}
+knitr::opts_chunk$set(cache = T)
+```
+
 While Mintos hands out the data in several Excel sheets, Excel is not recommended for analysis. The [maximum number of rows in Microsoft Excel](https://support.office.com/en-ie/article/excel-specifications-and-limits-1672b34d-7043-467e-8e27-269d656771c3) is 1 048 576.
 
 For using it in R, I recommend first converting and saving the sheets to csv's. These csv's can be loaded and row-bind. I use tidyR tibbles and dplyr but for performance reasons one could prefer to use data.table.

@@ -20,6 +20,10 @@ library(ggrepel)
 library(lubridate)
 ```
 
+```{r setupcache, include=FALSE}
+knitr::opts_chunk$set(cache = T)
+```
+
 We are interested in the following largest banks in Europe: [Gross, grösser, HSBC: Die 50 grössten Banken, die Europa zu bieten hat](https://www.msn.com/de-ch/finanzen/finance/gross-gr%C3%B6sser-hsbc-die-50-gr%C3%B6ssten-banken-die-europa-zu-bieten-hat/ar-AAAQuXY?ocid=ieslice#page=1)
 
 * HSBC

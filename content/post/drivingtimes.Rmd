@@ -21,6 +21,10 @@ In the following we want to create a map that shows the *driving time* to the cl
 
 Here's what we want to create:
 
+```{r setupcache, include=FALSE}
+knitr::opts_chunk$set(cache = T)
+```
+
 ```{r previewloadplotfinal, echo=F}
 
 # finalmap <- readRDS("postdata/drivingtimes/finalmap.RDS")
