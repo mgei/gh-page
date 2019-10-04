@@ -16,6 +16,10 @@ Should be:
 
 Data is from [the official portal of the Swiss government](https://www.admin.ch/gov/de/start/bundesrat/geschichte-des-bundesrats/schweizer-regierung-zusammensetzung-seit-1848/departementsvorsteher-liste.html)
 
+```{r setupcache, include=FALSE}
+knitr::opts_chunk$set(cache = T)
+```
+
 ```{r bundesrat, message=F, warning=F, echo=F}
 library(tidyverse)
 library(readxl)

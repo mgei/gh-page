@@ -3,12 +3,11 @@ slug: "r-problems"
 date: "2019-10-04"
 title: "Top annoying R problems and how to overcome them"
 tags: ["R"]
-draft: true
 authors: [mgei]
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = T, warning = F, message = F)
+knitr::opts_chunk$set(echo = T, warning = F, message = F, cache = T)
 ```
 
 This is to be extended each time I shall get accross one of my common issues.

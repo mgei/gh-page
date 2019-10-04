@@ -14,6 +14,10 @@ This function allows to fetch enteries from the Swiss telephone directory [tel.s
 
 [Here's](https://tel.search.ch/api/help.en.html) the official API documentation. The R function allows for all of the fields. Additionally, when `adj_formats` is set to `TRUE` (default), then the column formats are set appropriately (character, date/time, integer).
 
+```{r setupcache, include=FALSE}
+knitr::opts_chunk$set(cache = T)
+```
+
 ```{r libs, warning=FALSE, message=FALSE}
 library(tidyverse)
 library(lubridate)

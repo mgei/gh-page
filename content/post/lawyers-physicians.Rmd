@@ -219,7 +219,7 @@ per_capita %>%
 
 ```
 
-Interestingly the numbers not only vary absolutely but also proportionally to one another. The economically strong cantons Geneva, Basel-City und Zurich have an over proportional number of physicians and of lawyers. The correlation (Pearson) is at `r cor(per_capita$med_per_1000, per_capita$iur_per_1000) %>% number(accuracy = 0.001) `.
+Interestingly the numbers not only vary absolutely but also proportionally to one another. The economically strong cantons Geneva, Basel-City und Zurich have an over proportional number of physicians and of lawyers. The correlation (Pearson) is at 0.796.
 
 ```{r barchart}
 

@@ -14,6 +14,10 @@ In 2017 Switzerland had 18'858 free physician working in individual doctor's off
 
 As we will see, in four cantons lawyers outnumber physicians.
 
+```{r setupcache, include=FALSE}
+knitr::opts_chunk$set(cache = T)
+```
+
 ```{r preview, echo=F, message=F, warning=F}
 
 library(tidyverse)
@@ -215,7 +219,7 @@ per_capita %>%
 
 ```
 
-Interestingly the numbers not only vary absolutely but also proportionally to one another. The economically strong cantons Geneva, Basel-City und Zurich have an over proportional number of physicians and of lawyers. The correlation (Pearson) is at `r cor(per_capita$med_per_1000, per_capita$iur_per_1000) %>% number(accuracy = 0.001) `.
+Interestingly the numbers not only vary absolutely but also proportionally to one another. The economically strong cantons Geneva, Basel-City und Zurich have an over proportional number of physicians and of lawyers. The correlation (Pearson) is at 0.796.
 
 ```{r barchart}
 

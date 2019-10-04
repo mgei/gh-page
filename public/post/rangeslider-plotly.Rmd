@@ -20,6 +20,10 @@ However, we like to compare stocks in terms of performance. Else it it practical
 
 Suggested [here](https://stackoverflow.com/a/56793779/9285732).
 
+```{r setupcache, include=FALSE}
+knitr::opts_chunk$set(cache = T)
+```
+
 ```{r dygraphs, message=F, warning=F}
 library(dygraphs)
 library(tidyquant)

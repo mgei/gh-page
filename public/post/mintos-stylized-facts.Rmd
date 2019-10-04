@@ -21,6 +21,12 @@ Let's have a look.
 ```{r global_options, include=FALSE}
 knitr::opts_chunk$set(fig.width=12, fig.height=12,
                       echo=T, warning=FALSE, message=FALSE)
+
+mintoscolor <- "#78c8c7"
+```
+
+```{r setupcache, include=FALSE}
+knitr::opts_chunk$set(cache = T)
 ```
 
 While Mintos hands out the data in several Excel sheets, Excel is not recommended for analysis. The [maximum number of rows in Microsoft Excel](https://support.office.com/en-ie/article/excel-specifications-and-limits-1672b34d-7043-467e-8e27-269d656771c3) is 1 048 576.
@@ -28,9 +34,6 @@ While Mintos hands out the data in several Excel sheets, Excel is not recommende
 For using it in R, I recommend first converting and saving the sheets to csv's. These csv's can be loaded and row-bind. I use tidyR tibbles and dplyr but for performance reasons one could prefer to use data.table.
 
 ```{r read1, eval=F}
-library(tidyverse)
-library(readxl)
-
 # converting xlsx to csv
 files <- list.files("data/xlsx")
 
@@ -95,12 +98,20 @@ A medium spec workstation is recommended (used here 16 Gb RAM + 16 Gb Swap, i7-4
 
 First, let's look at the available columns.
 
+For ease of computation we shall only use a subset of 1 million rows.
+
 ```{r setup, warning=F, message=F}
 library(tidyverse)
 library(lubridate)
 library(magrittr)
 
-data <- bind_rows(readRDS("postdata/mintos-stylized-facts/data1.RDS"), readRDS("postdata/mintos-stylized-facts/data2.RDS"))
+# data <- bind_rows(readRDS("postdata/mintos-stylized-facts/data1.RDS"), readRDS("postdata/mintos-stylized-facts/data2.RDS"))
+# 
+# data %>% sample_n(1000000) -> data1mn
+# 
+# data1mn %>% saveRDS("postdata/mintos-stylized-facts/data1mn.RDS")
+
+data <- readRDS("postdata/mintos-stylized-facts/data1mn.RDS")
 
 data %>% glimpse()
 ```
@@ -128,7 +139,7 @@ Due to the number of observations we resort to samples of 1 000 to 10 000 for so
 
 ## Correlation matrix
 
-```{r corrmat}
+```{r corrmat, eval = F}
 # library(ggcorrplot)
 library(GGally)
 
@@ -150,27 +161,27 @@ toporigin <- data %>%
 
 set.seed(15)
 
-data %>% 
+data %>%
   select(Rate = `Loan Rate Percent`, Term, LTV0 = `Initial LTV`, Amount1000 =`Initial Loan Amount`, Currency, `Listing Date`, Buyback,
-         Country, Origin = `Loan Originator`, Collateral) %>% 
+         Country, Origin = `Loan Originator`, Collateral) %>%
   mutate(Currency = recode_factor(Currency, "EUR" = "EUR", .default = "Other"),
          Buyback = as.factor(Buyback),
          Collateral = as.factor(Collateral),
          Country = fct_other(Country, keep = topcountries, other_level = "Other"),
          Origin = fct_other(Origin, keep = toporigin, other_level = "Other"),
-         ListingYear = year(`Listing Date`)) %>% 
-  select(-`Listing Date`) %>% 
-  select(-Country, -Origin) %>% 
-  sample_n(10000) %>% 
+         ListingYear = year(`Listing Date`)) %>%
+  select(-`Listing Date`) %>%
+  select(-Country, -Origin) %>%
+  sample_n(10000) %>%
   filter(!is.na(ListingYear)) -> quants_fct
 
 mintoscolor <- "#78c8c7"
 
-quants_fct %>% 
-  # drop_na() %>% 
+quants_fct %>%
+  # drop_na() %>%
   mutate(ListYr = as.factor(ListingYear),
          Amount1000 = Amount1000/1000) %>%
-  select(-ListingYear) %>% 
+  select(-ListingYear) %>%
   ggpairs(
     lower = list(
       continuous = wrap("smooth_loess", alpha = 0.5, color = mintoscolor),
@@ -190,6 +201,17 @@ quants_fct %>%
   switch = "y",
   title = "Correlation of Mintos.com loan characteristics") -> cp
 
+
+cp
+# cp %>% saveRDS("postdata/mintos-stylized-facts/corrmat.RDS")
+```
+
+
+```{r corrmathidden1, echo=F}
+library(GGally)
+
+cp <- readRDS("postdata/mintos-stylized-facts/corrmat.RDS")
+
 cp
 
 ``` 
@@ -200,6 +222,8 @@ What we see is that rates have droped since 2015 but most recently in 2019 have 
 
 ```{r interest, fig.height=5, fig.width=8}
 # library(ggbeeswarm)
+
+mintoscolor <- "#78c8c7"
 
 set.seed(12)
 
@@ -214,7 +238,9 @@ d %>% sample_n(30000) %>%
   geom_jitter(data = (d %>% sample_n(1000)), alpha = 0.2, color = mintoscolor) +
   scale_y_continuous(breaks = seq(0,25,1)) +
   labs(title = "Distribution of interest rate of newly listed loans") +
-  theme_bw()
+  theme_bw() -> cp
+
+cp
 
 ```
 

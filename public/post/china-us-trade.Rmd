@@ -16,6 +16,10 @@ authors: [mgei]
 * A look at the GDP growth
 * What type of goods are traded?
 
+```{r setupcache, include=FALSE}
+knitr::opts_chunk$set(cache = T)
+```
+
 # UN Comtrade
 
 [UN Comtrade](https://comtrade.un.org/) is a repository of official international trade statistics and relevant analytical tables. It allows to view and download detailed global trade data, i.e. imports and exports of all goods or even of specific services or goods (say tomatoes).
@@ -163,7 +167,7 @@ data1 %>%
 
 ```
 
-In 2018 the balance of trade *in goods* was in deficit by `r data1 %>% filter(year == 2018) %>% spread(trade_flow, trade_value_usd_bn) %>% mutate(tb = Export - Import) %>% pull(tb) %>% number() `
+In 2018 the balance of trade *in goods* was in deficit by -933.
 
 Current account? What about services?
 
@@ -191,9 +195,9 @@ services <- srv %>% as_tibble() %>%
 
 ```
 
-Of course, there's more to the current account than just the trade in good. There's trade in services, the countrie's income abroad, and current transfers. For the former we have the latest data from Cometrade dates from 2016. The US imported services of `r im <- services %>% filter(year == 2016) %>% pull(Import); im %>% number()` billion USD while it exported services for `r ex <- services %>% filter(year == 2016) %>% pull(Export); ex %>% number()` bn USD. The surplus here is `r tbs <- (ex-im); tbs %>% number() ` bn USD.
+Of course, there's more to the current account than just the trade in good. There's trade in services, the countrie's income abroad, and current transfers. For the former we have the latest data from Cometrade dates from 2016. The US imported services of 496 billion USD while it exported services for 727 bn USD.
 
-To put this into perspective, the balance of trade in goods was at `r tb <- data1 %>% filter(year == 2016) %>% spread(trade_flow, trade_value_usd_bn) %>% mutate(tb = Export - Import) %>% pull(tb); tb %>% number()`. The balance of trade goods *and* services would therefore be `r (tbs + tb) %>% number()` bn USD (2016).
+To put this into perspective, the balance of trade in goods was at -783. The balance of trade goods *and* services would therefore be . bn USD (2016).
 
 We shall focus on the exchange of goods in the following.
 
@@ -353,7 +357,7 @@ trade_plot(us, top_n = 24, include_others = T, include_flags = T, include_share 
 
 ```
 
-Immediately visible are the imports from China. With `r chim <- us %>% filter(partner_iso == "CHN", year == 2018, trade_flow == "Import") %>% pull(trade_value_usd) %>% billion(); chim %>% number() ` bn USD. That's `r (chim / (us %>% filter(year == 2018, partner_iso == "WLD", trade_flow == "Import") %>% pull(trade_value_usd) %>% billion())) %>% percent() ` of all US imports. Exports to China (`r chex <- us %>% filter(partner_iso == "CHN", year == 2018, trade_flow == "Export") %>% pull(trade_value_usd) %>% billion(); chex %>% number() ` bn USD) only account for `r (chex / (us %>% filter(year == 2018, partner_iso == "WLD", trade_flow == "Export") %>% pull(trade_value_usd) %>% billion())) %>% percent() ` of all exports.
+Immediately visible are the imports from China. With 563 bn USD. That's 21.5% of all US imports. Exports to China (120 bn USD) only account for 7.23% of all exports.
 
 ## Over time
 

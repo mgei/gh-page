@@ -10,3 +10,5 @@ stringr
 forcats
 lubridate
 magrittr
+GGally
+kableExtra

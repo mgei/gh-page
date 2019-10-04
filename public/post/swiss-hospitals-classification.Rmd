@@ -20,6 +20,10 @@ The app is also live for trying here: http://swiss-hospitals-classification.econ
 
 We use data from the Swiss Federal Office of Public Health (BAG), i.e. data from the [*DRG Fallzahlensuche*](http://www.drg-fallzahlsuche.admin.ch/de/systems/8?codes=&hospitals=&activeTab=&hospitalSearch=). We have the following script to scrape data from http://www.drg-fallzahlsuche.admin.ch
 
+```{r setupcache, include=FALSE}
+knitr::opts_chunk$set(cache = T)
+```
+
 ```{r scrape, eval=F}
 
 library(tidyverse)

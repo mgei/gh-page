@@ -14,6 +14,10 @@ The theme used here is [Minimo](https://github.com/MunifTanjim/minimo).
 
 ![*Screenshot of the Minimo theme with default colors*](/images/post/minimo-screenshot.png)
 
+```{r setupcache, include=FALSE}
+knitr::opts_chunk$set(cache = T)
+```
+
 ## Github pages
 
 This website hosted on Github. It's open source, the code is available [here](https://github.com/mgei/gh-page).

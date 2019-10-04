@@ -19,6 +19,10 @@ library(factoextra)
 
 ```
 
+```{r setupcache, include=FALSE}
+knitr::opts_chunk$set(cache = T)
+```
+
 # Data
 
 FTSE 350 Industrial Engineering [index](https://www.investing.com/indices/industrial-engineering-historical-data). The index components are Bodycote, Hill&Smith, IMI, Rotork, Spirax-Sarco Engineering, and Weir Group ([components](https://www.investing.com/indices/industrial-engineering-components)).

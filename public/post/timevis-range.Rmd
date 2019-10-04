@@ -14,6 +14,10 @@ Timevis is a package by [Dean Attali](https://deanattali.com/) to create fully i
 
 # Range data
 
+```{r setupcache, include=FALSE}
+knitr::opts_chunk$set(cache = T)
+```
+
 ```{r setup, warning=F, message=F}
 library(tidyverse)
 library(lubridate)

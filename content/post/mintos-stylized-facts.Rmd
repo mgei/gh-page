@@ -21,6 +21,8 @@ Let's have a look.
 ```{r global_options, include=FALSE}
 knitr::opts_chunk$set(fig.width=12, fig.height=12,
                       echo=T, warning=FALSE, message=FALSE)
+
+mintoscolor <- "#78c8c7"
 ```
 
 ```{r setupcache, include=FALSE}
@@ -205,7 +207,7 @@ cp
 ```
 
 
-```{corrmathidden1, echo=F}
+```{r corrmathidden1, echo=F}
 library(GGally)
 
 cp <- readRDS("postdata/mintos-stylized-facts/corrmat.RDS")
@@ -220,6 +222,8 @@ What we see is that rates have droped since 2015 but most recently in 2019 have 
 
 ```{r interest, fig.height=5, fig.width=8}
 # library(ggbeeswarm)
+
+mintoscolor <- "#78c8c7"
 
 set.seed(12)
 

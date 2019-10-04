@@ -321,7 +321,7 @@ data1 %&gt;%
   labs(title = &quot;USA import and exports over time&quot;,
        x = &quot;&quot;, y = &quot;trade value in billion USD&quot;, caption = &quot;Data: UN Comtrade&quot;, color = &quot;&quot;, fill = &quot;&quot;)</code></pre>
 <p><img src="/post/china-us-trade_files/figure-html/devus-1.png" width="672" /></p>
-<p>In 2018 the balance of trade <em>in goods</em> was in deficit by -933</p>
+<p>In 2018 the balance of trade <em>in goods</em> was in deficit by -933.</p>
 <p>Current account? What about services?</p>
 <pre class="r"><code>srv &lt;- ct_search(reporters = &quot;USA&quot;, 
                  partners = &quot;All&quot;, 
@@ -337,8 +337,8 @@ data1 %&gt;%
   group_by(year, trade_flow) %&gt;% 
   summarise(trade_value_usd_bn = sum(trade_value_usd)/1000000000) %&gt;% 
   spread(trade_flow, trade_value_usd_bn)</code></pre>
-<p>Of course, there’s more to the current account than just the trade in good. There’s trade in services, the countrie’s income abroad, and current transfers. For the former we have the latest data from Cometrade dates from 2016. The US imported services of 496 billion USD while it exported services for 727 bn USD. The surplus here is 231 bn USD.</p>
-<p>To put this into perspective, the balance of trade in goods was at -783. The balance of trade goods <em>and</em> services would therefore be -552 bn USD (2016).</p>
+<p>Of course, there’s more to the current account than just the trade in good. There’s trade in services, the countrie’s income abroad, and current transfers. For the former we have the latest data from Cometrade dates from 2016. The US imported services of 496 billion USD while it exported services for 727 bn USD.</p>
+<p>To put this into perspective, the balance of trade in goods was at -783. The balance of trade goods <em>and</em> services would therefore be . bn USD (2016).</p>
 <p>We shall focus on the exchange of goods in the following.</p>
 </div>
 <div id="trading-partners" class="section level2">

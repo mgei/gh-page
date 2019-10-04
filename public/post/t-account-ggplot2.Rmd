@@ -15,6 +15,10 @@ library(tidyverse)
 library(scales)
 ```
 
+```{r setupcache, include=FALSE}
+knitr::opts_chunk$set(cache = T)
+```
+
 Because the native `quantmod::getFinancials()` and `tidyquant::tq_get(get = financials)` do not work anymore (discontinued due to a change in Yahoo Finance), we use an alternative posted on [Stackoverflow](https://stackoverflow.com/questions/49452906/getfinancials-quantmod-and-tq-get-tidy-quant-not-working). Here's the function:
 
 

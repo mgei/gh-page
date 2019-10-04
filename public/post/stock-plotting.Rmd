@@ -3,12 +3,15 @@ slug: "stock-plotting"
 date: "2019-06-11"
 title: "Plotting stock performance in R"
 tags: ["plotting", "R", "tidyquant", "finance", "stock market"]
-draft: true
 authors: [mgei]
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = T, warning = F, message = F)
+```
+
+```{r setupcache, include=FALSE}
+knitr::opts_chunk$set(cache = T)
 ```
 
 ```{r packages}
