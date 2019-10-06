@@ -8,12 +8,12 @@
   
   <url>
     <loc>https://mgei.github.io/</loc>
-    <lastmod>2019-10-04T00:00:00+00:00</lastmod>
+    <lastmod>2019-10-06T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://mgei.github.io/post/</loc>
-    <lastmod>2019-10-04T00:00:00+00:00</lastmod>
+    <lastmod>2019-10-06T00:00:00+00:00</lastmod>
   </url>
   
   <url>
@@ -30,7 +30,30 @@
   
   <url>
     <loc>https://mgei.github.io/authors/</loc>
-    <lastmod>2019-10-04T00:00:00+00:00</lastmod>
+    <lastmod>2019-10-06T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://mgei.github.io/post/box-paradox/</loc>
+    <lastmod>2019-10-06T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://mgei.github.io/tags/</loc>
+    <lastmod>2019-10-06T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://mgei.github.io/authors/mgei/</loc>
+    <lastmod>2019-10-06T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://mgei.github.io/tags/python/</loc>
+    <lastmod>2019-10-06T00:00:00+00:00</lastmod>
+    <priority>0</priority>
   </url>
   
   <url>
@@ -40,20 +63,8 @@
   </url>
   
   <url>
-    <loc>https://mgei.github.io/tags/</loc>
-    <lastmod>2019-10-04T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
     <loc>https://mgei.github.io/post/r-problems/</loc>
     <lastmod>2019-10-04T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://mgei.github.io/authors/mgei/</loc>
-    <lastmod>2019-10-04T00:00:00+00:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>

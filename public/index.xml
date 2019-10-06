@@ -5,7 +5,7 @@
     <link>https://mgei.github.io/</link>
     <description>Recent content in Home on mgei.github.io</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Fri, 04 Oct 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 06 Oct 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://mgei.github.io/index.xml" rel="self" type="application/rss+xml" />
     
@@ -36,6 +36,16 @@
       <guid>https://mgei.github.io/about/</guid>
       <description>This site The goal is to consolidate the content that I have published on my Youtube channel, RPubs, Github, my company&amp;rsquo;s website, as well as non-confidential material from on my own work. The main purpose is to have an archive ready as a personal reference, i.e. myself looking things up. Maybe it also helps others.
 Me My name is Martin Geissmann. I studied economics in Basel and Zurich before my professional track led me to healthcare management.</description>
+    </item>
+    
+    <item>
+      <title>Bertrand&#39;s box paradox in Python</title>
+      <link>https://mgei.github.io/post/box-paradox/</link>
+      <pubDate>Sun, 06 Oct 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgei.github.io/post/box-paradox/</guid>
+      <description>The paradox https://en.wikipedia.org/wiki/Bertrand%27s_box_paradox
+ Analytical solution in Python import random import numpy as np # 0 represents a silver coin, 1 a gold coin b1 = [1,1] b2 = [0,0] b3 = [1,0] boxes = np.matrix([b1,b2,b3]) rounds = 100000 first = [] second = [] for r in range(rounds): box = random.randint(0,2) coin1 = random.randint(0,1) coin2 = abs(coin1 - 1) first.append(boxes[box,coin1]) second.append(boxes[box, coin2]) print(first) print(second) first = np.array(first) second = np.</description>
     </item>
     
     <item>

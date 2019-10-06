@@ -1,0 +1,50 @@
+---
+slug: "box-paradox"
+date: "2019-10-06"
+title: "Bertrand's box paradox in Python"
+tags: ["python"]
+authors: [mgei]
+---
+
+# The paradox
+
+https://en.wikipedia.org/wiki/Bertrand%27s_box_paradox
+
+# Analytical solution in Python
+
+```{python code, eval=F}
+import random
+import numpy as np
+
+
+# 0 represents a silver coin, 1 a gold coin
+b1 = [1,1]
+b2 = [0,0]
+b3 = [1,0]
+
+boxes = np.matrix([b1,b2,b3])
+
+rounds = 100000
+first = []
+second = []
+
+for r in range(rounds):
+    box = random.randint(0,2)
+    coin1 = random.randint(0,1)
+    coin2 = abs(coin1 - 1)
+    
+    first.append(boxes[box,coin1])
+    second.append(boxes[box, coin2])
+    
+print(first)
+print(second)
+
+first = np.array(first)
+second = np.array(second)
+
+indexes = np.where(first == 1)
+
+np.mean(second[indexes])
+```
+
+Turns out to be around 0.66.
