@@ -83,3 +83,50 @@ yolo <- function(x) {
 yolo("hello")
 
 ```
+
+# Dplyr functions with column name as inputs
+
+You want to write a function that has as the input the column name that is to be `dplyr::select`-ed or `mutate`-ed. Or even `summarise`-ed. It's not so trivial, because in standard dplyr code you do not need to put quotation marks, so the variables are not interpreted as such.
+
+Here's how to do it:
+
+```{r dplyrnames1}
+
+library(dplyr)
+
+select_and_summarise <- function(data, group_colname, mean_colname) {
+  data %>%
+    group_by(!!as.name(group_colname)) %>%
+    summarise(mean = mean(sqrt(!!as.name(mean_colname))))
+}
+
+mydata <- as_tibble(mtcars)
+
+select_and_summarise(mydata, "cyl", "mpg")
+
+```
+
+Now for `mutate` there's more needed:
+
+```{r dplyrnames2}
+
+example_mutate <- function(data, sqrt_colname, new_sqrt_colname){
+  data %>%
+    mutate(!!new_sqrt_colname := sqrt(!!as.name(sqrt_colname)))
+}
+
+example_mutate(mydata, "mpg", "mpg_sqrt")
+```
+
+And last but not least, what it's not just one colname but several. Say `c("mpg", "cyl", "hp")`?
+
+```{r dplyrnames3}
+
+select_several <- function(data, select_columns) {
+  data %>% 
+    select(!!paste0(lapply(select_columns, as.name)))
+}
+
+select_several(mydata, c("mpg", "cyl", "hp"))
+
+```

@@ -228,6 +228,70 @@ German Windows encoding and formatting trouble when reading data and sourcing ot
 yolo(&quot;hello&quot;)</code></pre>
 <pre><code>## [1] &quot;hello&quot;</code></pre>
 </div>
+<div id="dplyr-functions-with-column-name-as-inputs" class="section level1">
+<h1>Dplyr functions with column name as inputs</h1>
+<p>You want to write a function that has as the input the column name that is to be <code>dplyr::select</code>-ed or <code>mutate</code>-ed. Or even <code>summarise</code>-ed. It’s not so trivial, because in standard dplyr code you do not need to put quotation marks, so the variables are not interpreted as such.</p>
+<p>Here’s how to do it:</p>
+<pre class="r"><code>library(dplyr)
+
+select_and_summarise &lt;- function(data, group_colname, mean_colname) {
+  data %&gt;%
+    group_by(!!as.name(group_colname)) %&gt;%
+    summarise(mean = mean(sqrt(!!as.name(mean_colname))))
+}
+
+mydata &lt;- as_tibble(mtcars)
+
+select_and_summarise(mydata, &quot;cyl&quot;, &quot;mpg&quot;)</code></pre>
+<pre><code>## # A tibble: 3 x 2
+##     cyl  mean
+##   &lt;dbl&gt; &lt;dbl&gt;
+## 1     4  5.15
+## 2     6  4.44
+## 3     8  3.87</code></pre>
+<p>Now for <code>mutate</code> there’s more needed:</p>
+<pre class="r"><code>example_mutate &lt;- function(data, sqrt_colname, new_sqrt_colname){
+  data %&gt;%
+    mutate(!!new_sqrt_colname := sqrt(!!as.name(sqrt_colname)))
+}
+
+example_mutate(mydata, &quot;mpg&quot;, &quot;mpg_sqrt&quot;)</code></pre>
+<pre><code>## # A tibble: 32 x 12
+##      mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb
+##    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+##  1  21       6  160    110  3.9   2.62  16.5     0     1     4     4
+##  2  21       6  160    110  3.9   2.88  17.0     0     1     4     4
+##  3  22.8     4  108     93  3.85  2.32  18.6     1     1     4     1
+##  4  21.4     6  258    110  3.08  3.22  19.4     1     0     3     1
+##  5  18.7     8  360    175  3.15  3.44  17.0     0     0     3     2
+##  6  18.1     6  225    105  2.76  3.46  20.2     1     0     3     1
+##  7  14.3     8  360    245  3.21  3.57  15.8     0     0     3     4
+##  8  24.4     4  147.    62  3.69  3.19  20       1     0     4     2
+##  9  22.8     4  141.    95  3.92  3.15  22.9     1     0     4     2
+## 10  19.2     6  168.   123  3.92  3.44  18.3     1     0     4     4
+## # … with 22 more rows, and 1 more variable: mpg_sqrt &lt;dbl&gt;</code></pre>
+<p>And last but not least, what it’s not just one colname but several. Say <code>c(&quot;mpg&quot;, &quot;cyl&quot;, &quot;hp&quot;)</code>?</p>
+<pre class="r"><code>select_several &lt;- function(data, select_columns) {
+  data %&gt;% 
+    select(!!paste0(lapply(select_columns, as.name)))
+}
+
+select_several(mydata, c(&quot;mpg&quot;, &quot;cyl&quot;, &quot;hp&quot;))</code></pre>
+<pre><code>## # A tibble: 32 x 3
+##      mpg   cyl    hp
+##    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+##  1  21       6   110
+##  2  21       6   110
+##  3  22.8     4    93
+##  4  21.4     6   110
+##  5  18.7     8   175
+##  6  18.1     6   105
+##  7  14.3     8   245
+##  8  24.4     4    62
+##  9  22.8     4    95
+## 10  19.2     6   123
+## # … with 22 more rows</code></pre>
+</div>
 
 </div>
 
