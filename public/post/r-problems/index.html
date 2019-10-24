@@ -187,7 +187,7 @@ German Windows encoding and formatting trouble when reading data and sourcing ot
 <p>Solution:</p>
 <ul>
 <li>use <code>print(data)</code>’s (or anything else that’s stationary) and follow the output in the console</li>
-<li>use <code>reactive({ print(whatever())})</code> for Shiny reactive variables</li>
+<li>use <code>observe({ print(whatever()) })</code> for Shiny reactive variables</li>
 </ul>
 </div>
 <div id="early-stopping-and-the-use-of-return-in-r-functions" class="section level1">
@@ -291,6 +291,16 @@ select_several(mydata, c(&quot;mpg&quot;, &quot;cyl&quot;, &quot;hp&quot;))</cod
 ##  9  22.8     4    95
 ## 10  19.2     6   123
 ## # … with 22 more rows</code></pre>
+</div>
+<div id="literature" class="section level1">
+<h1>Literature</h1>
+<div id="shiny" class="section level2">
+<h2>Shiny</h2>
+<ul>
+<li>Building Big Shiny Apps - A Workflow (2019-09-11): <a href="https://thinkr-open.github.io/building-shiny-apps-workflow/" class="uri">https://thinkr-open.github.io/building-shiny-apps-workflow/</a></li>
+<li>Mastering Shiny by Hadley Wickham: <a href="https://mastering-shiny.org" class="uri">https://mastering-shiny.org</a></li>
+</ul>
+</div>
 </div>
 
 </div>

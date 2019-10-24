@@ -40,7 +40,7 @@ You don't know what's happening in the background. Why is there no output? Has t
 Solution:
 
 * use `print(data)`'s (or anything else that's stationary) and follow the output in the console
-* use `reactive({ print(whatever())})` for Shiny reactive variables
+* use `observe({ print(whatever()) })` for Shiny reactive variables
 
 # Early stopping and the use of return in R functions
 
@@ -130,3 +130,10 @@ select_several <- function(data, select_columns) {
 select_several(mydata, c("mpg", "cyl", "hp"))
 
 ```
+
+# Literature
+
+## Shiny
+
+* Building Big Shiny Apps - A Workflow (2019-09-11): https://thinkr-open.github.io/building-shiny-apps-workflow/
+* Mastering Shiny by Hadley Wickham: https://mastering-shiny.org
