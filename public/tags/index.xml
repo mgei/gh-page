@@ -5,10 +5,46 @@
     <link>https://mgei.github.io/tags/</link>
     <description>Recent content in Tags on mgei.github.io</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Sun, 06 Oct 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 13 Nov 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://mgei.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>R</title>
+      <link>https://mgei.github.io/tags/r/</link>
+      <pubDate>Wed, 13 Nov 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgei.github.io/tags/r/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>shiny</title>
+      <link>https://mgei.github.io/tags/shiny/</link>
+      <pubDate>Wed, 13 Nov 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgei.github.io/tags/shiny/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>shinydashboard</title>
+      <link>https://mgei.github.io/tags/shinydashboard/</link>
+      <pubDate>Wed, 13 Nov 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgei.github.io/tags/shinydashboard/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>template</title>
+      <link>https://mgei.github.io/tags/template/</link>
+      <pubDate>Wed, 13 Nov 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgei.github.io/tags/template/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>python</title>
@@ -16,15 +52,6 @@
       <pubDate>Sun, 06 Oct 2019 00:00:00 +0000</pubDate>
       
       <guid>https://mgei.github.io/tags/python/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>R</title>
-      <link>https://mgei.github.io/tags/r/</link>
-      <pubDate>Fri, 04 Oct 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://mgei.github.io/tags/r/</guid>
       <description></description>
     </item>
     
@@ -119,27 +146,27 @@
     </item>
     
     <item>
+      <title>tabulizer</title>
+      <link>https://mgei.github.io/tags/tabulizer/</link>
+      <pubDate>Wed, 12 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgei.github.io/tags/tabulizer/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>finance</title>
       <link>https://mgei.github.io/tags/finance/</link>
-      <pubDate>Mon, 17 Jun 2019 00:00:00 +0000</pubDate>
+      <pubDate>Tue, 11 Jun 2019 00:00:00 +0000</pubDate>
       
       <guid>https://mgei.github.io/tags/finance/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>plotly</title>
-      <link>https://mgei.github.io/tags/plotly/</link>
-      <pubDate>Mon, 17 Jun 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://mgei.github.io/tags/plotly/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>stock market</title>
       <link>https://mgei.github.io/tags/stock-market/</link>
-      <pubDate>Mon, 17 Jun 2019 00:00:00 +0000</pubDate>
+      <pubDate>Tue, 11 Jun 2019 00:00:00 +0000</pubDate>
       
       <guid>https://mgei.github.io/tags/stock-market/</guid>
       <description></description>
@@ -148,18 +175,9 @@
     <item>
       <title>tidyquant</title>
       <link>https://mgei.github.io/tags/tidyquant/</link>
-      <pubDate>Mon, 17 Jun 2019 00:00:00 +0000</pubDate>
+      <pubDate>Tue, 11 Jun 2019 00:00:00 +0000</pubDate>
       
       <guid>https://mgei.github.io/tags/tidyquant/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>tabulizer</title>
-      <link>https://mgei.github.io/tags/tabulizer/</link>
-      <pubDate>Wed, 12 Jun 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://mgei.github.io/tags/tabulizer/</guid>
       <description></description>
     </item>
     
@@ -358,15 +376,6 @@
       <pubDate>Fri, 12 Apr 2019 00:00:00 +0000</pubDate>
       
       <guid>https://mgei.github.io/tags/feather-format/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>shiny</title>
-      <link>https://mgei.github.io/tags/shiny/</link>
-      <pubDate>Fri, 12 Apr 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://mgei.github.io/tags/shiny/</guid>
       <description></description>
     </item>
     

@@ -20,15 +20,6 @@
     </item>
     
     <item>
-      <title>Plotting stock relative performance with R Plotly&#39;s rangeslider</title>
-      <link>https://mgei.github.io/post/rangeslider-plotly/</link>
-      <pubDate>Mon, 17 Jun 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://mgei.github.io/post/rangeslider-plotly/</guid>
-      <description>Rangeslider option for stock market plots The one feature that I liked most about Google Finance was the ability to easily compare the performance of stocks over specified periods. In the application (Google used Flash) one could specify a stock and then add several others to it. The starting point would be zero (%) and the performance line the return given equal amount invested in both assets (performance in %).</description>
-    </item>
-    
-    <item>
       <title>Fuel consumption by model and manufacturer</title>
       <link>https://mgei.github.io/post/fuel-consumption/</link>
       <pubDate>Wed, 12 Jun 2019 00:00:00 +0000</pubDate>
