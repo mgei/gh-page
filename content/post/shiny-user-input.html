@@ -1,0 +1,64 @@
+---
+slug: "shiny-user-input"
+date: "2020-02-26"
+title: "Simple User Input Storage in a Shiny App"
+tags: ["R", "shiny"]
+authors: [mgei]
+---
+
+
+
+<div id="shiny-app" class="section level1">
+<h1>Shiny app</h1>
+<pre class="r"><code>library(shiny)
+library(shinyWidgets)
+library(tidyverse)
+
+# read persistent data or create a new file if it does not exist yet
+if (&quot;favs.csv&quot; %in% list.files()) {
+  favs &lt;- read_file(&quot;favs.csv&quot;) %&gt;% 
+    strsplit(&quot;, &quot;) %&gt;% 
+    .[[1]] %&gt;% 
+    as.numeric() %&gt;% 
+    .[-1]
+} else {
+  favs &lt;- 99
+  paste(favs, collapse = &quot;, &quot;) %&gt;% write_file(&quot;favs.csv&quot;)
+  favs &lt;- favs[-1]
+}
+
+ui &lt;- fluidPage(
+  radioGroupButtons(
+    inputId = &quot;fav_number&quot;, 
+    label = &quot;What&#39;s your favorite number?&quot;, 
+    choices = 1:9
+    
+  ),
+  
+  circleButton(&quot;button_go&quot;, &quot;Go!&quot;),
+  
+  plotOutput(&quot;plot&quot;)
+)
+
+server &lt;- function(input, output, session) {
+  
+  rfavs &lt;- reactiveVal(favs)
+  
+  observeEvent(input$button_go, {
+    req(input$fav_number)
+    
+    write_file(paste0(&quot;, &quot;, input$fav_number), &quot;favs.csv&quot;, append = T)
+    
+    isolate({
+      rfavs(c(rfavs(), as.integer(input$fav_number)))
+    })
+  })
+  
+  output$plot &lt;- renderPlot({
+    hist(rfavs(), breaks = 1:9)
+  })
+  
+}
+
+shinyApp(ui, server)</code></pre>
+</div>

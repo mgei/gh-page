@@ -1,0 +1,67 @@
+---
+slug: "shiny-user-input"
+date: "2020-02-26"
+title: "Simple user input storage in a Shiny app"
+tags: ["R", "shiny"]
+authors: [mgei]
+---
+
+# Persistent data storage
+
+```{r setupcache, include=FALSE}
+knitr::opts_chunk$set(cache = T)
+```
+
+```{r code, eval=F}
+library(shiny)
+library(shinyWidgets)
+library(tidyverse)
+
+# read persistent data or create a new file if it does not exist yet
+if ("favs.csv" %in% list.files()) {
+  favs <- read_file("favs.csv") %>% 
+    strsplit(", ") %>% 
+    .[[1]] %>% 
+    as.numeric() %>% 
+    .[-1]
+} else {
+  favs <- 99
+  paste(favs, collapse = ", ") %>% write_file("favs.csv")
+  favs <- favs[-1]
+}
+
+ui <- fluidPage(
+  radioGroupButtons(
+    inputId = "fav_number", 
+    label = "What's your favorite number?", 
+    choices = 1:9
+    
+  ),
+  
+  circleButton("button_go", "Go!"),
+  
+  plotOutput("plot")
+)
+
+server <- function(input, output, session) {
+  
+  rfavs <- reactiveVal(favs)
+  
+  observeEvent(input$button_go, {
+    req(input$fav_number)
+    
+    write_file(paste0(", ", input$fav_number), "favs.csv", append = T)
+    
+    isolate({
+      rfavs(c(rfavs(), as.integer(input$fav_number)))
+    })
+  })
+  
+  output$plot <- renderPlot({
+    hist(rfavs(), breaks = 1:9)
+  })
+  
+}
+
+shinyApp(ui, server)
+```
