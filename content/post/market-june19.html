@@ -117,7 +117,8 @@ etfs %&gt;%
 <div id="vix" class="section level2">
 <h2>VIX</h2>
 <blockquote>
-<p>The CBOE Volatility Index, known by its ticker symbol VIX, is a popular measure of the stock market’s expectation of volatility implied by S&amp;P 500 index options. It is calculated and disseminated on a real-time basis by the Chicago Board Options Exchange (CBOE), and is commonly referred to as the fear index or the fear gauge. - <a href="https://en.wikipedia.org/wiki/VIX" class="uri">https://en.wikipedia.org/wiki/VIX</a></p>
+<p>The CBOE Volatility Index, known by its ticker symbol VIX, is a popular measure of the stock market’s expectation of volatility implied by S&amp;P 500 index options. It is calculated and disseminated on a real-time basis by the Chicago Board Options Exchange (CBOE), and is commonly referred to as the fear index or the fear gauge.
+- <a href="https://en.wikipedia.org/wiki/VIX" class="uri">https://en.wikipedia.org/wiki/VIX</a></p>
 </blockquote>
 <pre class="r"><code># vix &lt;- tq_get(c(&quot;^VIX&quot;),
 #                get  = &quot;stock.prices&quot;,
@@ -151,7 +152,8 @@ vix %&gt;%
 <div id="yield-curves" class="section level2">
 <h2>Yield curves</h2>
 <blockquote>
-<p>In finance, the yield curve is a curve showing several yields or interest rates across different contract lengths (2 month, 2 year, 20 year, etc. …) for a similar debt contract. - <a href="https://en.wikipedia.org/wiki/Yield_curve" class="uri">https://en.wikipedia.org/wiki/Yield_curve</a></p>
+<p>In finance, the yield curve is a curve showing several yields or interest rates across different contract lengths (2 month, 2 year, 20 year, etc. …) for a similar debt contract.
+- <a href="https://en.wikipedia.org/wiki/Yield_curve" class="uri">https://en.wikipedia.org/wiki/Yield_curve</a></p>
 </blockquote>
 <pre class="r"><code># usd_yields_raw &lt;- Quandl(&quot;USTREASURY/YIELD&quot;)
 # 
@@ -209,7 +211,8 @@ chf_yiels %&gt;%
 <div id="why-care-about-the-yield-curve" class="section level2">
 <h2>Why care about the yield curve?</h2>
 <blockquote>
-<p>The slope of the yield curve is one of the most powerful predictors of future economic growth, inflation, and recessions. - <a href="https://en.wikipedia.org/wiki/Yield_curve#Relationship_to_the_business_cycle" class="uri">https://en.wikipedia.org/wiki/Yield_curve#Relationship_to_the_business_cycle</a></p>
+<p>The slope of the yield curve is one of the most powerful predictors of future economic growth, inflation, and recessions.
+- <a href="https://en.wikipedia.org/wiki/Yield_curve#Relationship_to_the_business_cycle" class="uri">https://en.wikipedia.org/wiki/Yield_curve#Relationship_to_the_business_cycle</a></p>
 </blockquote>
 <pre class="r"><code># SPX &lt;- tq_get(&quot;^GSPC&quot;, from = &quot;1990-01-01&quot;)
 # 

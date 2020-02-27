@@ -1,0 +1,11 @@
+reticulate
+visNetwork
+leaflet
+gstat
+rgdal
+sf
+quantmod
+TTR
+tidyquant
+factoextra
+timevis

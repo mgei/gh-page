@@ -2,20 +2,20 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>hugo on mgei.github.io</title>
-    <link>/tags/hugo/</link>
+    <link>https://mgei.github.io/tags/hugo/</link>
     <description>Recent content in hugo on mgei.github.io</description>
     <generator>Hugo -- gohugo.io</generator>
     <lastBuildDate>Wed, 08 May 2019 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="/tags/hugo/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://mgei.github.io/tags/hugo/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>How I made this Github page</title>
-      <link>/post/github-page/</link>
+      <link>https://mgei.github.io/post/github-page/</link>
       <pubDate>Wed, 08 May 2019 00:00:00 +0000</pubDate>
       
-      <guid>/post/github-page/</guid>
+      <guid>https://mgei.github.io/post/github-page/</guid>
       <description>R / Blogdown / Hugo The website you are looking at is made with R and blogdown. Blogdown allows to use the static website generator Hugo with R Markdown documents (*.Rmd) instead of only pure markdown (*.md). So one can easily integrate R code which is rendered like a HTML R Markdown document.
 The theme used here is Minimo.
 Screenshot of the Minimo theme with default colors

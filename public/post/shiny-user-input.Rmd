@@ -1,12 +1,12 @@
 ---
 slug: "shiny-user-input"
 date: "2020-02-26"
-title: "Simple User Input Storage in a Shiny App"
+title: "Simple user input storage in a Shiny app"
 tags: ["R", "shiny"]
 authors: [mgei]
 ---
 
-# Shiny app
+# Persistent data storage
 
 ```{r setupcache, include=FALSE}
 knitr::opts_chunk$set(cache = T)

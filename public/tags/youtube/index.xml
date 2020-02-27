@@ -2,20 +2,20 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Youtube on mgei.github.io</title>
-    <link>/tags/youtube/</link>
+    <link>https://mgei.github.io/tags/youtube/</link>
     <description>Recent content in Youtube on mgei.github.io</description>
     <generator>Hugo -- gohugo.io</generator>
     <lastBuildDate>Mon, 22 Apr 2019 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="/tags/youtube/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://mgei.github.io/tags/youtube/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Analyzing the Swiss cantons with more lawyers than medical doctors</title>
-      <link>/post/lawyer-physicians/</link>
+      <link>https://mgei.github.io/post/lawyer-physicians/</link>
       <pubDate>Mon, 22 Apr 2019 00:00:00 +0000</pubDate>
       
-      <guid>/post/lawyer-physicians/</guid>
+      <guid>https://mgei.github.io/post/lawyer-physicians/</guid>
       <description>Originally published on RPubs: http://rpubs.com/mgei/lawyers
  Intro In 2017 Switzerland had 18’858 free physician working in individual doctor’s offices (Aerzte mit Praxistätigkeit as opposed to doctors employed by hospitals). Also Switzerland currently has 12’967 registered lawyers.1 Relative to the number of inhabitants of nearly 8.5 million (2017), that’s on average 2.2 physicians and 1.5 lawyers per 1’000 inhabitants.
 As we will see, in four cantons lawyers outnumber physicians.</description>
@@ -23,20 +23,20 @@ As we will see, in four cantons lawyers outnumber physicians.</description>
     
     <item>
       <title>How far to the closest hospital?</title>
-      <link>/post/drivingtimes/</link>
+      <link>https://mgei.github.io/post/drivingtimes/</link>
       <pubDate>Wed, 27 Mar 2019 00:00:00 +0000</pubDate>
       
-      <guid>/post/drivingtimes/</guid>
+      <guid>https://mgei.github.io/post/drivingtimes/</guid>
       <description>Originally published on RPubs: http://rpubs.com/mgei/drivingtimes
  Intro Imagine you just fell out of a plane over Switzerland and landed at a random location. As you are wounded your number one concern it to get to a hospital asap. Not any hospital but one that has an emergency room and is equipped at least with a CT to check for fractures.</description>
     </item>
     
     <item>
       <title>Create a T-account plot for a balance sheet or income statement using ggplot2 in R</title>
-      <link>/post/t-account-ggplot2/</link>
+      <link>https://mgei.github.io/post/t-account-ggplot2/</link>
       <pubDate>Wed, 16 Jan 2019 00:00:00 +0000</pubDate>
       
-      <guid>/post/t-account-ggplot2/</guid>
+      <guid>https://mgei.github.io/post/t-account-ggplot2/</guid>
       <description>Originally published on a Github gist: https://gist.github.com/mgei/14e44b7121fcee18f3809cf4bfd1af71
  Loading the packages and getting the data library(tidyverse) library(scales) Because the native quantmod::getFinancials() and tidyquant::tq_get(get = financials) do not work anymore (discontinued due to a change in Yahoo Finance), we use an alternative posted on Stackoverflow. Here’s the function:
 scrapy_stocks &amp;lt;- function(stock){ if (&amp;quot;rvest&amp;quot; %in% installed.packages()) { library(rvest) }else{ install.packages(&amp;quot;rvest&amp;quot;) library(rvest) } for (i in 1:length(stock)) { tryCatch( { url &amp;lt;- &amp;quot;https://finance.</description>
@@ -44,10 +44,10 @@ scrapy_stocks &amp;lt;- function(stock){ if (&amp;quot;rvest&amp;quot; %in% inst
     
     <item>
       <title>Generate mock addresses with realistic names and locations</title>
-      <link>/post/mock-addresses/</link>
+      <link>https://mgei.github.io/post/mock-addresses/</link>
       <pubDate>Mon, 14 Jan 2019 00:00:00 +0000</pubDate>
       
-      <guid>/post/mock-addresses/</guid>
+      <guid>https://mgei.github.io/post/mock-addresses/</guid>
       <description>Originally published on a Github gist: https://gist.github.com/mgei/0269fb9e4120be24af6b5d1d344b89b6
  Fake name generator Fake Name Generator allows to generate mock names/addresses. One can choose from plenty of fields to include besides names and addresses, such as date of birth, phone number, ID number, and also lon/lat coordinates.
 For the following purpose we will order as many addresses as possible and should not forget to include longitude and latitude.</description>
@@ -55,10 +55,10 @@ For the following purpose we will order as many addresses as possible and should
     
     <item>
       <title>Geocode in R with ggmap (and a free Google API key)</title>
-      <link>/post/geocode-ggmap/</link>
+      <link>https://mgei.github.io/post/geocode-ggmap/</link>
       <pubDate>Wed, 12 Dec 2018 00:00:00 +0000</pubDate>
       
-      <guid>/post/geocode-ggmap/</guid>
+      <guid>https://mgei.github.io/post/geocode-ggmap/</guid>
       <description>Youtube video https://www.youtube.com/watch?v=A7LzEJiKQvc
    How to geocode locations or addresses in R with library(ggmap) in 2018/2019. Previously you could just use geocode(“New York”) to get the coordinates, but Google now required a Google Cloud Platform API key. Get the latest ggmap version from Github, and a free 12 month trial to GCP. This is how you geocode now.
 We will create a leaflet map with library(leaflet) in R.</description>
@@ -66,30 +66,30 @@ We will create a leaflet map with library(leaflet) in R.</description>
     
     <item>
       <title>Principal Component Analysis in R for Portfolio Diversification</title>
-      <link>/post/pca-tutorial/</link>
+      <link>https://mgei.github.io/post/pca-tutorial/</link>
       <pubDate>Wed, 12 Dec 2018 00:00:00 +0000</pubDate>
       
-      <guid>/post/pca-tutorial/</guid>
+      <guid>https://mgei.github.io/post/pca-tutorial/</guid>
       <description>Youtube video https://www.youtube.com/watch?v=yrH5A0ZPxf0
    I perform a PCA on a set of six MSCI indices. First, I go download the data and import it into R with readxl. Then I look at the data and the returns with some very basic techniques like plotting the performance with ggplot and tidyquant. Later I perform a PCA and also apply a varimax transformation on the loadings (the eigenvectors). Lastly, I look at how an equal-weighted portfolio performed versus a portfolio with components selected based on the PCA/varimax results.</description>
     </item>
     
     <item>
       <title>Deep Learning in Radiology</title>
-      <link>/post/econovo-rad-deep-learning/</link>
+      <link>https://mgei.github.io/post/econovo-rad-deep-learning/</link>
       <pubDate>Wed, 05 Dec 2018 00:00:00 +0000</pubDate>
       
-      <guid>/post/econovo-rad-deep-learning/</guid>
+      <guid>https://mgei.github.io/post/econovo-rad-deep-learning/</guid>
       <description>  Published here: https://www.econovo.ch/en/2018/12/05/radiology-deep-learning/
  </description>
     </item>
     
     <item>
       <title>Various horse videos (Youtube)</title>
-      <link>/post/horse-videos/</link>
+      <link>https://mgei.github.io/post/horse-videos/</link>
       <pubDate>Wed, 30 May 2018 00:00:00 +0000</pubDate>
       
-      <guid>/post/horse-videos/</guid>
+      <guid>https://mgei.github.io/post/horse-videos/</guid>
       <description> CS Biel-Benken 2017 R/N110  Youtube video https://www.youtube.com/watch?v=RiuIP5MDxRg
     CS Delémont 2018 R/N110  Youtube video https://www.youtube.com/watch?v=YfstjN6kGR0
     Horse tracking AI using YOLOv2  Youtube video https://www.youtube.com/watch?v=YeICugaj5mU
@@ -98,10 +98,10 @@ We will create a leaflet map with library(leaflet) in R.</description>
     
     <item>
       <title>Various drone videos (Youtube)</title>
-      <link>/post/drone-videos/</link>
+      <link>https://mgei.github.io/post/drone-videos/</link>
       <pubDate>Fri, 29 Dec 2017 00:00:00 +0000</pubDate>
       
-      <guid>/post/drone-videos/</guid>
+      <guid>https://mgei.github.io/post/drone-videos/</guid>
       <description> Luftaufnahme Drohne Nacht - Basel (2017)  Youtube video https://www.youtube.com/watch?v=3EPW0H2oKNI
     Walking in Belfort (DJI active track, 2017)  Youtube video https://www.youtube.com/watch?v=QvRpSElDQes
     DJI Spark active tracking a horse (2017)  Youtube video https://www.youtube.com/watch?v=9a4S7F4jqZc
