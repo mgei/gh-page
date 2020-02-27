@@ -8,7 +8,8 @@ git add .
 git commit -m "$commitmessage"
 git push
 
-cd public
+cp -r public/* ../mgei.github.io/
+cd ../mgei.github.io
 
 git add .
 git commit -m "$commitmessage"
