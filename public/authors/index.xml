@@ -2,20 +2,20 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Authors on mgei.github.io</title>
-    <link>https://mgei.github.io/authors/</link>
+    <link>/authors/</link>
     <description>Recent content in Authors on mgei.github.io</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Wed, 26 Feb 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 08 Apr 2020 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://mgei.github.io/authors/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/authors/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>mgei</title>
-      <link>https://mgei.github.io/authors/mgei/</link>
-      <pubDate>Wed, 26 Feb 2020 00:00:00 +0000</pubDate>
+      <link>/authors/mgei/</link>
+      <pubDate>Wed, 08 Apr 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://mgei.github.io/authors/mgei/</guid>
+      <guid>/authors/mgei/</guid>
       <description></description>
     </item>
     

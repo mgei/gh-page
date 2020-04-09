@@ -1,0 +1,46 @@
+---
+slug: "dividend-yield-tr"
+date: "2020-04-05"
+title: "Calculation of dividend yield from index returns"
+tags: ["R", "tidyquand", "finance", "stock market"]
+authors: [mgei]
+---
+
+
+
+<div id="from-tr-to-dividends" class="section level2">
+<h2>From TR to dividends</h2>
+<p>If you have a price index <span class="math inline">\(I\)</span> and the corresponding total return index <span class="math inline">\(I_{TR}\)</span>, then you can calculate a pre-dividend version of the total return index for period <em>t</em> as follows</p>
+<p><span class="math display">\[ I^{predividend}_{TR, t} = I_{TR, t-1}*(1+r_{t}) \]</span></p>
+<p>Our pre-dividend total return index of period <em>t</em> is the previous period’s total return index times the return of the price index. The return is simple arithmetic.</p>
+<p><span class="math display">\[ r_{t} = \dfrac{I_{t}}{I_{t-1}} -1 \]</span></p>
+<p>The dividend on the total return index in period <em>t</em> <span class="math inline">\(D_{t}\)</span> would be the difference between the actual total return index value and the computed pre-dividend version of it.</p>
+<p><span class="math display">\[ D_{t} = I_{TR, t} - I^{predividend}_{TR,t} \]</span></p>
+</div>
+<div id="dividend-yield" class="section level2">
+<h2>Dividend yield</h2>
+<p>The yield is the computed dividend divided by the total return index. Note that periods should be in years, as the yield is expressed in annual terms. If your <em>t</em> is not years, you would need to aggregate (yearly sum of dividends, and mean of TR index value).</p>
+<p><span class="math display">\[ y_{dividend} = D_t / I_{TR,t}\]</span></p>
+<p>In R and using the tidyverse and the common finance package tidyquant to get S&amp;P500 data from Yahoo, this is the script that I came up with.</p>
+<pre class="r"><code>library(tidyverse)
+library(tidyquant)
+
+sp500 &lt;- tq_get(&quot;^GSPC&quot;, from = &quot;1990-01-01&quot;)
+sp500_tr &lt;- tq_get(&quot;^SP500TR&quot;, from = &quot;1990-01-01&quot;)
+
+spx &lt;- left_join(sp500 %&gt;% select(date, SP500 = adjusted), 
+                 sp500_tr %&gt;% select(date, SP500_TR = adjusted), 
+                 by = &quot;date&quot;)
+
+spx_dividend &lt;- spx %&gt;% 
+  mutate(SP500_return = SP500/lag(SP500)-1,
+         SP500_TR_predividend = lag(SP500_TR)*(1+SP500_return),
+         dividend = SP500_TR - SP500_TR_predividend)
+
+spx_dividend_yield &lt;- spx %&gt;% 
+  group_by(year = year(date)) %&gt;% 
+  summarise(dividend = sum(dividend, na.rm = T),
+            SP500_TR = mean(SP500_TR)) %&gt;% 
+  mutate(dividendyield = dividend/SP500_TR)</code></pre>
+<p>Posted on quant.stackexchange.com <a href="https://quant.stackexchange.com/a/53069/46111" class="uri">https://quant.stackexchange.com/a/53069/46111</a></p>
+</div>

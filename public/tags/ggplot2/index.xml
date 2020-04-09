@@ -2,20 +2,20 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>ggplot2 on mgei.github.io</title>
-    <link>https://mgei.github.io/tags/ggplot2/</link>
+    <link>/tags/ggplot2/</link>
     <description>Recent content in ggplot2 on mgei.github.io</description>
     <generator>Hugo -- gohugo.io</generator>
     <lastBuildDate>Thu, 27 Jun 2019 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://mgei.github.io/tags/ggplot2/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/tags/ggplot2/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Timeline graph for assignment term of Swiss Bundesraete</title>
-      <link>https://mgei.github.io/post/timeline-bundesraete/</link>
+      <link>/post/timeline-bundesraete/</link>
       <pubDate>Thu, 27 Jun 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://mgei.github.io/post/timeline-bundesraete/</guid>
+      <guid>/post/timeline-bundesraete/</guid>
       <description>Timeline plot Should be:
  clean well sorted and arranged give the viewer the important information immediately  Data is from the official portal of the Swiss government
 plot Here’s the R code:
@@ -24,10 +24,10 @@ library(tidyverse) library(readxl) library(lubridate) library(scales) bundesraet
     
     <item>
       <title>Create a T-account plot for a balance sheet or income statement using ggplot2 in R</title>
-      <link>https://mgei.github.io/post/t-account-ggplot2/</link>
+      <link>/post/t-account-ggplot2/</link>
       <pubDate>Wed, 16 Jan 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://mgei.github.io/post/t-account-ggplot2/</guid>
+      <guid>/post/t-account-ggplot2/</guid>
       <description>Originally published on a Github gist: https://gist.github.com/mgei/14e44b7121fcee18f3809cf4bfd1af71
  Loading the packages and getting the data library(tidyverse) library(scales) Because the native quantmod::getFinancials() and tidyquant::tq_get(get = financials) do not work anymore (discontinued due to a change in Yahoo Finance), we use an alternative posted on Stackoverflow. Here’s the function:
 scrapy_stocks &amp;lt;- function(stock){ if (&amp;quot;rvest&amp;quot; %in% installed.packages()) { library(rvest) }else{ install.packages(&amp;quot;rvest&amp;quot;) library(rvest) } for (i in 1:length(stock)) { tryCatch( { url &amp;lt;- &amp;quot;https://finance.</description>

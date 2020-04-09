@@ -2,20 +2,20 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>timeline on mgei.github.io</title>
-    <link>https://mgei.github.io/tags/timeline/</link>
+    <link>/tags/timeline/</link>
     <description>Recent content in timeline on mgei.github.io</description>
     <generator>Hugo -- gohugo.io</generator>
     <lastBuildDate>Thu, 27 Jun 2019 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://mgei.github.io/tags/timeline/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/tags/timeline/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Timeline graph for assignment term of Swiss Bundesraete</title>
-      <link>https://mgei.github.io/post/timeline-bundesraete/</link>
+      <link>/post/timeline-bundesraete/</link>
       <pubDate>Thu, 27 Jun 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://mgei.github.io/post/timeline-bundesraete/</guid>
+      <guid>/post/timeline-bundesraete/</guid>
       <description>Timeline plot Should be:
  clean well sorted and arranged give the viewer the important information immediately  Data is from the official portal of the Swiss government
 plot Here’s the R code:

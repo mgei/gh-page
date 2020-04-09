@@ -7,14 +7,14 @@
 
 <meta property='og:title' content='Plotting stock performance in R • Martin Geissmann'>
 <meta property='og:description' content='library(tidyverse) library(tidyquant) # library(Quandl) library(lubridate) library(ggrepel) # library(httr) library(scales) library(kableExtra) library(plotly) # Quandl.api_key(read_file(&quot;quandl.key&quot;)) Currency data fx &lt;- read_delim(&quot;postdata/stock-plotting/snb-data-devkum-en-all-20190603_1430.csv&quot;, skip = 3, delim = &quot;;&quot;) %&gt;% filter(D0 == &quot;M1&quot;, # end of month only !is.na(Value)) %&gt;% mutate(Date = ceiling_date(ymd(paste0(Date, &quot;-01&quot;)), &quot;month&quot;)-1, currency = str_sub(D1, 1,3)) fx %&gt;% group_by(D1) %&gt;% summarise(from = min(Date), to = max(Date)) %&gt;% print(n = 26) ## # A tibble: 26 x 3 ## D1 from to ## &lt;chr&gt; &lt;date&gt; &lt;date&gt; ## 1 ARS100 1999-01-31 2019-05-31 ## 2 AUD1 1992-01-31 2019-05-31 ## 3 BRL100 1999-01-31 2019-05-31 ## 4 CAD1 1970-01-31 2019-05-31 ## 5 CNY100 1998-12-31 2019-05-31 ## 6 CZK100 1999-01-31 2019-05-31 ## 7 DKK100 1970-01-31 2019-05-31 ## 8 EUR1 1999-01-31 2019-05-31 ## 9 GBP1 1970-01-31 2019-05-31 ## 10 HKD100 1999-01-31 2019-05-31 ## 11 HUF100 1999-01-31 2019-05-31 ## 12 JPY100 1972-01-31 2019-05-31 ## 13 KRW100 1999-01-31 2019-05-31 ## 14 MXN100 1999-01-31 2019-05-31 ## 15 MYR100 1999-01-31 2019-05-31 ## 16 NOK100 1970-01-31 2019-05-31 ## 17 NZD1 1999-01-31 2019-05-31 ## 18 PLN100 1999-01-31 2019-05-31 ## 19 RUB1 1998-01-31 2019-05-31 ## 20 SEK100 1970-01-31 2019-05-31 ## 21 SGD1 1999-01-31 2019-05-31 ## 22 THB100 1999-01-31 2019-05-31 ## 23 TRY100 1999-01-31 2019-05-31 ## 24 USD1 1970-01-31 2019-05-31 ## 25 XDR1 1978-01-31 2019-05-31 ## 26 ZAR1 1992-07-31 2019-05-31 range_from &lt;- as.'>
-<meta property='og:url' content='https://mgei.github.io/post/stock-plotting/'>
+<meta property='og:url' content='/post/stock-plotting/'>
 <meta property='og:site_name' content='mgei.github.io'>
 <meta property='og:type' content='article'><meta property='og:image' content='https://www.gravatar.com/avatar/a525a84fae399669fa8861e2661df00b?s=256'><meta property='article:section' content='post'><meta property='article:tag' content='plotting'><meta property='article:tag' content='R'><meta property='article:tag' content='tidyquant'><meta property='article:tag' content='finance'><meta property='article:tag' content='stock market'><meta property='article:published_time' content='2019-06-11T00:00:00Z'/><meta property='article:modified_time' content='2019-06-11T00:00:00Z'/><meta name='twitter:card' content='summary'>
 
-<meta name="generator" content="Hugo 0.65.3" />
+<meta name="generator" content="Hugo 0.68.3" />
 
   <title>Plotting stock performance in R • Martin Geissmann</title>
-  <link rel='canonical' href='https://mgei.github.io/post/stock-plotting/'>
+  <link rel='canonical' href='/post/stock-plotting/'>
   
   
   <link rel='icon' href='/favicon.ico'>
@@ -64,7 +64,11 @@
 </section></div>
 
   <div class='sidebar-overlay'></div>
-</div><div class='main'><a class='screen-reader-text' href='#content'>Skip to Content</a>
+</div><script src="//yihui.org/js/math-code.js"></script>
+  <script async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+  </script>
+<div class='main'><a class='screen-reader-text' href='#content'>Skip to Content</a>
 
 <button id='sidebar-toggler' class='sidebar-toggler' aria-controls='sidebar'>
   <span class='screen-reader-text'>Toggle Sidebar</span>

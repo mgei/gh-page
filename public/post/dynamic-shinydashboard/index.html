@@ -7,14 +7,14 @@
 
 <meta property='og:title' content='Shinydashboard with dynamic menu items and content • Martin Geissmann'>
 <meta property='og:description' content='Shinydashboard dynamic menu library(shiny) library(shinydashboard) # subitems, could be dynamic from user input or database data_subitems &lt;- c(&quot;one&quot;, &quot;two&quot;, &quot;three&quot;) ui &lt;- dashboardPage( dashboardHeader(), dashboardSidebar( uiOutput(&quot;mysidebar&quot;) ), dashboardBody( uiOutput(&quot;mycontent&quot;) ) ) server &lt;- function(input, output, session) { # This is to get the desired menuItem selected initially. # selected=T seems not to work with a dynamic sidebarMenu. observeEvent(session, { updateTabItems(session, &quot;tabs&quot;, selected = &quot;initial&quot;) }) # Use reactive values when working with Shiny.'>
-<meta property='og:url' content='https://mgei.github.io/post/dynamic-shinydashboard/'>
+<meta property='og:url' content='/post/dynamic-shinydashboard/'>
 <meta property='og:site_name' content='mgei.github.io'>
 <meta property='og:type' content='article'><meta property='og:image' content='https://www.gravatar.com/avatar/a525a84fae399669fa8861e2661df00b?s=256'><meta property='article:section' content='post'><meta property='article:tag' content='R'><meta property='article:tag' content='shiny'><meta property='article:tag' content='shinydashboard'><meta property='article:tag' content='template'><meta property='article:published_time' content='2019-11-13T00:00:00Z'/><meta property='article:modified_time' content='2019-11-13T00:00:00Z'/><meta name='twitter:card' content='summary'>
 
-<meta name="generator" content="Hugo 0.65.3" />
+<meta name="generator" content="Hugo 0.68.3" />
 
   <title>Shinydashboard with dynamic menu items and content • Martin Geissmann</title>
-  <link rel='canonical' href='https://mgei.github.io/post/dynamic-shinydashboard/'>
+  <link rel='canonical' href='/post/dynamic-shinydashboard/'>
   
   
   <link rel='icon' href='/favicon.ico'>
@@ -64,7 +64,11 @@
 </section></div>
 
   <div class='sidebar-overlay'></div>
-</div><div class='main'><a class='screen-reader-text' href='#content'>Skip to Content</a>
+</div><script src="//yihui.org/js/math-code.js"></script>
+  <script async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+  </script>
+<div class='main'><a class='screen-reader-text' href='#content'>Skip to Content</a>
 
 <button id='sidebar-toggler' class='sidebar-toggler' aria-controls='sidebar'>
   <span class='screen-reader-text'>Toggle Sidebar</span>

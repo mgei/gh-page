@@ -2,20 +2,20 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>template on mgei.github.io</title>
-    <link>https://mgei.github.io/tags/template/</link>
+    <link>/tags/template/</link>
     <description>Recent content in template on mgei.github.io</description>
     <generator>Hugo -- gohugo.io</generator>
     <lastBuildDate>Wed, 13 Nov 2019 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://mgei.github.io/tags/template/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/tags/template/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Shinydashboard with dynamic menu items and content</title>
-      <link>https://mgei.github.io/post/dynamic-shinydashboard/</link>
+      <link>/post/dynamic-shinydashboard/</link>
       <pubDate>Wed, 13 Nov 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://mgei.github.io/post/dynamic-shinydashboard/</guid>
+      <guid>/post/dynamic-shinydashboard/</guid>
       <description>Shinydashboard dynamic menu library(shiny) library(shinydashboard) # subitems, could be dynamic from user input or database data_subitems &amp;lt;- c(&amp;quot;one&amp;quot;, &amp;quot;two&amp;quot;, &amp;quot;three&amp;quot;) ui &amp;lt;- dashboardPage( dashboardHeader(), dashboardSidebar( uiOutput(&amp;quot;mysidebar&amp;quot;) ), dashboardBody( uiOutput(&amp;quot;mycontent&amp;quot;) ) ) server &amp;lt;- function(input, output, session) { # This is to get the desired menuItem selected initially. # selected=T seems not to work with a dynamic sidebarMenu. observeEvent(session, { updateTabItems(session, &amp;quot;tabs&amp;quot;, selected = &amp;quot;initial&amp;quot;) }) # Use reactive values when working with Shiny.</description>
     </item>
     

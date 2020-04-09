@@ -11,14 +11,14 @@ scrapy_stocks &lt;- function(stock){ if (&quot;rvest&quot; %in% installed.packag
 <meta property='og:description' content='Originally published on a Github gist: https://gist.github.com/mgei/14e44b7121fcee18f3809cf4bfd1af71
  Loading the packages and getting the data library(tidyverse) library(scales) Because the native quantmod::getFinancials() and tidyquant::tq_get(get = financials) do not work anymore (discontinued due to a change in Yahoo Finance), we use an alternative posted on Stackoverflow. Here’s the function:
 scrapy_stocks &lt;- function(stock){ if (&quot;rvest&quot; %in% installed.packages()) { library(rvest) }else{ install.packages(&quot;rvest&quot;) library(rvest) } for (i in 1:length(stock)) { tryCatch( { url &lt;- &quot;https://finance.'>
-<meta property='og:url' content='https://mgei.github.io/post/t-account-ggplot2/'>
+<meta property='og:url' content='/post/t-account-ggplot2/'>
 <meta property='og:site_name' content='mgei.github.io'>
 <meta property='og:type' content='article'><meta property='og:image' content='https://www.gravatar.com/avatar/a525a84fae399669fa8861e2661df00b?s=256'><meta property='article:section' content='post'><meta property='article:tag' content='R'><meta property='article:tag' content='finance'><meta property='article:tag' content='plotting'><meta property='article:tag' content='ggplot2'><meta property='article:tag' content='Youtube'><meta property='article:published_time' content='2019-01-16T00:00:00Z'/><meta property='article:modified_time' content='2019-01-16T00:00:00Z'/><meta name='twitter:card' content='summary'>
 
-<meta name="generator" content="Hugo 0.65.3" />
+<meta name="generator" content="Hugo 0.68.3" />
 
   <title>Create a T-account plot for a balance sheet or income statement using ggplot2 in R • Martin Geissmann</title>
-  <link rel='canonical' href='https://mgei.github.io/post/t-account-ggplot2/'>
+  <link rel='canonical' href='/post/t-account-ggplot2/'>
   
   
   <link rel='icon' href='/favicon.ico'>
@@ -68,7 +68,11 @@ scrapy_stocks &lt;- function(stock){ if (&quot;rvest&quot; %in% installed.packag
 </section></div>
 
   <div class='sidebar-overlay'></div>
-</div><div class='main'><a class='screen-reader-text' href='#content'>Skip to Content</a>
+</div><script src="//yihui.org/js/math-code.js"></script>
+  <script async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+  </script>
+<div class='main'><a class='screen-reader-text' href='#content'>Skip to Content</a>
 
 <button id='sidebar-toggler' class='sidebar-toggler' aria-controls='sidebar'>
   <span class='screen-reader-text'>Toggle Sidebar</span>

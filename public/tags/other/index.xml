@@ -2,20 +2,20 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>other on mgei.github.io</title>
-    <link>https://mgei.github.io/tags/other/</link>
+    <link>/tags/other/</link>
     <description>Recent content in other on mgei.github.io</description>
     <generator>Hugo -- gohugo.io</generator>
     <lastBuildDate>Sun, 10 Mar 2019 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://mgei.github.io/tags/other/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/tags/other/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Trying out Intel&#39;s Neural Compute Stick</title>
-      <link>https://mgei.github.io/post/movidius-gist/</link>
+      <link>/post/movidius-gist/</link>
       <pubDate>Sun, 10 Mar 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://mgei.github.io/post/movidius-gist/</guid>
+      <guid>/post/movidius-gist/</guid>
       <description>Movidius and Intel Neural Compute Stick 2  The new, improved Intel® Neural Compute Stick 2 (Intel® NCS 2) features Intel’s latest high-performance vision processing unit: the Intel® Movidius™ Myriad™ X VPU. With more compute cores and a dedicated hardware accelerator for deep neural network inference, the Intel® NCS 2 delivers up to eight times the performance boost compared to the previous generation Intel® Movidius™ Neural Compute Stick (NCS). — Intel</description>
     </item>
     

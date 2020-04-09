@@ -2,20 +2,20 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>tabulizer on mgei.github.io</title>
-    <link>https://mgei.github.io/tags/tabulizer/</link>
+    <link>/tags/tabulizer/</link>
     <description>Recent content in tabulizer on mgei.github.io</description>
     <generator>Hugo -- gohugo.io</generator>
     <lastBuildDate>Wed, 12 Jun 2019 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://mgei.github.io/tags/tabulizer/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/tags/tabulizer/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Fuel consumption by model and manufacturer</title>
-      <link>https://mgei.github.io/post/fuel-consumption/</link>
+      <link>/post/fuel-consumption/</link>
       <pubDate>Wed, 12 Jun 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://mgei.github.io/post/fuel-consumption/</guid>
+      <guid>/post/fuel-consumption/</guid>
       <description>European car fuel consumption data We found data from the Swiss automobile association TCS. While they provide a simple online tool Verbrauchskatelog, the data as a whole is downloadable only in PDF format here.
 One can read tables from PDF documents in R using the tabulizer package. A great example for it’s use was published last year on R Views Player Data for the 2018 FIFA World Cup.
 In my case, I struggled to even install tabulizer on Ubuntu, so I had revert to Windows.</description>

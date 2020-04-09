@@ -2,40 +2,40 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>business intelligence on mgei.github.io</title>
-    <link>https://mgei.github.io/tags/business-intelligence/</link>
+    <link>/tags/business-intelligence/</link>
     <description>Recent content in business intelligence on mgei.github.io</description>
     <generator>Hugo -- gohugo.io</generator>
     <lastBuildDate>Fri, 01 Feb 2019 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://mgei.github.io/tags/business-intelligence/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/tags/business-intelligence/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>(de) Die Zusammensetzung des Umsatzes - eine Netzwerkanalyse</title>
-      <link>https://mgei.github.io/post/econovo-netzwerk-analyse/</link>
+      <link>/post/econovo-netzwerk-analyse/</link>
       <pubDate>Fri, 01 Feb 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://mgei.github.io/post/econovo-netzwerk-analyse/</guid>
+      <guid>/post/econovo-netzwerk-analyse/</guid>
       <description>  Published here: https://www.econovo.ch/en/2019/02/01/netzwerk-analyse/
  </description>
     </item>
     
     <item>
       <title>(de) Die ärztliche Leistung in der Neuroradiologie</title>
-      <link>https://mgei.github.io/post/econovo-al-neuroradiology/</link>
+      <link>/post/econovo-al-neuroradiology/</link>
       <pubDate>Tue, 20 Nov 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://mgei.github.io/post/econovo-al-neuroradiology/</guid>
+      <guid>/post/econovo-al-neuroradiology/</guid>
       <description>  Published here: https://www.econovo.ch/en/2018/11/20/al-neuroradiologie/
  </description>
     </item>
     
     <item>
       <title>(de) Business Intelligence und Leistungsanalyse bei Radiologieinstituten</title>
-      <link>https://mgei.github.io/post/econovo-bi-radiology/</link>
+      <link>/post/econovo-bi-radiology/</link>
       <pubDate>Sat, 27 Oct 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://mgei.github.io/post/econovo-bi-radiology/</guid>
+      <guid>/post/econovo-bi-radiology/</guid>
       <description>  Published here: https://www.econovo.ch/en/2018/10/27/bi-leistungsanalyse-rad/
  </description>
     </item>

@@ -148,6 +148,14 @@ dev.off()</code></pre>
 <li>If the date of a post is in the future, it will not be included when building the site with <code>site_build()</code>. It was however included when previewing locally with <code>serve_site()</code>.</li>
 </ul>
 </div>
+<div id="allow-for-mathjax-formula-to-be-shown-correctly" class="section level3">
+<h3>Allow for MathJax formula to be shown correctly</h3>
+<p>Insert this on one of the main html files in themes layouts. We added it to the sidebar.html.</p>
+<pre class="html"><code>  &lt;script src=&quot;//yihui.org/js/math-code.js&quot;&gt;&lt;/script&gt;
+  &lt;script async
+  src=&quot;https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML&quot;&gt;
+  &lt;/script&gt;</code></pre>
+</div>
 </div>
 <div id="build-and-depoly" class="section level2">
 <h2>Build and depoly</h2>

@@ -2,20 +2,20 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>python on mgei.github.io</title>
-    <link>https://mgei.github.io/tags/python/</link>
+    <link>/tags/python/</link>
     <description>Recent content in python on mgei.github.io</description>
     <generator>Hugo -- gohugo.io</generator>
     <lastBuildDate>Sun, 06 Oct 2019 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://mgei.github.io/tags/python/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/tags/python/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Bertrand&#39;s box paradox in Python</title>
-      <link>https://mgei.github.io/post/box-paradox/</link>
+      <link>/post/box-paradox/</link>
       <pubDate>Sun, 06 Oct 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://mgei.github.io/post/box-paradox/</guid>
+      <guid>/post/box-paradox/</guid>
       <description>The paradox https://en.wikipedia.org/wiki/Bertrand%27s_box_paradox
  Analytical solution in Python import random import numpy as np # 0 represents a silver coin, 1 a gold coin b1 = [1,1] b2 = [0,0] b3 = [1,0] boxes = np.matrix([b1,b2,b3]) rounds = 100000 first = [] second = [] for r in range(rounds): box = random.randint(0,2) coin1 = random.randint(0,1) coin2 = abs(coin1 - 1) first.append(boxes[box,coin1]) second.append(boxes[box, coin2]) print(first) print(second) first = np.array(first) second = np.</description>
     </item>

@@ -13,14 +13,14 @@ library(tidyverse) library(readxl) library(lubridate) library(scales) bundesraet
  clean well sorted and arranged give the viewer the important information immediately  Data is from the official portal of the Swiss government
 plot Here’s the R code:
 library(tidyverse) library(readxl) library(lubridate) library(scales) bundesraete &lt;- read_delim(&quot;postdata/timeline-bundesraete/br.csv&quot;, delim = &quot;;&quot;) %&gt;% rowwise() %&gt;% mutate(Wahl = dmy(Wahl), Rücktritt = min(dmy(Rücktritt), Sys.Date(), na.rm = T)) %&gt;% ungroup() %&gt;% mutate(Amtsdauer = paste(round((interval(Wahl, Rücktritt) / years(1)), digits = 1), &quot;J.&quot;)) nr &lt;- read_excel(&quot;postdata/timeline-bundesraete/nr.'>
-<meta property='og:url' content='https://mgei.github.io/post/timeline-bundesraete/'>
+<meta property='og:url' content='/post/timeline-bundesraete/'>
 <meta property='og:site_name' content='mgei.github.io'>
 <meta property='og:type' content='article'><meta property='og:image' content='https://www.gravatar.com/avatar/a525a84fae399669fa8861e2661df00b?s=256'><meta property='article:section' content='post'><meta property='article:tag' content='R'><meta property='article:tag' content='ggplot2'><meta property='article:tag' content='timeline'><meta property='article:tag' content='graphics'><meta property='article:published_time' content='2019-06-27T00:00:00Z'/><meta property='article:modified_time' content='2019-06-27T00:00:00Z'/><meta name='twitter:card' content='summary'>
 
-<meta name="generator" content="Hugo 0.65.3" />
+<meta name="generator" content="Hugo 0.68.3" />
 
   <title>Timeline graph for assignment term of Swiss Bundesraete • Martin Geissmann</title>
-  <link rel='canonical' href='https://mgei.github.io/post/timeline-bundesraete/'>
+  <link rel='canonical' href='/post/timeline-bundesraete/'>
   
   
   <link rel='icon' href='/favicon.ico'>
@@ -70,7 +70,11 @@ library(tidyverse) library(readxl) library(lubridate) library(scales) bundesraet
 </section></div>
 
   <div class='sidebar-overlay'></div>
-</div><div class='main'><a class='screen-reader-text' href='#content'>Skip to Content</a>
+</div><script src="//yihui.org/js/math-code.js"></script>
+  <script async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+  </script>
+<div class='main'><a class='screen-reader-text' href='#content'>Skip to Content</a>
 
 <button id='sidebar-toggler' class='sidebar-toggler' aria-controls='sidebar'>
   <span class='screen-reader-text'>Toggle Sidebar</span>

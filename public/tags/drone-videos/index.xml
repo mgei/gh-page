@@ -2,20 +2,20 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>drone videos on mgei.github.io</title>
-    <link>https://mgei.github.io/tags/drone-videos/</link>
+    <link>/tags/drone-videos/</link>
     <description>Recent content in drone videos on mgei.github.io</description>
     <generator>Hugo -- gohugo.io</generator>
     <lastBuildDate>Fri, 29 Dec 2017 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://mgei.github.io/tags/drone-videos/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/tags/drone-videos/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Various drone videos (Youtube)</title>
-      <link>https://mgei.github.io/post/drone-videos/</link>
+      <link>/post/drone-videos/</link>
       <pubDate>Fri, 29 Dec 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://mgei.github.io/post/drone-videos/</guid>
+      <guid>/post/drone-videos/</guid>
       <description> Luftaufnahme Drohne Nacht - Basel (2017)  Youtube video https://www.youtube.com/watch?v=3EPW0H2oKNI
     Walking in Belfort (DJI active track, 2017)  Youtube video https://www.youtube.com/watch?v=QvRpSElDQes
     DJI Spark active tracking a horse (2017)  Youtube video https://www.youtube.com/watch?v=9a4S7F4jqZc

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>tidyquand on mgei.github.io</title>
+    <link>/tags/tidyquand/</link>
+    <description>Recent content in tidyquand on mgei.github.io</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Sun, 05 Apr 2020 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/tidyquand/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Calculation of dividend yield from index returns</title>
+      <link>/post/dividend-yield-tr/</link>
+      <pubDate>Sun, 05 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/dividend-yield-tr/</guid>
+      <description>From TR to dividends If you have a price index \(I\) and the corresponding total return index \(I_{TR}\), then you can calculate a pre-dividend version of the total return index for period t as follows
+\[ I^{predividend}_{TR, t} = I_{TR, t-1}*(1+r_{t}) \]
+Our pre-dividend total return index of period t is the previous period’s total return index times the return of the price index. The return is simple arithmetic.</description>
+    </item>
+    
+  </channel>
+</rss>

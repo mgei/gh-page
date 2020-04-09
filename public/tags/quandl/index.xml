@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Quandl on mgei.github.io</title>
+    <link>/tags/quandl/</link>
+    <description>Recent content in Quandl on mgei.github.io</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Wed, 08 Apr 2020 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/quandl/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Where and how to retrieve any FX pairs&#39; historical data</title>
+      <link>/post/fx-data/</link>
+      <pubDate>Wed, 08 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/fx-data/</guid>
+      <description>Currency data From experience, the most reliable data sources are from central banks. The problem is that they often only report the exchange rate to their own currency. For example, the European Central Bank reports every currency against the EUR (ECB), the US Fed against the USD (Fed) and the Swiss national Bank all currencies against the CHF (SNB).
+But it’s easy to compute the rates from any pair given you have official rates against a major currency (EUR, USD, CHF etc.</description>
+    </item>
+    
+  </channel>
+</rss>

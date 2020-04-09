@@ -7,14 +7,14 @@
 
 <meta property='og:title' content='Simple user input storage in a Shiny app • Martin Geissmann'>
 <meta property='og:description' content='Persistent data storage library(shiny) library(shinyWidgets) library(tidyverse) # read persistent data or create a new file if it does not exist yet if (&quot;favs.csv&quot; %in% list.files()) { favs &lt;- read_file(&quot;favs.csv&quot;) %&gt;% strsplit(&quot;, &quot;) %&gt;% .[[1]] %&gt;% as.numeric() %&gt;% .[-1] } else { favs &lt;- 99 paste(favs, collapse = &quot;, &quot;) %&gt;% write_file(&quot;favs.csv&quot;) favs &lt;- favs[-1] } ui &lt;- fluidPage( radioGroupButtons( inputId = &quot;fav_number&quot;, label = &quot;What&#39;s your favorite number?&quot;, choices = 1:9 ), circleButton(&quot;button_go&quot;, &quot;Go!'>
-<meta property='og:url' content='https://mgei.github.io/post/shiny-user-input/'>
+<meta property='og:url' content='/post/shiny-user-input/'>
 <meta property='og:site_name' content='mgei.github.io'>
 <meta property='og:type' content='article'><meta property='og:image' content='https://www.gravatar.com/avatar/a525a84fae399669fa8861e2661df00b?s=256'><meta property='article:section' content='post'><meta property='article:tag' content='R'><meta property='article:tag' content='shiny'><meta property='article:published_time' content='2020-02-26T00:00:00Z'/><meta property='article:modified_time' content='2020-02-26T00:00:00Z'/><meta name='twitter:card' content='summary'>
 
-<meta name="generator" content="Hugo 0.65.3" />
+<meta name="generator" content="Hugo 0.68.3" />
 
   <title>Simple user input storage in a Shiny app • Martin Geissmann</title>
-  <link rel='canonical' href='https://mgei.github.io/post/shiny-user-input/'>
+  <link rel='canonical' href='/post/shiny-user-input/'>
   
   
   <link rel='icon' href='/favicon.ico'>
@@ -64,7 +64,11 @@
 </section></div>
 
   <div class='sidebar-overlay'></div>
-</div><div class='main'><a class='screen-reader-text' href='#content'>Skip to Content</a>
+</div><script src="//yihui.org/js/math-code.js"></script>
+  <script async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+  </script>
+<div class='main'><a class='screen-reader-text' href='#content'>Skip to Content</a>
 
 <button id='sidebar-toggler' class='sidebar-toggler' aria-controls='sidebar'>
   <span class='screen-reader-text'>Toggle Sidebar</span>
@@ -231,6 +235,16 @@ shinyApp(ui, server)</code></pre>
 </svg>
  Previous</span>
         <span class='screen-reader-text'>Previous post: </span>Shinydashboard with dynamic menu items and content</a>
+    </div><div class='next-entry sep-before'>
+      <a href='/post/dividend-yield-tr/'>
+        <span class='screen-reader-text'>Next post: </span>Calculation of dividend yield from index returns<span aria-hidden='true'>Next <svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <line x1="4" y1="12" x2="20" y2="12"/>
+  <polyline points="14 6 20 12 14 18"/>
+  
+</svg>
+</span>
+      </a>
     </div></div>
 </nav>
 

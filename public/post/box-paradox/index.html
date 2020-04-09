@@ -9,14 +9,14 @@
 <meta property='og:title' content='Bertrand&#39;s box paradox in Python • Martin Geissmann'>
 <meta property='og:description' content='The paradox https://en.wikipedia.org/wiki/Bertrand%27s_box_paradox
  Analytical solution in Python import random import numpy as np # 0 represents a silver coin, 1 a gold coin b1 = [1,1] b2 = [0,0] b3 = [1,0] boxes = np.matrix([b1,b2,b3]) rounds = 100000 first = [] second = [] for r in range(rounds): box = random.randint(0,2) coin1 = random.randint(0,1) coin2 = abs(coin1 - 1) first.append(boxes[box,coin1]) second.append(boxes[box, coin2]) print(first) print(second) first = np.array(first) second = np.'>
-<meta property='og:url' content='https://mgei.github.io/post/box-paradox/'>
+<meta property='og:url' content='/post/box-paradox/'>
 <meta property='og:site_name' content='mgei.github.io'>
 <meta property='og:type' content='article'><meta property='og:image' content='https://www.gravatar.com/avatar/a525a84fae399669fa8861e2661df00b?s=256'><meta property='article:section' content='post'><meta property='article:tag' content='python'><meta property='article:published_time' content='2019-10-06T00:00:00Z'/><meta property='article:modified_time' content='2019-10-06T00:00:00Z'/><meta name='twitter:card' content='summary'>
 
-<meta name="generator" content="Hugo 0.65.3" />
+<meta name="generator" content="Hugo 0.68.3" />
 
   <title>Bertrand&#39;s box paradox in Python • Martin Geissmann</title>
-  <link rel='canonical' href='https://mgei.github.io/post/box-paradox/'>
+  <link rel='canonical' href='/post/box-paradox/'>
   
   
   <link rel='icon' href='/favicon.ico'>
@@ -66,7 +66,11 @@
 </section></div>
 
   <div class='sidebar-overlay'></div>
-</div><div class='main'><a class='screen-reader-text' href='#content'>Skip to Content</a>
+</div><script src="//yihui.org/js/math-code.js"></script>
+  <script async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+  </script>
+<div class='main'><a class='screen-reader-text' href='#content'>Skip to Content</a>
 
 <button id='sidebar-toggler' class='sidebar-toggler' aria-controls='sidebar'>
   <span class='screen-reader-text'>Toggle Sidebar</span>

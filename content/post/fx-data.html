@@ -1,0 +1,54 @@
+---
+slug: "fx-data"
+date: "2020-04-08"
+title: "Where and how to retrieve any FX pairs' historical data"
+tags: ["R", "Quandl", "finance", "stock market"]
+authors: [mgei]
+---
+
+
+
+<div id="currency-data" class="section level1">
+<h1>Currency data</h1>
+<p>From experience, the most reliable data sources are from central banks. The problem is that they often only report the exchange rate to their own currency. For example, the European Central Bank reports every currency against the EUR (<a href="https://sdw.ecb.europa.eu/browse.do?node=9691113">ECB</a>), the US Fed against the USD (<a href="https://www.federalreserve.gov/releases/h10/Hist/">Fed</a>) and the Swiss national Bank all currencies against the CHF (<a href="https://data.snb.ch/de/topics/ziredev#!/cube/devkum">SNB</a>).</p>
+<p>But it’s easy to compute the rates from any pair given you have official rates against a major currency (EUR, USD, CHF etc.)</p>
+<p><span class="math display">\[ \frac{C_1}{C_2} = \frac{1}{\frac{C_3}{C_1}} * \frac{C_3}{C_2} \]</span></p>
+<p><span class="math inline">\(C_1\)</span> being your first currency (e.g. AUD), <span class="math inline">\(C_2\)</span> the second (USD) and <span class="math inline">\(C_3\)</span> a major currency you got common exchange rate information for (e.g. EUR).</p>
+<p>Data from the ECB (end of day exchange rates against EUR) is also available for free on <a href="https://www.quandl.com/data/ECB/EURUSD-EUR-vs-USD-Foreign-Exchange-Reference-Rate">Quandl</a>. There’s also a API for which you need to register to get a free API key.</p>
+<p>In R this is how I calculate:</p>
+<pre class="r"><code>library(tidyverse)
+library(Quandl)
+
+Quandl.api_key(KEY) # get your personal API key on Quandl.com
+
+get_exchange &lt;- function(currency1, currency2) {
+  if (currency1 == &quot;EUR&quot;) {
+    out &lt;- Quandl(paste0(&quot;ECB/&quot;, currency1, currency2))
+    return(out %&gt;% rename(!!paste0(currency1, currency2) := 2))
+  }
+  if (currency2 == &quot;EUR&quot;) {
+    out &lt;- Quandl(paste0(&quot;ECB/&quot;, currency1, currency2))
+
+    out &lt;- out %&gt;% 
+      mutate(Value = 1/Value)
+
+    return(out %&gt;% rename(!!paste0(currency2, currency1) := 2))
+  }
+
+  EURcur1 &lt;- Quandl(paste0(&quot;ECB/EUR&quot;, currency1))
+  EURcur2 &lt;- Quandl(paste0(&quot;ECB/EUR&quot;, currency2))
+
+  currencies &lt;- left_join(EURcur1 %&gt;% rename(EURcur1 = 2), 
+                          EURcur2 %&gt;% rename(EURcur2 = 2),
+                          by = &quot;Date&quot;)
+
+  currencies %&gt;% 
+    mutate(!!paste0(currency1, currency2) := 1/EURcur1 * EURcur2) %&gt;% 
+    select(-EURcur1, -EURcur2)
+}</code></pre>
+<p>For example, get the AUD/USD pair.</p>
+<pre class="r"><code>AUDUSD &lt;- get_exchange(&quot;AUD&quot;, &quot;USD&quot;) 
+
+# AUDUSD %&gt;% as_tibble()</code></pre>
+<p>Posted on quant.stackexchange.com <a href="https://quant.stackexchange.com/a/53122/46111" class="uri">https://quant.stackexchange.com/a/53122/46111</a></p>
+</div>

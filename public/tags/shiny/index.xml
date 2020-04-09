@@ -2,38 +2,38 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>shiny on mgei.github.io</title>
-    <link>https://mgei.github.io/tags/shiny/</link>
+    <link>/tags/shiny/</link>
     <description>Recent content in shiny on mgei.github.io</description>
     <generator>Hugo -- gohugo.io</generator>
     <lastBuildDate>Wed, 26 Feb 2020 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://mgei.github.io/tags/shiny/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/tags/shiny/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Simple user input storage in a Shiny app</title>
-      <link>https://mgei.github.io/post/shiny-user-input/</link>
+      <link>/post/shiny-user-input/</link>
       <pubDate>Wed, 26 Feb 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://mgei.github.io/post/shiny-user-input/</guid>
+      <guid>/post/shiny-user-input/</guid>
       <description>Persistent data storage library(shiny) library(shinyWidgets) library(tidyverse) # read persistent data or create a new file if it does not exist yet if (&amp;quot;favs.csv&amp;quot; %in% list.files()) { favs &amp;lt;- read_file(&amp;quot;favs.csv&amp;quot;) %&amp;gt;% strsplit(&amp;quot;, &amp;quot;) %&amp;gt;% .[[1]] %&amp;gt;% as.numeric() %&amp;gt;% .[-1] } else { favs &amp;lt;- 99 paste(favs, collapse = &amp;quot;, &amp;quot;) %&amp;gt;% write_file(&amp;quot;favs.csv&amp;quot;) favs &amp;lt;- favs[-1] } ui &amp;lt;- fluidPage( radioGroupButtons( inputId = &amp;quot;fav_number&amp;quot;, label = &amp;quot;What&amp;#39;s your favorite number?&amp;quot;, choices = 1:9 ), circleButton(&amp;quot;button_go&amp;quot;, &amp;quot;Go!</description>
     </item>
     
     <item>
       <title>Shinydashboard with dynamic menu items and content</title>
-      <link>https://mgei.github.io/post/dynamic-shinydashboard/</link>
+      <link>/post/dynamic-shinydashboard/</link>
       <pubDate>Wed, 13 Nov 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://mgei.github.io/post/dynamic-shinydashboard/</guid>
+      <guid>/post/dynamic-shinydashboard/</guid>
       <description>Shinydashboard dynamic menu library(shiny) library(shinydashboard) # subitems, could be dynamic from user input or database data_subitems &amp;lt;- c(&amp;quot;one&amp;quot;, &amp;quot;two&amp;quot;, &amp;quot;three&amp;quot;) ui &amp;lt;- dashboardPage( dashboardHeader(), dashboardSidebar( uiOutput(&amp;quot;mysidebar&amp;quot;) ), dashboardBody( uiOutput(&amp;quot;mycontent&amp;quot;) ) ) server &amp;lt;- function(input, output, session) { # This is to get the desired menuItem selected initially. # selected=T seems not to work with a dynamic sidebarMenu. observeEvent(session, { updateTabItems(session, &amp;quot;tabs&amp;quot;, selected = &amp;quot;initial&amp;quot;) }) # Use reactive values when working with Shiny.</description>
     </item>
     
     <item>
       <title>R Shiny app for preference expression</title>
-      <link>https://mgei.github.io/post/engagement-ring/</link>
+      <link>/post/engagement-ring/</link>
       <pubDate>Fri, 12 Apr 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://mgei.github.io/post/engagement-ring/</guid>
+      <guid>/post/engagement-ring/</guid>
       <description>Engagement ring This is an R Shiny application for finding out about your girlfriend’s engagement ring preferences. The idea behind is to vote for one ring out of of two (see Ranked Pairs).
 Screenshot
  At the end of this post is the full code, which is also available on Github.
@@ -42,10 +42,10 @@ Screenshot
     
     <item>
       <title>Swiss Hospitals Classification</title>
-      <link>https://mgei.github.io/post/swiss-hospitals-classification/</link>
+      <link>/post/swiss-hospitals-classification/</link>
       <pubDate>Wed, 20 Mar 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://mgei.github.io/post/swiss-hospitals-classification/</guid>
+      <guid>/post/swiss-hospitals-classification/</guid>
       <description>Originally published on Github: https://github.com/mgei/swiss-hospitals-classification
  R Shiny app for cluster analysis A simple R Shiny app to classify Swiss hospitals according to their DRG positions using clustering and wordclouds.
 The app is also live for trying here: http://swiss-hospitals-classification.econovo.io/

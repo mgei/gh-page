@@ -11,14 +11,14 @@ rvest relies on xml2 package.
 <meta property='og:description' content='Web scraping with rvest https://www.gedenkzeit.ch/ is a Swiss obituary platform. The goal is to get the dates of birth and dates of death.
 rvest relies on xml2 package.
 # getting data from gedenkzeit.ch library(tidyverse) library(lubridate) library(rvest) library(gender) base &lt;- &quot;https://www.gedenkzeit.ch/Todesanzeigen/_/_/_/0/0/&quot; from &lt;- 1 to &lt;- 3 data &lt;- tibble() for (i in from:to) { link &lt;- paste0(base, from) #&gt; Loading required package: xml2 html &lt;- read_html(link) rawnames &lt;- html_nodes(html, &quot;.'>
-<meta property='og:url' content='https://mgei.github.io/post/webscraping-gedenkzeitch/'>
+<meta property='og:url' content='/post/webscraping-gedenkzeitch/'>
 <meta property='og:site_name' content='mgei.github.io'>
 <meta property='og:type' content='article'><meta property='og:image' content='https://www.gravatar.com/avatar/a525a84fae399669fa8861e2661df00b?s=256'><meta property='article:section' content='post'><meta property='article:tag' content='R'><meta property='article:tag' content='webscraping'><meta property='article:tag' content='gender'><meta property='article:published_time' content='2019-08-16T00:00:00Z'/><meta property='article:modified_time' content='2019-08-16T00:00:00Z'/><meta name='twitter:card' content='summary'>
 
-<meta name="generator" content="Hugo 0.65.3" />
+<meta name="generator" content="Hugo 0.68.3" />
 
   <title>Web scraping deaths from gedenkzeit.ch • Martin Geissmann</title>
-  <link rel='canonical' href='https://mgei.github.io/post/webscraping-gedenkzeitch/'>
+  <link rel='canonical' href='/post/webscraping-gedenkzeitch/'>
   
   
   <link rel='icon' href='/favicon.ico'>
@@ -68,7 +68,11 @@ rvest relies on xml2 package.
 </section></div>
 
   <div class='sidebar-overlay'></div>
-</div><div class='main'><a class='screen-reader-text' href='#content'>Skip to Content</a>
+</div><script src="//yihui.org/js/math-code.js"></script>
+  <script async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+  </script>
+<div class='main'><a class='screen-reader-text' href='#content'>Skip to Content</a>
 
 <button id='sidebar-toggler' class='sidebar-toggler' aria-controls='sidebar'>
   <span class='screen-reader-text'>Toggle Sidebar</span>
